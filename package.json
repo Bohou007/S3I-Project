@@ -4,6 +4,10 @@
     "version": "3.3.0",
     "description": "Javascript Version",
     "private": true,
+    "engines": {
+        "node": "16.x|17.x",
+        "npm": ">=5.0.0"
+    },
     "scripts": {
         "start": "PORT=8080 react-app-rewired start",
         "build": "react-app-rewired build",
@@ -13,10 +17,6 @@
         "clear-all": "rm -rf build node_modules",
         "re-start": "rm -rf build node_modules && yarn install && yarn start",
         "re-build": "rm -rf build node_modules && yarn install && yarn build"
-    },
-    "engines": {
-        "npm": ">=8.5.2",
-        "node": ">=17.7.2"
     },
     "eslintConfig": {
         "extends": [
