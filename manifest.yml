@@ -1,0 +1,6 @@
+---
+applications:
+  - name: s3i-selfcare
+    random-route: true
+    buildpack: https://github.com/cloudfoundry/nodejs-buildpack
+    memory: 128M
