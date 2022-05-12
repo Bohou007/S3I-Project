@@ -1,3 +1,5 @@
+/* eslint-disable no-nested-ternary */
+/* eslint-disable no-unneeded-ternary */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from 'react';
 import { format } from 'date-fns';
@@ -35,6 +37,9 @@ import axios from '../../../../utils/axios';
 import useAuth from '../../../../hooks/useAuth';
 import { PATH_DASHBOARD } from '../../../../routes/paths';
 
+import { SkeletonConversationItem, SkeletonMailSidebarItem } from '../../../../components/skeleton';
+import { TableEmptyRows, TableHeadCustom, TableNoData, TableSelectedActions } from '../../../../components/table';
+
 // ----------------------------------------------------------------------
 import { UserTableToolbarReservation, UserTableRowTx } from '../../user/list';
 
@@ -45,18 +50,34 @@ export default function Echeances() {
   const [tableData, setTableData] = useState([]);
   const { user } = useAuth();
 
+  const [isNotFound, setIsNotFound] = useState(false);
+  const [isGet, setIsGet] = useState(false);
+
   const isLight = theme.palette.mode === 'light';
 
   useEffect(async () => {
     const deadline = await axios.get(
       `/ws-booking-payment/payment-schedule/customer/${user?.customer_reference}/limit/5`
     );
+
+    if (deadline.status === 200) {
+      setIsGet(true);
+    }
+
+    setTimeout(() => {
+      setIsGet(false);
+    }, 3000);
     setTableData(deadline.data);
   }, []);
 
   const handleClick = () => {
     navigate(PATH_DASHBOARD.general.deadlines);
   };
+
+  setTimeout(() => {
+    const ntF = tableData.length === 0 ? true : false;
+    setIsNotFound(ntF);
+  }, 4000);
 
   return (
     <>
@@ -77,9 +98,22 @@ export default function Echeances() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {tableData.map((row, index) => (
-                  <UserTableRowTx key={index} tableData={tableData} row={row} />
-                ))}
+                {isGet ? (
+                  <>
+                    <SkeletonConversationItem />
+                    <SkeletonConversationItem />
+                    <SkeletonConversationItem />
+                  </>
+                ) : tableData.length > 0 ? (
+                  tableData.map((row, index) => <UserTableRowTx key={index} tableData={tableData} row={row} />)
+                ) : (
+                  isNotFound && (
+                    <>
+                      <TableEmptyRows height={'72'} />
+                      <TableNoData isNotFound={isNotFound} />
+                    </>
+                  )
+                )}
               </TableBody>
             </Table>
           </TableContainer>

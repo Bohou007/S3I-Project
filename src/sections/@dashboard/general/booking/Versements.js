@@ -1,3 +1,5 @@
+/* eslint-disable no-nested-ternary */
+/* eslint-disable no-unneeded-ternary */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/jsx-no-undef */
 import { useState, useEffect } from 'react';
@@ -37,6 +39,9 @@ import { PATH_DASHBOARD } from '../../../../routes/paths';
 import axios from '../../../../utils/axios';
 import useAuth from '../../../../hooks/useAuth';
 
+import { SkeletonConversationItem, SkeletonMailSidebarItem } from '../../../../components/skeleton';
+import { TableEmptyRows, TableHeadCustom, TableNoData, TableSelectedActions } from '../../../../components/table';
+
 import { UserTableToolbarReservation, UserTableRowPaimentTx } from '../../user/list';
 
 // ----------------------------------------------------------------------
@@ -48,16 +53,31 @@ export default function Versements() {
   const [tableData, setTableData] = useState([]);
   const { user } = useAuth();
 
+  const [isNotFound, setIsNotFound] = useState(false);
+  const [isGet, setIsGet] = useState(false);
+
   const isLight = theme.palette.mode === 'light';
 
   useEffect(async () => {
     const response = await axios.get(`/ws-booking-payment/payment/customer/${user?.customer_reference}`);
+    if (response.status === 200) {
+      setIsGet(true);
+    }
+
+    setTimeout(() => {
+      setIsGet(false);
+    }, 3000);
     setTableData(response.data);
   }, []);
 
   const handleClick = () => {
     navigate(PATH_DASHBOARD.general.payment);
   };
+
+  setTimeout(() => {
+    const ntF = tableData.length === 0 ? true : false;
+    setIsNotFound(ntF);
+  }, 4000);
 
   return (
     <>
@@ -78,17 +98,22 @@ export default function Versements() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {tableData.map((row, index) => (
-                  <UserTableRowPaimentTx
-                    key={index}
-                    tableData={tableData}
-                    row={row}
-                    // selected={selected.includes(row.id)}
-                    // onSelectRow={() => onSelectRow(row.id)}
-                    // onDeleteRow={() => handleDeleteRow(row.id)}
-                    // onEditRow={() => handleEditRow(row.name)}
-                  />
-                ))}
+                {isGet ? (
+                  <>
+                    <SkeletonConversationItem />
+                    <SkeletonConversationItem />
+                    <SkeletonConversationItem />
+                  </>
+                ) : tableData.length > 0 ? (
+                  tableData.map((row, index) => <UserTableRowPaimentTx key={index} tableData={tableData} row={row} />)
+                ) : (
+                  isNotFound && (
+                    <>
+                      <TableEmptyRows height={'72'} />
+                      <TableNoData isNotFound={isNotFound} />
+                    </>
+                  )
+                )}
               </TableBody>
             </Table>
           </TableContainer>
