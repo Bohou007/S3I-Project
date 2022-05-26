@@ -18,7 +18,7 @@ import Page from '../../components/Page';
 import Logo from '../../components/Logo';
 import Image from '../../components/Image';
 // sections
-import { LoginForm } from '../../sections/auth/login';
+import { LoginFormAdmin } from '../../sections/auth/login';
 
 // ----------------------------------------------------------------------
 
@@ -67,25 +67,17 @@ const salutation = moment(Date.now()).format('k') < 12 ? 'Bonjour' : 'Bonsoir';
 
 // ----------------------------------------------------------------------
 
-export default function Login() {
+export default function LoginAdmin() {
   const { method } = useAuth();
   const smUp = useResponsive('up', 'sm');
 
   const mdUp = useResponsive('up', 'md');
 
   return (
-    <Page title="Connexion">
+    <Page title="Connexion Admin">
       <RootStyle>
         <HeaderStyle>
           <Logo />
-          {/* {smUp && (
-            <Typography variant="body2" sx={{ mt: { md: -2 } }}>
-              Vous n'avez pas de compte ? {''}
-              <Link variant="subtitle2" component={RouterLink} to={PATH_AUTH.register}>
-                Créer un compte
-              </Link>
-            </Typography>
-          )} */}
         </HeaderStyle>
 
         {mdUp && (
@@ -113,20 +105,12 @@ export default function Login() {
               </Box>
             </Stack>
 
-            {/* <Alert severity="info" sx={{ mb: 3 }}>
-              Use email : <strong>demo@minimals.cc</strong> / password :<strong> demo1234</strong>
-            </Alert> */}
+            <Alert severity="info" sx={{ mb: 3 }}>
+              Utiliser l'email : <strong>virginie.douakouadio@s3i-groupe.com</strong> / Mot de passe :
+              <strong> @dm1&&</strong>
+            </Alert>
 
-            <LoginForm />
-
-            {/* {!smUp && (
-              <Typography variant="body2" align="center" sx={{ mt: 3 }}>
-                Vous n'avez pas de compte ?{' '}
-                <Link variant="subtitle2" component={RouterLink} to={PATH_AUTH.register}>
-                  Créer un compte
-                </Link>
-              </Typography>
-            )} */}
+            <LoginFormAdmin />
           </ContentStyle>
         </Container>
       </RootStyle>

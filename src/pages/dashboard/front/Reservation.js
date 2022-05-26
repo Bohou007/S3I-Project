@@ -25,6 +25,8 @@ import {
   TableContainer,
   TablePagination,
   FormControlLabel,
+  Grid,
+  Stack,
 } from '@mui/material';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
@@ -46,18 +48,18 @@ import { SkeletonConversationItem, SkeletonMailSidebarItem } from '../../../comp
 import { UserTableToolbarReservation, UserTableRowReservation } from '../../../sections/@dashboard/user/list';
 import useAuth from '../../../hooks/useAuth';
 import axios from '../../../utils/axios';
+import { AppFeatured, AppWelcome, AppWidget } from '../../../sections/@dashboard/general/app';
 
 // ----------------------------------------------------------------------
 
 const STATUS_OPTIONS = ['Tous les echeances', 'Echances passées', 'Echanches à venir'];
 
 const TABLE_HEAD = [
-  { id: 'codeReservation', label: 'Code de reservation', align: 'left' },
-  { id: 'programmeImobillier', label: 'Programme Immobillier', align: 'left' },
+  { id: 'programmeImobillier', label: 'Programme immobillier', align: 'left' },
   { id: 'lot', label: 'Lot', align: 'left' },
   { id: 'sousLot', label: 'Sous-lot', align: 'left' },
-  { id: 'montantReservation', label: 'Montant', align: 'center' },
-  // { id: 'date_echeance', label: "début de l'échéancier", align: 'center' },
+  { id: 'montantReservation', label: 'Montant total', align: 'left' },
+  { id: 'montantReservation', label: 'Montant versé', align: 'left' },
   { id: 'date_fin', label: 'fin de paiement', align: 'left' },
   { id: '' },
 ];
@@ -99,6 +101,9 @@ export default function Reservation() {
   const [filterDate, setFilterDate] = useState('');
   const [isNotFound, setIsNotFound] = useState(false);
 
+  const [totalReservationAmount, setTotalReservationAmount] = useState(0);
+  const [totalAmountPay, setTotalAmountPay] = useState(0);
+
   const PROGRAMME_OPTIONS = program;
 
   const { currentTab: filterStatus, onChangeTab: onChangeFilterStatus } = useTabs('all');
@@ -109,6 +114,14 @@ export default function Reservation() {
       `/ws-booking-payment/real-estate-program/booking-by-customer/${user?.customer_reference}`
     );
 
+    const totalAmountPayData = await axios.get(
+      `/ws-booking-payment/booking/customer/${user?.customer_reference}/total_amount_paid`
+    );
+    const totalReservationAmountData = await axios.get(
+      `/ws-booking-payment/booking/customer/${user?.customer_reference}/total_house_amount`
+    );
+    setTotalReservationAmount(totalReservationAmountData.data);
+    setTotalAmountPay(totalAmountPayData.data);
     setTableData(response.data);
     setProgram(programData.data);
 
@@ -174,6 +187,15 @@ export default function Reservation() {
     navigate(PATH_DASHBOARD.user.edit(paramCase(id)));
   };
 
+  const statisticsAmount = (total, partial) => {
+    // Calculate the percentage
+    const percent = (partial / total) * 100;
+    // arrondi sans nombre aores la virgule
+    const percentRounded = Math.round(percent);
+    console.log(percent);
+    return percentRounded;
+  };
+
   const dataFiltered = applySortFilter({
     tableData,
     comparator: getComparator(order, orderBy),
@@ -192,12 +214,33 @@ export default function Reservation() {
   }, 4000);
 
   return (
-    <Page title="Consulter mes reservations">
+    <Page title="Consulter mes logements">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Consulter mes reservations"
-          links={[{ name: 'Tableau de bord', href: PATH_DASHBOARD.root }, { name: 'Mes reservation' }]}
+          heading="Consulter mes logements"
+          links={[{ name: 'Tableau de bord', href: PATH_DASHBOARD.root }, { name: 'Mes logements' }]}
         />
+        <Card sx={{ padding: 5, marginBottom: 5 }}>
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={6}>
+              <AppWidget
+                title="Montant verser"
+                total={totalAmountPay}
+                icon={'eva:credit-card-ffill'}
+                color="warning"
+                chartData={statisticsAmount(totalReservationAmount, totalAmountPay)}
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <AppWidget
+                title="Montant restant "
+                total={totalReservationAmount - totalAmountPay}
+                icon={'eva:person-ffill'}
+                chartData={statisticsAmount(totalReservationAmount, totalReservationAmount - totalAmountPay)}
+              />
+            </Grid>
+          </Grid>
+        </Card>
 
         <Card>
           {/* <Tabs

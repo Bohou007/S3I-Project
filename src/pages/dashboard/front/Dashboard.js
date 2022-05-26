@@ -41,18 +41,28 @@ export default function Dashboard() {
   const [countReservation, setCountReservation] = useState(0);
   const [countNoPayReservation, setCountNoPayReservation] = useState(0);
   const [countPayReservation, setCountPayReservation] = useState(0);
+  const [totalReservationAmount, setTotalReservationAmount] = useState(0);
+  const [totalAmountPay, setTotalAmountPay] = useState(0);
 
   useEffect(async () => {
     const response = await axios.get(`/ws-booking-payment/booking/customer/${user?.customer_reference}`);
-
     const noPay = await axios.get(
       `/ws-booking-payment/booking/customer/${user?.customer_reference}/status/not-sold-out`
     );
     const pay = await axios.get(`/ws-booking-payment/booking/customer/${user?.customer_reference}/status/sold-out`);
+
+    const totalAmountPayData = await axios.get(
+      `/ws-booking-payment/booking/customer/${user?.customer_reference}/total_amount_paid`
+    );
+    const totalReservationAmountData = await axios.get(
+      `/ws-booking-payment/booking/customer/${user?.customer_reference}/total_house_amount`
+    );
     setCountReservation(response.data.length <= 9 ? '0' + response.data.length : response.data.length);
     setCountNoPayReservation(formatNumber(noPay.data.length));
     setCountPayReservation(formatNumber(pay.data.length));
     setReservation(response.data);
+    setTotalReservationAmount(totalReservationAmountData.data);
+    setTotalAmountPay(totalAmountPayData.data);
   }, []);
 
   const formatNumber = (number) => {
@@ -60,33 +70,42 @@ export default function Dashboard() {
     return fmt;
   };
 
+  const statisticsAmount = (total, partial) => {
+    // Calculate the percentage
+    const percent = (partial / total) * 100;
+    // arrondi sans nombre aores la virgule
+    const percentRounded = Math.round(percent);
+    console.log(percent);
+    return percentRounded;
+  };
+
   return (
     <Page title="Tableau de bord">
       <Container maxWidth={themeStretch ? false : 'xl'}>
         <Grid container spacing={3}>
-          <Grid item xs={12} md={12}>
+          <Grid item xs={12} md={7}>
             <AppWelcome displayName={displayName} />
           </Grid>
 
-          {/* <Grid item xs={12} md={4}> */}
-          {/* <Stack spacing={1}>
+          <Grid item xs={12} md={5}>
+            <Stack spacing={1}>
               <AppWidget
                 title="Montant verser"
-                total={55566}
-                icon={'eva:credit-card-fill'}
+                total={totalAmountPay}
+                icon={'eva:credit-card-ffill'}
                 color="warning"
-                chartData={75}
+                chartData={statisticsAmount(totalReservationAmount, totalAmountPay)}
               />
               <AppWidget
                 title="Montant restant "
-                total={38566}
-                icon={'eva:person-ffill'} $``
-                chartData={48}
+                total={totalReservationAmount - totalAmountPay}
+                icon={'eva:person-ffill'}
+                chartData={statisticsAmount(totalReservationAmount, totalReservationAmount - totalAmountPay)}
               />
-            </Stack> */}
-          {/* <BookingCheckInWidgets /> */}
-          {/* <AppFeatured /> */}
-          {/* </Grid> */}
+            </Stack>
+            {/* <BookingCheckInWidgets /> */}
+            {/* <AppFeatured /> */}
+          </Grid>
 
           <Grid item xs={12} md={4}>
             <BookingWidgetSummary

@@ -4,6 +4,8 @@ import { PATH_DASHBOARD, PATH_DASHBOARD_ADMIN } from './routes/paths';
 // API
 export const HOST_API = process.env.REACT_APP_HOST_API_KEY || '';
 
+export const ROUTER_BASE_URL = '/#/';
+
 export const FIREBASE_API = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,

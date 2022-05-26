@@ -26,6 +26,7 @@ import {
   CardContent,
   CardActions,
   Grid,
+  MenuItem,
 } from '@mui/material';
 import Button from '@mui/material/Button';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -56,6 +57,7 @@ class UserTableRowPaiment extends Component {
       isOpenModal: false,
       program: '',
       listPro: '',
+      openMenu: null,
     };
     this.handleAddEvent = this.handleAddEvent.bind(this);
     this.handleCloseModal = this.handleCloseModal.bind(this);
@@ -81,7 +83,7 @@ class UserTableRowPaiment extends Component {
     const response = await axios.get(`/ws-booking-payment/real-estate-program/${value}`);
     // console.log('response', response);
 
-    const programme = response.data.label + ' ' + response.data.formula;
+    const programme = response.data.label + ' ' + response.data.formula + ' ' + response.data.real_estate_program_type;
     this.setState({
       listPro: programme,
     });
@@ -103,16 +105,26 @@ class UserTableRowPaiment extends Component {
     });
   }
 
+  handleOpenMenu = (event) => {
+    this.setState({
+      openMenu: event.currentTarget,
+    });
+  };
+
+  handleCloseMenu = () => {
+    this.setState({
+      openMenu: null,
+    });
+  };
+
   render() {
     const { row } = this.props;
     console.log('Program', this.state.program);
 
     return (
       <TableRow hover>
-        <TableCell align="left">
-          <Label variant={'ghost'} color={'success'} sx={{ textTransform: 'capitalize' }}>
-            {this.state.listPro}
-          </Label>
+        <TableCell align="left" sx={{ textTransform: 'none' }}>
+          {this.state.listPro}
         </TableCell>
 
         <TableCell align="left">{this.sepMillier(row.amount)} FCFA</TableCell>
@@ -127,14 +139,28 @@ class UserTableRowPaiment extends Component {
         <TableCell align="center"> {moment(row.payment_date).format('DD MMM YYYY')}</TableCell>
 
         <TableCell align="right">
-          <Button
-            variant="outlined"
-            color={'primary'}
-            onClick={() => this.handleAddEvent(this.props.row)}
-            startIcon={<VisibilityIcon />}
-          >
-            Details
-          </Button>
+          <TableMoreMenu
+            open={this.state.openMenu}
+            onOpen={this.handleOpenMenu}
+            onClose={this.handleCloseMenu}
+            actions={
+              <>
+                <MenuItem onClick={() => this.handleAddEvent(this.props.row)} sx={{}}>
+                  <Iconify icon={'eva:eye-outline'} />
+                  Voir le detail
+                </MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    this.props.onViewRow();
+                    // handleCloseMenu();
+                  }}
+                >
+                  <Iconify icon={'eva:corner-down-right-outline'} />
+                  Votre facture
+                </MenuItem>
+              </>
+            }
+          />
 
           <DialogAnimate open={this.state.isOpenModal} onClose={this.handleCloseModal} maxWidth={'md'}>
             <DialogTitle sx={{ width: '100%', backgroundColor: '#D7B94D', paddingBottom: 2 }}>
@@ -227,39 +253,6 @@ class UserTableRowPaiment extends Component {
                   </Grid>
                 </Grid>
               </Card>
-              {/* <Typography variant="h4" component="div">
-                Detailes de l'echeance
-              </Typography>
-              <Card sx={{ minWidth: 275 }}>
-                <Grid container spacing={2}>
-                  <Grid item xs={4}>
-                    <CardContent sx={{}}>
-                      <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>
-                        Date de début de l'échéancier de paiement
-                      </Typography>
-                      <Typography variant="body2">
-                        {moment(this.state.detailRow.payment_schedule_start_date).format('DD MMM YYYY')}{' '}
-                      </Typography>
-                    </CardContent>
-                  </Grid>
-                  <Grid item xs={4}>
-                    <CardContent sx={{}}>
-                      <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>
-                        Date de fin de paiement de la reservation
-                      </Typography>
-                      <Typography variant="body2">
-                        {moment(this.state.detailRow.payment_schedule_end_date).format('DD MMM YYYY')}
-                      </Typography>
-                    </CardContent>
-                  </Grid>
-                  <Grid item xs={4}>
-                    <CardContent sx={{}}>
-                      <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Nombre d'echeance de paiement</Typography>
-                      <Typography variant="body2">{this.state.detailRow.payment_deadlines_number}</Typography>
-                    </CardContent>
-                  </Grid>
-                </Grid>
-              </Card> */}
             </Stack>
             <DialogActions>
               <Box sx={{ flexGrow: 1 }} />
@@ -276,10 +269,7 @@ class UserTableRowPaiment extends Component {
 
 UserTableRowPaiment.propTypes = {
   row: PropTypes.object,
-  selected: PropTypes.bool,
-  onEditRow: PropTypes.func,
-  onSelectRow: PropTypes.func,
-  onDeleteRow: PropTypes.func,
+  onViewRow: PropTypes.func,
 };
 
 export default UserTableRowPaiment;

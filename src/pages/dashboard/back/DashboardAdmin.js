@@ -25,25 +25,23 @@ import { AppFeatured, AppWelcome, AppWidget } from '../../../sections/@dashboard
 
 export default function DashboardAdmin() {
   const { user } = useAuth();
-
+  const displayName = `${user.firstName} ${user.lastName}`;
   const { themeStretch } = useSettings();
 
   return (
     <Page title="Tableau de bord">
       <Container maxWidth={themeStretch ? false : 'xl'}>
         <Grid container spacing={3}>
-          <Grid item xs={12} md={8}>
-            <AppWelcome displayName={user?.displayName} />
+          <Grid item xs={12} md={12}>
+            <AppWelcome displayName={displayName} />
           </Grid>
 
-          <Grid item xs={12} md={4}>
+          {/* <Grid item xs={12} md={4}>
             <Stack spacing={1}>
               <AppWidget title="Montant verser" total={38566} chartData={48} />
               <AppWidget title="Montant restant" total={55566} color="warning" chartData={75} />
             </Stack>
-            {/* <BookingCheckInWidgets /> */}
-            {/* <AppFeatured /> */}
-          </Grid>
+          </Grid> */}
 
           <Grid item xs={12} md={4}>
             <BookingWidgetSummary title="Réservations totales" total={710} icon={<BookingIllustration />} />

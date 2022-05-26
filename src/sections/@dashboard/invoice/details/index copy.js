@@ -1,6 +1,4 @@
 import PropTypes from 'prop-types';
-import numeral from 'numeral';
-
 // @mui
 import { styled, useTheme } from '@mui/material/styles';
 import {
@@ -39,47 +37,55 @@ const RowResultStyle = styled(TableRow)(({ theme }) => ({
 
 InvoiceDetails.propTypes = {
   invoice: PropTypes.object.isRequired,
-  customer: PropTypes.object.isRequired,
-  program: PropTypes.object.isRequired,
 };
 
-export default function InvoiceDetails({ invoice, customer, program }) {
+export default function InvoiceDetails({ invoice }) {
   const theme = useTheme();
 
   if (!invoice) {
     return null;
   }
 
-  const sepMillier = (number) => {
-    const Primenumeral = numeral(number).format(+0, 0);
-    // console.log(Primenumeral);
-    return Primenumeral.replace(/[,]+/g, ' ');
-  };
-
-  // const { items, taxes, status, dueDate, discount, invoiceTo, createDate, totalPrice, invoiceNumber, subTotalPrice } =
-  //   invoice;
+  const {
+    items,
+    taxes,
+    status,
+    dueDate,
+    discount,
+    invoiceTo,
+    createDate,
+    totalPrice,
+    invoiceFrom,
+    invoiceNumber,
+    subTotalPrice,
+  } = invoice;
 
   return (
     <>
-      <InvoiceToolbar invoice={invoice} customer={customer} program={program} />
+      <InvoiceToolbar invoice={invoice} />
 
       <Card sx={{ pt: 5, px: 5 }}>
         <Grid container>
           <Grid item xs={12} sm={6} sx={{ mb: 5 }}>
-            <Image disabledEffect visibleByDefault alt="logo" src="/logo/s3i-logo.png" sx={{ maxWidth: 120 }} />
+            <Image disabledEffect visibleByDefault alt="logo" src="/logo/logo_full.svg" sx={{ maxWidth: 120 }} />
           </Grid>
 
           <Grid item xs={12} sm={6} sx={{ mb: 5 }}>
             <Box sx={{ textAlign: { sm: 'right' } }}>
               <Label
                 variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-                color={'success'}
+                color={
+                  (status === 'paid' && 'success') ||
+                  (status === 'unpaid' && 'warning') ||
+                  (status === 'overdue' && 'error') ||
+                  'default'
+                }
                 sx={{ textTransform: 'uppercase', mb: 1 }}
               >
-                PAYÉE
+                {status}
               </Label>
 
-              <Typography variant="h6">{invoice.payment_reference}</Typography>
+              <Typography variant="h6">{invoiceNumber}</Typography>
             </Box>
           </Grid>
 
@@ -87,34 +93,32 @@ export default function InvoiceDetails({ invoice, customer, program }) {
             <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
               Facturé à
             </Typography>
-            <Typography variant="body2">
-              {customer.firstname} {customer.lastname}
-            </Typography>
-            <Typography variant="body2">Tel: {customer.phone_number}</Typography>
-            <Typography variant="body2">Email: {customer.email}</Typography>
-          </Grid>
-
-          <Grid item xs={12} sm={6} sx={{ mb: 5, textAlign: 'right' }}>
-            <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
-              Payer à
-            </Typography>
-            <Typography variant="body2">S3I - bâtisseur du confort</Typography>
-            <Typography variant="body2">Tel: (+225) 07 77 001 002</Typography>
-            <Typography variant="body2">Email: serviceclients@s3i-groupe.com</Typography>
+            <Typography variant="body2">{invoiceFrom.name}</Typography>
+            <Typography variant="body2">{invoiceFrom.address}</Typography>
+            <Typography variant="body2">Phone: {invoiceFrom.phone}</Typography>
           </Grid>
 
           <Grid item xs={12} sm={6} sx={{ mb: 5 }}>
             <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
-              Date de facturation
+              Invoice to
             </Typography>
-            <Typography variant="body2">{fDate(invoice.payment_date)}</Typography>
+            <Typography variant="body2">{invoiceTo.name}</Typography>
+            <Typography variant="body2">{invoiceTo.address}</Typography>
+            <Typography variant="body2">Phone: {invoiceTo.phone}</Typography>
           </Grid>
 
-          <Grid item xs={12} sm={6} sx={{ mb: 5, textAlign: 'right' }}>
+          <Grid item xs={12} sm={6} sx={{ mb: 5 }}>
             <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
-              Mode de paiement
+              date create
             </Typography>
-            <Typography variant="body2">{invoice.payment_method}</Typography>
+            <Typography variant="body2">{fDate(createDate)}</Typography>
+          </Grid>
+
+          <Grid item xs={12} sm={6} sx={{ mb: 5 }}>
+            <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
+              Due date
+            </Typography>
+            <Typography variant="body2">{fDate(dueDate)}</Typography>
           </Grid>
         </Grid>
 
@@ -128,66 +132,66 @@ export default function InvoiceDetails({ invoice, customer, program }) {
                 }}
               >
                 <TableRow>
-                  <TableCell align="left" colSpan={4}>
-                    Description
-                  </TableCell>
-                  <TableCell align="right" sx={{ textAligin: 'right' }} colSpan={1}>
-                    Montant versé
-                  </TableCell>
+                  <TableCell width={40}>#</TableCell>
+                  <TableCell align="left">Description</TableCell>
+                  <TableCell align="left">Qty</TableCell>
+                  <TableCell align="right">Unit price</TableCell>
+                  <TableCell align="right">Total</TableCell>
                 </TableRow>
               </TableHead>
 
               <TableBody>
-                <TableRow
-                  sx={{
-                    borderBottom: (theme) => `solid 1px ${theme.palette.divider}`,
-                    width: '100%',
-                  }}
-                >
-                  <TableCell align="left" colSpan={4}>
-                    <Box>
-                      <Typography variant="subtitle2">
-                        {program.label} {program.formula} {program.real_estate_program_type}
-                      </Typography>
-                      <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-                        {program.location}
-                      </Typography>
-                    </Box>
-                  </TableCell>
-                  <TableCell colSpan={1} align="right" sx={{ textAligin: 'right' }}>
-                    {sepMillier(invoice.amount)} CFA
-                  </TableCell>
-                </TableRow>
+                {items.map((row, index) => (
+                  <TableRow
+                    key={index}
+                    sx={{
+                      borderBottom: (theme) => `solid 1px ${theme.palette.divider}`,
+                    }}
+                  >
+                    <TableCell>{index + 1}</TableCell>
+                    <TableCell align="left">
+                      <Box sx={{ maxWidth: 560 }}>
+                        <Typography variant="subtitle2">{row.title}</Typography>
+                        <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
+                          {row.description}
+                        </Typography>
+                      </Box>
+                    </TableCell>
+                    <TableCell align="left">{row.quantity}</TableCell>
+                    <TableCell align="right">{fCurrency(row.price)}</TableCell>
+                    <TableCell align="right">{fCurrency(row.price * row.quantity)}</TableCell>
+                  </TableRow>
+                ))}
 
                 <RowResultStyle>
                   <TableCell colSpan={3} />
                   <TableCell align="right">
                     <Box sx={{ mt: 2 }} />
-                    <Typography>Sous-total</Typography>
+                    <Typography>Subtotal</Typography>
                   </TableCell>
-                  <TableCell align="right" width={220}>
+                  <TableCell align="right" width={120}>
                     <Box sx={{ mt: 2 }} />
-                    <Typography>{sepMillier(invoice.amount)} CFA</Typography>
+                    <Typography>{fCurrency(subTotalPrice)}</Typography>
                   </TableCell>
                 </RowResultStyle>
 
-                {/* <RowResultStyle>
+                <RowResultStyle>
                   <TableCell colSpan={3} />
                   <TableCell align="right">
                     <Typography>Discount</Typography>
                   </TableCell>
                   <TableCell align="right" width={120}>
-                    <Typography sx={{ color: 'error.main' }}>{invoice.amount && fCurrency(-invoice.amount)}</Typography>
+                    <Typography sx={{ color: 'error.main' }}>{discount && fCurrency(-discount)}</Typography>
                   </TableCell>
-                </RowResultStyle> */}
+                </RowResultStyle>
 
                 <RowResultStyle>
                   <TableCell colSpan={3} />
                   <TableCell align="right">
                     <Typography>Taxes</Typography>
                   </TableCell>
-                  <TableCell align="right" width={220}>
-                    <Typography>0 CFA</Typography>
+                  <TableCell align="right" width={120}>
+                    <Typography>{taxes && fCurrency(taxes)}</Typography>
                   </TableCell>
                 </RowResultStyle>
 
@@ -196,8 +200,8 @@ export default function InvoiceDetails({ invoice, customer, program }) {
                   <TableCell align="right">
                     <Typography variant="h6">Total</Typography>
                   </TableCell>
-                  <TableCell align="right" width={240}>
-                    <Typography variant="h6">{sepMillier(invoice.amount)} CFA</Typography>
+                  <TableCell align="right" width={140}>
+                    <Typography variant="h6">{fCurrency(totalPrice)}</Typography>
                   </TableCell>
                 </RowResultStyle>
               </TableBody>
@@ -211,12 +215,12 @@ export default function InvoiceDetails({ invoice, customer, program }) {
           <Grid item xs={12} md={9} sx={{ py: 3 }}>
             <Typography variant="subtitle2">NOTES</Typography>
             <Typography variant="body2">
-              Si vous souhaitez que nous ajoutions des notes supplémentaires, faites-le nous savoir!
+              We appreciate your business. Should you need us to add VAT or extra notes let us know!
             </Typography>
           </Grid>
           <Grid item xs={12} md={3} sx={{ py: 3, textAlign: 'right' }}>
-            <Typography variant="subtitle2">Vous avez des questions ?</Typography>
-            <Typography variant="body2">serviceclients@s3i-groupe.com</Typography>
+            <Typography variant="subtitle2">Have a Question?</Typography>
+            <Typography variant="body2">support@minimals.cc</Typography>
           </Grid>
         </Grid>
       </Card>

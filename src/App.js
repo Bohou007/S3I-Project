@@ -1,3 +1,7 @@
+/* eslint-disable arrow-body-style */
+/* eslint-disable react/prefer-stateless-function */
+import React from 'react';
+import { HashRouter, Route } from 'react-router-dom';
 // routes
 import Router from './routes';
 // theme
@@ -14,23 +18,25 @@ import ThemeLocalization from './components/ThemeLocalization';
 import MotionLazyContainer from './components/animate/MotionLazyContainer';
 
 // ----------------------------------------------------------------------
-export default function App() {
-  return (
-    <ThemeProvider>
-      <ThemeColorPresets>
-        <ThemeLocalization>
-          <RtlLayout>
-            <NotistackProvider>
-              <MotionLazyContainer>
-                <ProgressBarStyle />
-                <ChartStyle />
-                <ScrollToTop />
-                <Router />
-              </MotionLazyContainer>
-            </NotistackProvider>
-          </RtlLayout>
-        </ThemeLocalization>
-      </ThemeColorPresets>
-    </ThemeProvider>
-  );
+export default class App extends React.Component {
+  render() {
+    return (
+      <ThemeProvider>
+        <ThemeColorPresets>
+          <ThemeLocalization>
+            <RtlLayout>
+              <NotistackProvider>
+                <MotionLazyContainer>
+                  <ProgressBarStyle />
+                  <ChartStyle />
+                  <ScrollToTop />
+                  <Router />
+                </MotionLazyContainer>
+              </NotistackProvider>
+            </RtlLayout>
+          </ThemeLocalization>
+        </ThemeColorPresets>
+      </ThemeProvider>
+    );
+  }
 }

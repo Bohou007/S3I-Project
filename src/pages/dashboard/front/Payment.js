@@ -161,6 +161,10 @@ export default function Payment() {
     navigate(PATH_DASHBOARD.user.edit(paramCase(id)));
   };
 
+  const handleViewRow = (paymentReference) => {
+    navigate(PATH_DASHBOARD.general.paymentView(paymentReference));
+  };
+
   const dataFiltered = applySortFilter({
     tableData,
     comparator: getComparator(order, orderBy),
@@ -268,6 +272,7 @@ export default function Payment() {
                           key={index}
                           tableData={tableData}
                           row={row}
+                          onViewRow={() => handleViewRow(row.payment_reference)}
                           selected={selected.includes(row.id)}
                           onSelectRow={() => onSelectRow(row.id)}
                         />

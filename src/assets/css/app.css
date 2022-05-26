@@ -1,3 +1,8 @@
 .css-r2ayaq-MuiButtonBase-root-MuiIconButton-root {
     border-radius: none !important;
 }
+
+.css-or2cpc-MuiPaper-root-MuiPopover-paper {
+    width: 246px !important;
+    left: 1100px !important;
+}

@@ -1,5 +1,5 @@
 import { Suspense, lazy } from 'react';
-import { Navigate, useRoutes, useLocation } from 'react-router-dom';
+import { Navigate, useRoutes, useLocation, use } from 'react-router-dom';
 // layouts
 import MainLayout from '../layouts/main';
 import DashboardLayout from '../layouts/dashboard';
@@ -12,6 +12,8 @@ import LoadingScreen from '../components/LoadingScreen';
 
 // config
 import { PATH_AFTER_LOGIN, PATH_AFTER_LOGIN_ADMIN } from '../config';
+
+// import '../utils/ensureBasename';
 
 // components
 // --------
@@ -32,7 +34,7 @@ export default function Router() {
   return useRoutes([
     {
       path: '/',
-      element: <Navigate to="/auth/login" replace />,
+      element: <Navigate to="auth/login" replace />,
     },
     {
       path: 'auth',
@@ -54,7 +56,7 @@ export default function Router() {
           ),
         },
         { path: 'login-unprotected', element: <Login /> },
-        { path: ':role/login', element: <Login /> },
+        { path: 'admin/login', element: <LoginAdmin /> },
         { path: 'register-unprotected', element: <Register /> },
         { path: 'reset-password', element: <ResetPassword /> },
         { path: 'verify', element: <VerifyCode /> },
@@ -66,9 +68,7 @@ export default function Router() {
       path: 'tableau-de-bord',
       element: (
         <AuthGuard>
-          {/* <RoleBasedGuard accessibleRoles={['customer']}> */}
           <DashboardLayout />
-          {/* </RoleBasedGuard> */}
         </AuthGuard>
       ),
       children: [
@@ -78,8 +78,16 @@ export default function Router() {
           element: <Dashboard />,
         },
         { path: 'consulter-mes-echeances', element: <Deadlines /> },
-        { path: 'consulter-mes-versements', element: <Payment /> },
-        { path: 'consulter-mes-reservations', element: <Reservation /> },
+        {
+          path: 'consulter-mes-versements',
+          children: [
+            { element: <Navigate to="/tableau-de-bord/consulter-mes-versements/listes" replace />, index: true },
+            { path: 'listes', element: <Payment /> },
+            { path: ':paymentReference', element: <PaymentView /> },
+          ],
+        },
+
+        { path: 'consulter-mes-logements', element: <Reservation /> },
         {
           path: 'e-commerce',
           children: [
@@ -137,9 +145,9 @@ export default function Router() {
       path: 'tableau-de-bord/admin',
       element: (
         <AuthGuard>
-          <RoleBasedGuard accessibleRoles={['admin']}>
-            <DashboardLayout />
-          </RoleBasedGuard>
+          {/* <RoleBasedGuard> */}
+          <DashboardLayout />
+          {/* </RoleBasedGuard> */}
         </AuthGuard>
       ),
       children: [
@@ -147,9 +155,9 @@ export default function Router() {
         {
           path: 'app',
           element: (
-            <RoleBasedGuard accessibleRoles={['admin']}>
-              <DashboardAdmin />
-            </RoleBasedGuard>
+            // <RoleBasedGuard accessibleRoles={['admin']}>
+            <DashboardAdmin />
+            // </RoleBasedGuard>
           ),
         },
         { path: 'programmes-immobiliers', element: <BuildingPrograms /> },
@@ -229,6 +237,7 @@ export default function Router() {
 
 // AUTHENTICATION
 const Login = Loadable(lazy(() => import('../pages/auth/Login')));
+const LoginAdmin = Loadable(lazy(() => import('../pages/auth/LoginAdmin')));
 const Register = Loadable(lazy(() => import('../pages/auth/Register')));
 const ResetPassword = Loadable(lazy(() => import('../pages/auth/ResetPassword')));
 const VerifyCode = Loadable(lazy(() => import('../pages/auth/VerifyCode')));
@@ -239,6 +248,7 @@ const VerifyCode = Loadable(lazy(() => import('../pages/auth/VerifyCode')));
 const Dashboard = Loadable(lazy(() => import('../pages/dashboard/front/Dashboard')));
 const Deadlines = Loadable(lazy(() => import('../pages/dashboard/front/Deadlines')));
 const Payment = Loadable(lazy(() => import('../pages/dashboard/front/Payment')));
+const PaymentView = Loadable(lazy(() => import('../pages/dashboard/front/PaymentView')));
 const Reservation = Loadable(lazy(() => import('../pages/dashboard/front/Reservation')));
 
 // GENERAL ADMIN

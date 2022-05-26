@@ -39,8 +39,10 @@ export const PATH_DASHBOARD = {
   general: {
     booking: path(ROOTS_DASHBOARD, '/app'),
     deadlines: path(ROOTS_DASHBOARD, '/consulter-mes-echeances'),
-    payment: path(ROOTS_DASHBOARD, '/consulter-mes-versements'),
-    reservation: path(ROOTS_DASHBOARD, '/consulter-mes-reservations'),
+    payment: path(ROOTS_DASHBOARD, '/consulter-mes-versements/listes'),
+    paymentView: (paymentReference) => path(ROOTS_DASHBOARD, `/consulter-mes-versements/${paymentReference}`),
+
+    reservation: path(ROOTS_DASHBOARD, '/consulter-mes-logements'),
   },
 
   user: {

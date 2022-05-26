@@ -6,6 +6,7 @@ import { Box } from '@mui/material';
 import Image from '../components/Image';
 
 import dashboard from './images/dashboard.png';
+import villa from './images/villa.png';
 
 export default function SeoIllustration({ ...other }) {
   const theme = useTheme();
@@ -17,6 +18,7 @@ export default function SeoIllustration({ ...other }) {
   return (
     <Box {...other}>
       <Image disabledEffect src={dashboard} sx={{ width: '100%', height: '200' }} />
+      {/* <Image disabledEffect src={villa} sx={{ width: '100%', height: '200' }} /> */}
 
       {/* <svg
         xmlns="http://www.w3.org/2000/svg"

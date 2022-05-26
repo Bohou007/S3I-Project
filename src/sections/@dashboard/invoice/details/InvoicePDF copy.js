@@ -1,8 +1,4 @@
-import React, { useRef } from 'react';
-import { useReactToPrint } from 'react-to-print';
 import PropTypes from 'prop-types';
-import numeral from 'numeral';
-
 import { Page, View, Text, Image, Document } from '@react-pdf/renderer';
 // utils
 import { fCurrency } from '../../../../utils/formatNumber';
@@ -15,11 +11,9 @@ import styles from './InvoiceStyle';
 InvoicePDF.propTypes = {
   invoice: PropTypes.object.isRequired,
   customer: PropTypes.object.isRequired,
-  program: PropTypes.object.isRequired,
-  facture: PropTypes.string.isRequired,
 };
 
-export default function InvoicePDF({ invoice, customer, program, facture }) {
+export default function InvoicePDF({ invoice, customer }) {
   const {
     items,
     taxes,
@@ -34,20 +28,14 @@ export default function InvoicePDF({ invoice, customer, program, facture }) {
     subTotalPrice,
   } = invoice;
 
-  const sepMillier = (number) => {
-    const Primenumeral = numeral(number).format(+0, 0);
-    // console.log(Primenumeral);
-    return Primenumeral.replace(/[,]+/g, ' ');
-  };
-
   return (
     <Document>
       <Page size="A4" style={styles.page}>
         <View style={[styles.gridContainer, styles.mb40]}>
-          <Image source="/logo/s3i-logo.png" style={{ height: 52 }} />
+          <Image source="/logo/logo_full.jpg" style={{ height: 32 }} />
           <View style={{ alignItems: 'flex-end', flexDirection: 'column' }}>
-            <Text style={styles.h3}>PAYÉE</Text>
-            <Text> {invoice.payment_reference} </Text>
+            <Text style={styles.h3}>{status}</Text>
+            <Text> {invoiceNumber} </Text>
           </View>
         </View>
 
@@ -61,8 +49,8 @@ export default function InvoicePDF({ invoice, customer, program, facture }) {
             <Text style={styles.body1}>Email: {customer.email}</Text>
           </View>
 
-          <View style={(styles.col6, styles.textAligne)}>
-            <Text style={[styles.overline, styles.mb8]}>Payer à</Text>
+          <View style={styles.col6}>
+            <Text style={[styles.overline, styles.mb8]}>Invoice to</Text>
             <Text style={styles.body1}>S3I - bâtisseur du confort</Text>
             <Text style={styles.body1}>Tel: (+225) 07 77 001 002</Text>
             <Text style={styles.body1}>Email: serviceclients@s3i-groupe.com</Text>
@@ -71,40 +59,77 @@ export default function InvoicePDF({ invoice, customer, program, facture }) {
 
         <View style={[styles.gridContainer, styles.mb40]}>
           <View style={styles.col6}>
-            <Text style={[styles.overline, styles.mb8]}>Date de facturation</Text>
-            <Text style={styles.body1}>{fDate(invoice.payment_date)}</Text>
+            <Text style={[styles.overline, styles.mb8]}>Date create</Text>
+            <Text style={styles.body1}>{fDate(invoice.createdAt)}</Text>
           </View>
-          <View style={(styles.col6, styles.textAlign)}>
-            <Text style={[styles.overline, styles.mb8]}>Mode de paiement</Text>
-            <Text style={styles.body1}>{invoice.payment_method}</Text>
+          <View style={styles.col6}>
+            <Text style={[styles.overline, styles.mb8]}>Due date</Text>
+            <Text style={styles.body1}>{fDate(invoice.createdAt)}</Text>
           </View>
         </View>
 
-        <Text style={[styles.overline, styles.mb8]}>Détails de la facture</Text>
+        <Text style={[styles.overline, styles.mb8]}>Invoice Details</Text>
 
         <View style={styles.table}>
           <View style={styles.tableHeader}>
             <View style={styles.tableRow}>
+              <View style={styles.tableCell_1}>
+                <Text style={styles.subtitle2}>#</Text>
+              </View>
+
               <View style={styles.tableCell_2}>
                 <Text style={styles.subtitle2}>Description</Text>
               </View>
 
+              <View style={styles.tableCell_3}>
+                <Text style={styles.subtitle2}>Qty</Text>
+              </View>
+
+              <View style={styles.tableCell_3}>
+                <Text style={styles.subtitle2}>Unit price</Text>
+              </View>
+
               <View style={[styles.tableCell_3, styles.alignRight]}>
-                <Text style={styles.subtitle2}>Montant versé</Text>
+                <Text style={styles.subtitle2}>Total</Text>
               </View>
             </View>
           </View>
 
           <View style={styles.tableBody}>
-            <View style={styles.tableRow}>
-              <View style={styles.tableCell_2} colSpan={4}>
-                <Text style={styles.subtitle2}>
-                  {program.label} {program.formula} {program.real_estate_program_type}
-                </Text>
-                <Text>{program.location}</Text>
+            {items.map((item, index) => (
+              <View style={styles.tableRow} key={item.id}>
+                <View style={styles.tableCell_1}>
+                  <Text>{index + 1}</Text>
+                </View>
+
+                <View style={styles.tableCell_2}>
+                  <Text style={styles.subtitle2}>{item.title}</Text>
+                  <Text>{item.description}</Text>
+                </View>
+
+                <View style={styles.tableCell_3}>
+                  <Text>{item.quantity}</Text>
+                </View>
+
+                <View style={styles.tableCell_3}>
+                  <Text>{item.price}</Text>
+                </View>
+
+                <View style={[styles.tableCell_3, styles.alignRight]}>
+                  <Text>{fCurrency(item.price * item.quantity)}</Text>
+                </View>
               </View>
-              <View style={[styles.tableCell_3, styles.alignRight]} colSpan={1}>
-                <Text>{sepMillier(invoice.amount)} CFA</Text>
+            ))}
+
+            <View style={[styles.tableRow, styles.noBorder]}>
+              <View style={styles.tableCell_1} />
+              <View style={styles.tableCell_2} />
+              <View style={styles.tableCell_3} />
+              <View style={styles.tableCell_3}>
+                <Text>Subtotal</Text>
+              </View>
+              <View style={[styles.tableCell_3, styles.alignRight]}>
+                <Text>{fCurrency(subTotalPrice)}</Text>
               </View>
             </View>
 
@@ -113,10 +138,10 @@ export default function InvoicePDF({ invoice, customer, program, facture }) {
               <View style={styles.tableCell_2} />
               <View style={styles.tableCell_3} />
               <View style={styles.tableCell_3}>
-                <Text>Sous-total</Text>
+                <Text>Discount</Text>
               </View>
               <View style={[styles.tableCell_3, styles.alignRight]}>
-                <Text>{sepMillier(invoice.amount)} CFA</Text>
+                <Text>{fCurrency(-discount)}</Text>
               </View>
             </View>
 
@@ -128,7 +153,7 @@ export default function InvoicePDF({ invoice, customer, program, facture }) {
                 <Text>Taxes</Text>
               </View>
               <View style={[styles.tableCell_3, styles.alignRight]}>
-                <Text>0 CFA</Text>
+                <Text>{fCurrency(taxes)}</Text>
               </View>
             </View>
 
@@ -140,7 +165,7 @@ export default function InvoicePDF({ invoice, customer, program, facture }) {
                 <Text style={styles.h4}>Total</Text>
               </View>
               <View style={[styles.tableCell_3, styles.alignRight]}>
-                <Text style={styles.h4}>{sepMillier(invoice.amount)} CFA</Text>
+                <Text style={styles.h4}>{fCurrency(totalPrice)}</Text>
               </View>
             </View>
           </View>
@@ -149,11 +174,11 @@ export default function InvoicePDF({ invoice, customer, program, facture }) {
         <View style={[styles.gridContainer, styles.footer]}>
           <View style={styles.col8}>
             <Text style={styles.subtitle2}>NOTES</Text>
-            <Text>Si vous souhaitez que nous ajoutions des notes supplémentaires, faites-le nous savoir!</Text>
+            <Text>We appreciate your business. Should you need us to add VAT or extra notes let us know!</Text>
           </View>
           <View style={[styles.col4, styles.alignRight]}>
-            <Text style={styles.subtitle2}>Vous avez des questions ?</Text>
-            <Text>serviceclients@s3i-groupe.com</Text>
+            <Text style={styles.subtitle2}>Have a Question?</Text>
+            <Text>support@abcapp.com</Text>
           </View>
         </View>
       </Page>

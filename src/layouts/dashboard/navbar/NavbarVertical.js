@@ -86,7 +86,7 @@ export default function NavbarVertical({ isOpenSidebar, onCloseSidebar }) {
         <NavbarAccount isCollapse={isCollapse} />
       </Stack>
 
-      <NavSectionVertical navConfig={userRole !== 'admin' ? navConfig : navConfigAdmin} isCollapse={isCollapse} />
+      <NavSectionVertical navConfig={userRole !== 'customer' ? navConfigAdmin : navConfig} isCollapse={isCollapse} />
       <Box sx={{ flexGrow: 1 }} />
       {/* {!isCollapse && <NavbarDocs />} */}
     </Scrollbar>

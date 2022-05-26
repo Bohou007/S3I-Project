@@ -13,14 +13,28 @@ const styles = StyleSheet.create({
   col6: { width: '50%' },
   mb8: { marginBottom: 8 },
   mb40: { marginBottom: 40 },
+  textAligne: { textAlign: 'right' },
   overline: {
     fontSize: 8,
     marginBottom: 8,
     fontWeight: 700,
     textTransform: 'uppercase',
   },
-  h3: { fontSize: 16, fontWeight: 700 },
+
+  h3: { fontSize: 16, fontWeight: 700, color: '#229A16' },
   h4: { fontSize: 13, fontWeight: 700 },
+  labelColor: {
+    height: 22,
+    minWidth: 22,
+    borderRadius: 8,
+    cursor: 'default',
+    padding: 6,
+    color: '#229A16',
+    backgroundColor: 'rgba(84, 214, 44, 0.16)',
+    fontWeight: 700,
+    textTransform: 'uppercase',
+    marginBottom: 8,
+  },
   body1: { fontSize: 10 },
   subtitle2: { fontSize: 9, fontWeight: 700 },
   alignRight: { textAlign: 'right' },
@@ -55,9 +69,9 @@ const styles = StyleSheet.create({
     borderColor: '#DFE3E8',
   },
   noBorder: { paddingTop: 8, paddingBottom: 0, borderBottomWidth: 0 },
-  tableCell_1: { width: '5%' },
-  tableCell_2: { width: '50%', paddingRight: 16 },
-  tableCell_3: { width: '15%' },
+  tableCell_1: { width: '0%' },
+  tableCell_2: { width: '75%', paddingRight: 16 },
+  tableCell_3: { width: '25%' },
 });
 
 export default styles;

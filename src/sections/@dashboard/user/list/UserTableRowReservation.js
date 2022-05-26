@@ -82,7 +82,7 @@ class UserTableRowReservation extends Component {
     const response = await axios.get(`/ws-booking-payment/real-estate-program/${value}`);
     // console.log('response', response);
 
-    const programme = response.data.label + ' ' + response.data.formula;
+    const programme = response.data.label + ' ' + response.data.formula + ' ' + response.data.real_estate_program_type;
     this.setState({
       listPro: programme,
     });
@@ -110,12 +110,7 @@ class UserTableRowReservation extends Component {
 
     return (
       <TableRow hover>
-        <TableCell align="left">{row.booking_reference}</TableCell>
-        <TableCell align="left">
-          <Label variant={'ghost'} color={'success'} sx={{ textTransform: 'capitalize' }}>
-            {this.state.listPro}
-          </Label>
-        </TableCell>
+        <TableCell align="left">{this.state.listPro}</TableCell>
 
         <TableCell align="left">{row.lot}</TableCell>
 
@@ -123,11 +118,12 @@ class UserTableRowReservation extends Component {
           {row.sub_lot}
         </TableCell>
 
-        <TableCell align="center">{this.sepMillier(row.house_amount)} FCFA</TableCell>
+        <TableCell align="left">{this.sepMillier(row.house_amount)} FCFA</TableCell>
+        <TableCell align="left">{this.sepMillier(row.amount_paid)} FCFA</TableCell>
 
-        <TableCell align="center"> {moment(row.payment_schedule_end_date).format('DD MMM YYYY')}</TableCell>
+        <TableCell align="left"> {moment(row.payment_schedule_end_date).format('DD MMM YYYY')}</TableCell>
 
-        <TableCell align="right">
+        <TableCell align="left">
           <Button
             variant="outlined"
             color={'primary'}
@@ -197,13 +193,13 @@ class UserTableRowReservation extends Component {
                 </Grid>
               </Card>
               <Typography variant="h4" component="div">
-                Détails de la reservation
+                Détails de mon logement
               </Typography>
               <Card sx={{ minWidth: 275 }}>
                 <Grid container spacing={2}>
                   <Grid item xs={4}>
                     <CardContent sx={{}}>
-                      <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Code de reservation</Typography>
+                      <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Code de mon logement</Typography>
                       <Typography variant="body2">
                         <Label color="primary">{this.state.detailRow.booking_reference}</Label>
                       </Typography>
@@ -258,21 +254,30 @@ class UserTableRowReservation extends Component {
                       </Typography>
                     </CardContent>
                   </Grid>
-                  {/* <Grid item xs={4}>
+                  <Grid item xs={4}>
                     <CardContent sx={{}}>
-                      <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Nombre d'echeance</Typography>
+                      <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Montant versé</Typography>
                       <Typography variant="body2">
                         {this.sepMillier(this.state.detailRow.amount_paid)}{' '}
-                        {this.state.detailRow.amount_paid === 0 ? '' : 'FCFA'}
+                        {parseInt(this.state.detailRow.amount_paid) === 0 ? '' : 'FCFA'}
                       </Typography>
                     </CardContent>
-                  </Grid> */}
+                  </Grid>
+                  <Grid item xs={4}>
+                    <CardContent sx={{}}>
+                      <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Montant total de mon logement</Typography>
+                      <Typography variant="body2">
+                        {this.sepMillier(this.state.detailRow.house_amount)}{' '}
+                        {parseInt(this.state.detailRow.house_amount) === 0 ? '' : 'FCFA'}
+                      </Typography>
+                    </CardContent>
+                  </Grid>
                   <Grid item xs={12}>
                     <CardContent sx={{ width: '100%', backgroundColor: '#DFE3E8' }}>
-                      <Typography sx={{ fontSize: 15 }}>Montant total de la reservation</Typography>
+                      <Typography sx={{ fontSize: 15 }}>Reste a payer</Typography>
                       <Typography variant="body2" sx={{ fontSize: 18, fontWeight: 'bold' }}>
-                        {this.sepMillier(this.state.detailRow.house_amount)}{' '}
-                        {this.state.detailRow.house_amount === 0 ? '' : 'FCFA'}
+                        {this.sepMillier(this.state.detailRow.house_amount - this.state.detailRow.amount_paid)}{' '}
+                        {this.state.detailRow.house_amount - this.state.detailRow.amount_paid === 0 ? '' : 'FCFA'}
                       </Typography>
                     </CardContent>
                   </Grid>

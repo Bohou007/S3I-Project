@@ -38,7 +38,7 @@ export default function AppWelcome({ displayName }) {
       >
         <Typography gutterBottom variant="h4">
           Bienvenue,
-          <br /> {!displayName ? '...' : displayName}!
+          <br /> {!displayName ? '...' : displayName} !
         </Typography>
 
         <Typography variant="body2" sx={{ pb: { xs: 3, xl: 5 }, maxWidth: 480, mx: 'auto' }}>
@@ -54,6 +54,7 @@ export default function AppWelcome({ displayName }) {
         sx={{
           p: 3,
           width: 260,
+          // backgroundColor: '#ffffff',
           margin: { xs: 'auto', md: 'inherit' },
         }}
       />
