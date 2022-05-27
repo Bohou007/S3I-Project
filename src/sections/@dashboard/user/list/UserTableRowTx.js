@@ -83,7 +83,7 @@ class UserTableRowTx extends Component {
 
   handleGetProgramme = async (value) => {
     const response = await axios.get(`/ws-booking-payment/real-estate-program/${value}`);
-    const programme = response.data.label + ' ' + response.data.formula;
+    const programme = response.data.label + ' ' + response.data.formula + ' ' + response.data.real_estate_program_type;
     this.setState({
       nameProgram: programme,
     });

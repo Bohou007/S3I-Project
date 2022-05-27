@@ -125,12 +125,12 @@ export default function Reservation() {
     setTableData(response.data);
     setProgram(programData.data);
 
-    if (response.status === 200 && programData.status === 200) {
-      setIsGet(true);
-    }
+    // if (response.status === 200 && programData.status === 200) {
+    //   setIsGet(true);
+    // }
 
     setTimeout(() => {
-      setIsGet(false);
+      setIsGet(true);
     }, 3000);
   }, []);
 
@@ -145,13 +145,13 @@ export default function Reservation() {
     );
     setFilterDate(event);
 
-    if (programData.status === 200) {
-      setIsGet(true);
-    }
+    // if (programData.status === 200) {
+    //   setIsGet(true);
+    // }
 
     setTimeout(() => {
-      setIsGet(false);
-    }, 2000);
+      setIsGet(true);
+    }, 3000);
   };
 
   const handleFilterProgramme = async (event) => {
@@ -162,13 +162,13 @@ export default function Reservation() {
     setFilterProgramme(event.target.value);
     // setProgram(programData.data);
 
-    if (programData.status === 200) {
-      setIsGet(true);
-    }
+    // if (programData.status === 200) {
+    //   setIsGet(true);
+    // }
 
     setTimeout(() => {
-      setIsGet(false);
-    }, 2000);
+      setIsGet(true);
+    }, 3000);
   };
 
   const handleDeleteRow = (id) => {
@@ -193,7 +193,7 @@ export default function Reservation() {
     // arrondi sans nombre aores la virgule
     const percentRounded = Math.round(percent);
     console.log(percent);
-    return percentRounded;
+    return percentRounded > 0 ? percentRounded : 0;
   };
 
   const dataFiltered = applySortFilter({
@@ -229,6 +229,7 @@ export default function Reservation() {
                 icon={'eva:credit-card-ffill'}
                 color="warning"
                 chartData={statisticsAmount(totalReservationAmount, totalAmountPay)}
+                isGet={isGet}
               />
             </Grid>
             <Grid item xs={12} md={6}>
@@ -237,6 +238,7 @@ export default function Reservation() {
                 total={totalReservationAmount - totalAmountPay}
                 icon={'eva:person-ffill'}
                 chartData={statisticsAmount(totalReservationAmount, totalReservationAmount - totalAmountPay)}
+                isGet={isGet}
               />
             </Grid>
           </Grid>
@@ -309,33 +311,35 @@ export default function Reservation() {
 
                 <TableBody>
                   {isGet ? (
+                    dataFiltered.length > 0 ? (
+                      dataFiltered
+                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                        .map((row, index) => (
+                          <UserTableRowReservation
+                            key={index}
+                            tableData={tableData}
+                            row={row}
+                            selected={selected.includes(row.id)}
+                            onSelectRow={() => onSelectRow(row.id)}
+                          />
+                        ))
+                    ) : (
+                      isNotFound && (
+                        <>
+                          <TableEmptyRows
+                            height={denseHeight}
+                            emptyRows={emptyRows(page, rowsPerPage, tableData.length)}
+                          />
+                          <TableNoData isNotFound={isNotFound} />
+                        </>
+                      )
+                    )
+                  ) : (
                     <>
                       <SkeletonConversationItem />
                       <SkeletonConversationItem />
                       <SkeletonConversationItem />
                     </>
-                  ) : dataFiltered.length > 0 ? (
-                    dataFiltered
-                      .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                      .map((row, index) => (
-                        <UserTableRowReservation
-                          key={index}
-                          tableData={tableData}
-                          row={row}
-                          selected={selected.includes(row.id)}
-                          onSelectRow={() => onSelectRow(row.id)}
-                        />
-                      ))
-                  ) : (
-                    isNotFound && (
-                      <>
-                        <TableEmptyRows
-                          height={denseHeight}
-                          emptyRows={emptyRows(page, rowsPerPage, tableData.length)}
-                        />
-                        <TableNoData isNotFound={isNotFound} />
-                      </>
-                    )
                   )}
                 </TableBody>
               </Table>

@@ -33,6 +33,8 @@ InvoiceToolbar.propTypes = {
 export default function InvoiceToolbar({ invoice, customer, program }) {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const [isDownload, setIsDownload] = useState(false);
+  const [isPrint, setisPrint] = useState(false);
   // const { toggle: open, onOpen, onClose } = useToggle();
   const facture = 'Facture-' + invoice.payment_reference + '.pdf';
 
@@ -52,36 +54,45 @@ export default function InvoiceToolbar({ invoice, customer, program }) {
   };
 
   const generatePDFDocument = async (url) => {
-    axios
-      .get(url, {
-        responseType: 'blob',
-      })
-      .then((res) => {
-        fileDownload(res.data, facture);
-      });
+    setIsDownload(true);
+
+    setTimeout(() => {
+      setIsDownload(false);
+      axios
+        .get(url, {
+          responseType: 'blob',
+        })
+        .then((res) => {
+          fileDownload(res.data, facture);
+        });
+    }, 3000);
   };
 
   const handlePrint = async (url) => {
-    axios
-      .get(url, {
-        responseType: 'blob',
-      })
-      .then(async (res) => {
-        const blob = await new Blob([res.data], { type: 'application/pdf' });
-        const blobURL = URL.createObjectURL(blob);
+    setisPrint(true);
+    setTimeout(() => {
+      setisPrint(false);
+      axios
+        .get(url, {
+          responseType: 'blob',
+        })
+        .then(async (res) => {
+          const blob = await new Blob([res.data], { type: 'application/pdf' });
+          const blobURL = URL.createObjectURL(blob);
 
-        const iframe = document.createElement('iframe');
-        document.body.appendChild(iframe);
+          const iframe = document.createElement('iframe');
+          document.body.appendChild(iframe);
 
-        iframe.style.display = 'none';
-        iframe.src = blobURL;
-        iframe.onload = function () {
-          setTimeout(function () {
-            iframe.focus();
-            iframe.contentWindow.print();
-          }, 1);
-        };
-      });
+          iframe.style.display = 'none';
+          iframe.src = blobURL;
+          iframe.onload = function () {
+            setTimeout(function () {
+              iframe.focus();
+              iframe.contentWindow.print();
+            }, 1);
+          };
+        });
+    }, 3000);
   };
 
   console.log(facture);
@@ -98,21 +109,42 @@ export default function InvoiceToolbar({ invoice, customer, program }) {
           <Button
             color="inherit"
             variant="outlined"
+            disabled={isDownload ? 'disabled' : ''}
             onClick={() => generatePDFDocument(instance.url)}
-            startIcon={<Iconify icon={'eva:download-fill'} />}
+            startIcon={isDownload ? '' : <Iconify icon={'eva:download-fill'} />}
             sx={{ textAlign: 'right' }}
           >
-            Telecharger ma facture
+            {isDownload ? 'Téléchargement en cours...' : 'Télécharger ma facture'}
+
+            {isDownload && (
+              <CircularProgress
+                size={14}
+                sx={{
+                  color: '#f2e',
+                  marginLeft: 2,
+                }}
+              />
+            )}
           </Button>
 
           <Button
             color="inherit"
+            disabled={isPrint ? 'disabled' : ''}
             onClick={() => handlePrint(instance.url)}
             variant="outlined"
-            startIcon={<Iconify icon={'eva:printer-fill'} />}
+            startIcon={isPrint ? '' : <Iconify icon={'eva:printer-fill'} />}
             sx={{}}
           >
-            Imprimer ma facture
+            {isPrint ? 'Impression en cours...' : 'Imprimer ma facture'}
+            {isPrint && (
+              <CircularProgress
+                size={14}
+                sx={{
+                  color: '#f2e',
+                  marginLeft: 2,
+                }}
+              />
+            )}
           </Button>
         </Stack>
       </Stack>

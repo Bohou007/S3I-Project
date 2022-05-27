@@ -28,6 +28,7 @@ import {
 import { BookingIllustration, CheckInIllustration, CheckOutIllustration } from '../../../assets';
 import { AppFeatured, AppWelcome, AppWidget } from '../../../sections/@dashboard/general/app';
 import axios from '../../../utils/axios';
+import { SkeletonStat } from '../../../components/skeleton';
 
 // ----------------------------------------------------------------------
 
@@ -43,6 +44,7 @@ export default function Dashboard() {
   const [countPayReservation, setCountPayReservation] = useState(0);
   const [totalReservationAmount, setTotalReservationAmount] = useState(0);
   const [totalAmountPay, setTotalAmountPay] = useState(0);
+  const [isGet, setIsGet] = useState(false);
 
   useEffect(async () => {
     const response = await axios.get(`/ws-booking-payment/booking/customer/${user?.customer_reference}`);
@@ -73,11 +75,13 @@ export default function Dashboard() {
   const statisticsAmount = (total, partial) => {
     // Calculate the percentage
     const percent = (partial / total) * 100;
-    // arrondi sans nombre aores la virgule
     const percentRounded = Math.round(percent);
-    console.log(percent);
-    return percentRounded;
+    return percentRounded > 0 ? percentRounded : 0;
   };
+
+  setTimeout(() => {
+    setIsGet(true);
+  }, 1000);
 
   return (
     <Page title="Tableau de bord">
@@ -95,12 +99,14 @@ export default function Dashboard() {
                 icon={'eva:credit-card-ffill'}
                 color="warning"
                 chartData={statisticsAmount(totalReservationAmount, totalAmountPay)}
+                isGet={isGet}
               />
               <AppWidget
                 title="Montant restant "
                 total={totalReservationAmount - totalAmountPay}
                 icon={'eva:person-ffill'}
                 chartData={statisticsAmount(totalReservationAmount, totalReservationAmount - totalAmountPay)}
+                isGet={isGet}
               />
             </Stack>
             {/* <BookingCheckInWidgets /> */}

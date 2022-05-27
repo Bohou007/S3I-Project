@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 // @mui
-import { Container } from '@mui/material';
+import { Container, CircularProgress, Box } from '@mui/material';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // _mock_
@@ -42,12 +42,12 @@ export default function PaymentView() {
     setProgram(programData.data);
     setCustomer(authData.data);
     setInvoice(response.data);
-    if (response.status === 200) {
-      setIsGet(true);
-    }
+    // if (response.status === 200) {
+    //   setIsGet(true);
+    // }
 
     setTimeout(() => {
-      setIsGet(false);
+      setIsGet(true);
     }, 3000);
   }, []);
 
@@ -67,7 +67,21 @@ export default function PaymentView() {
             { name: invoice?.payment_reference || '' },
           ]}
         />
-        <Invoice invoice={invoice} customer={customer} program={program} isGet={isGet} />
+        {isGet ? (
+          <Invoice invoice={invoice} customer={customer} program={program} />
+        ) : (
+          <Box
+            sx={{
+              display: 'flex',
+              direction: 'row',
+              minHeight: '60vh',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <CircularProgress />
+          </Box>
+        )}
       </Container>
     </Page>
   );

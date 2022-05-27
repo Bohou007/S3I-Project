@@ -7,6 +7,8 @@ import { Card, Typography, Box } from '@mui/material';
 // utils
 import { fNumber } from '../../../../utils/formatNumber';
 import { BaseOptionChart } from '../../../../components/chart';
+import { SkeletonStat } from '../../../../components/skeleton';
+
 // components
 import Iconify from '../../../../components/Iconify';
 
@@ -37,9 +39,10 @@ AppWidget.propTypes = {
   icon: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   total: PropTypes.number.isRequired,
+  isGet: PropTypes.bool,
 };
 
-export default function AppWidget({ title, total, icon, color = 'primary', chartData }) {
+export default function AppWidget({ title, total, icon, color = 'primary', chartData, isGet }) {
   const theme = useTheme();
 
   const chartOptions = merge(BaseOptionChart(), {
@@ -68,14 +71,20 @@ export default function AppWidget({ title, total, icon, color = 'primary', chart
         bgcolor: theme.palette[color].darker,
       }}
     >
-      <ReactApexChart type="radialBar" series={[chartData]} options={chartOptions} width={86} height={86} />
-      <Box sx={{ ml: 3, color: 'common.white' }}>
-        <Typography variant="h4"> {fNumber(total)} CFA</Typography>
-        <Typography variant="body2" sx={{ opacity: 0.72 }}>
-          {title}
-        </Typography>
-      </Box>
-      <IconStyle icon={icon} />
+      {isGet ? (
+        <>
+          <ReactApexChart type="radialBar" series={[chartData]} options={chartOptions} width={86} height={86} />
+          <Box sx={{ ml: 3, color: 'common.white' }}>
+            <Typography variant="h4"> {fNumber(total)} CFA</Typography>
+            <Typography variant="body2" sx={{ opacity: 0.72 }}>
+              {title}
+            </Typography>
+          </Box>
+          <IconStyle icon={icon} />
+        </>
+      ) : (
+        <SkeletonStat />
+      )}
     </RootStyle>
   );
 }

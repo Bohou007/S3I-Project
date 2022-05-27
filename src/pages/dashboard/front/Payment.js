@@ -101,12 +101,12 @@ export default function Payment() {
     setProgram(programData.data);
 
     setTableData(response.data);
-    if (response.status === 200 && programData.status === 200) {
-      setIsGet(true);
-    }
+    // if (response.status === 200 && programData.status === 200) {
+    //   setIsGet(true);
+    // }
 
     setTimeout(() => {
-      setIsGet(false);
+      setIsGet(true);
     }, 3000);
   }, []);
 
@@ -121,13 +121,13 @@ export default function Payment() {
       `/ws-booking-payment/real-estate-program/booking-by-customer/${user?.customer_reference}`
     );
 
-    if (programData.status === 200) {
-      setIsGet(true);
-    }
+    // if (programData.status === 200) {
+    //   setIsGet(true);
+    // }
 
     setTimeout(() => {
-      setIsGet(false);
-    }, 2000);
+      setIsGet(true);
+    }, 3000);
   };
 
   const handleFilterProgramme = async (event) => {
@@ -136,13 +136,13 @@ export default function Payment() {
     );
     setFilterProgramme(event.target.value);
 
-    if (programData.status === 200) {
-      setIsGet(true);
-    }
+    // if (programData.status === 200) {
+    //   setIsGet(true);
+    // }
 
     setTimeout(() => {
-      setIsGet(false);
-    }, 2000);
+      setIsGet(true);
+    }, 3000);
   };
 
   const handleDeleteRow = (id) => {
@@ -259,34 +259,36 @@ export default function Payment() {
 
                 <TableBody>
                   {isGet ? (
+                    dataFiltered.length > 0 ? (
+                      dataFiltered
+                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                        .map((row, index) => (
+                          <UserTableRowPaiment
+                            key={index}
+                            tableData={tableData}
+                            row={row}
+                            onViewRow={() => handleViewRow(row.payment_reference)}
+                            selected={selected.includes(row.id)}
+                            onSelectRow={() => onSelectRow(row.id)}
+                          />
+                        ))
+                    ) : (
+                      isNotFound && (
+                        <>
+                          <TableEmptyRows
+                            height={denseHeight}
+                            emptyRows={emptyRows(page, rowsPerPage, tableData.length)}
+                          />
+                          <TableNoData isNotFound={isNotFound} />
+                        </>
+                      )
+                    )
+                  ) : (
                     <>
                       <SkeletonConversationItem />
                       <SkeletonConversationItem />
                       <SkeletonConversationItem />
                     </>
-                  ) : dataFiltered.length > 0 ? (
-                    dataFiltered
-                      .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                      .map((row, index) => (
-                        <UserTableRowPaiment
-                          key={index}
-                          tableData={tableData}
-                          row={row}
-                          onViewRow={() => handleViewRow(row.payment_reference)}
-                          selected={selected.includes(row.id)}
-                          onSelectRow={() => onSelectRow(row.id)}
-                        />
-                      ))
-                  ) : (
-                    isNotFound && (
-                      <>
-                        <TableEmptyRows
-                          height={denseHeight}
-                          emptyRows={emptyRows(page, rowsPerPage, tableData.length)}
-                        />
-                        <TableNoData isNotFound={isNotFound} />
-                      </>
-                    )
                   )}
                 </TableBody>
               </Table>

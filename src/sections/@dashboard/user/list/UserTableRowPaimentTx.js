@@ -81,7 +81,7 @@ class UserTableRowPaimentTx extends Component {
     const response = await axios.get(`/ws-booking-payment/real-estate-program/${value}`);
     // console.log('response', response);
 
-    const programme = response.data.label + ' ' + response.data.formula;
+    const programme = response.data.label + ' ' + response.data.formula + ' ' + response.data.real_estate_program_type;
     this.setState({
       listPro: programme,
     });
@@ -109,11 +109,7 @@ class UserTableRowPaimentTx extends Component {
 
     return (
       <TableRow hover>
-        <TableCell align="left">
-          <Label variant={'ghost'} color={'success'} sx={{ textTransform: 'capitalize' }}>
-            {this.state.listPro}
-          </Label>
-        </TableCell>
+        <TableCell align="left">{this.state.listPro}</TableCell>
 
         <TableCell align="left">{this.sepMillier(row.amount)} FCFA</TableCell>
 
