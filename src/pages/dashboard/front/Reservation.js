@@ -42,7 +42,13 @@ import Page from '../../../components/Page';
 import Iconify from '../../../components/Iconify';
 import Scrollbar from '../../../components/Scrollbar';
 import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
-import { TableEmptyRows, TableHeadCustom, TableNoData, TableSelectedActions } from '../../../components/table';
+import {
+  TableEmptyRows,
+  TableHeadCustom,
+  TableSkeleton,
+  TableNoData,
+  TableSelectedActions,
+} from '../../../components/table';
 import { SkeletonConversationItem, SkeletonMailSidebarItem } from '../../../components/skeleton';
 // sections
 import { UserTableToolbarReservation, UserTableRowReservation } from '../../../sections/@dashboard/user/list';
@@ -335,11 +341,7 @@ export default function Reservation() {
                       )
                     )
                   ) : (
-                    <>
-                      <SkeletonConversationItem />
-                      <SkeletonConversationItem />
-                      <SkeletonConversationItem />
-                    </>
+                    <TableSkeleton />
                   )}
                 </TableBody>
               </Table>

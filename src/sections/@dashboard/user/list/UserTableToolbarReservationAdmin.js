@@ -1,55 +1,47 @@
 import PropTypes from 'prop-types';
-import { Stack, InputAdornment, TextField, MenuItem } from '@mui/material';
+import { Stack, InputAdornment, TextField, MenuItem, Input } from '@mui/material';
 import DatePicker from '@mui/lab/DatePicker';
+
 // components
+
 import Iconify from '../../../../components/Iconify';
 
 // ----------------------------------------------------------------------
 
-const INPUT_WIDTH = 190;
-
-InvoiceTableToolbar.propTypes = {
+UserTableToolbarReservationAdmin.propTypes = {
   filterName: PropTypes.string,
-  filterService: PropTypes.string,
   filterProgramme: PropTypes.string,
-  filterEndDate: PropTypes.instanceOf(Date),
-  filterStartDate: PropTypes.instanceOf(Date),
-  handleFilterProgramme: PropTypes.func,
+  filterDate: PropTypes.any,
   onFilterName: PropTypes.func,
-  onFilterEndDate: PropTypes.func,
-  onFilterService: PropTypes.func,
-  onFilterStartDate: PropTypes.func,
-  optionsService: PropTypes.arrayOf(PropTypes.string),
+  onFilterProgramme: PropTypes.func,
+  onFilterDate: PropTypes.func,
+  optionsProgrmme: PropTypes.arrayOf(PropTypes.string),
 };
 
-export default function InvoiceTableToolbar({
-  optionsService,
-  filterStartDate,
-  filterProgramme,
-  filterEndDate,
+export default function UserTableToolbarReservationAdmin({
   filterName,
-  filterService,
-  handleFilterProgramme,
+  filterProgramme,
+  filterDate,
   onFilterName,
-  onFilterService,
-  onFilterStartDate,
-  onFilterEndDate,
+  onFilterProgramme,
+  onFilterDate,
+  optionsProgrmme,
 }) {
   return (
-    <Stack spacing={2} direction={{ xs: 'column', md: 'row' }} sx={{ py: 2.5, px: 3 }}>
+    <Stack spacing={2} direction={{ xs: 'column', sm: 'row' }} sx={{ py: 2.5, px: 3 }}>
       <TextField
         fullWidth
         select
         label="Programmes"
         value={filterProgramme}
-        onChange={handleFilterProgramme}
+        onChange={onFilterProgramme}
         SelectProps={{
           MenuProps: {
             sx: { '& .MuiPaper-root': { maxHeight: 260 } },
           },
         }}
         sx={{
-          maxWidth: { md: INPUT_WIDTH },
+          // maxWidth: { sm: 240 },
           textTransform: 'capitalize',
         }}
       >
@@ -65,7 +57,7 @@ export default function InvoiceTableToolbar({
         >
           All
         </MenuItem>
-        {optionsService.map((option) => (
+        {optionsProgrmme.map((option) => (
           <MenuItem
             key={option.real_estate_program_reference}
             value={option.real_estate_program_reference}
@@ -83,44 +75,19 @@ export default function InvoiceTableToolbar({
       </TextField>
 
       <DatePicker
-        label="Date de début"
-        value={filterStartDate}
+        label="Recherchez par date de fin de paiement"
+        value={filterDate}
         onChange={(newValue) => {
-          onFilterStartDate(newValue);
+          onFilterDate(newValue);
         }}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            fullWidth
-            sx={{
-              maxWidth: { md: INPUT_WIDTH },
-            }}
-          />
-        )}
-      />
-
-      <DatePicker
-        label="Date de fin"
-        value={filterEndDate}
-        onChange={(newValue) => {
-          onFilterEndDate(newValue);
-        }}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            fullWidth
-            sx={{
-              maxWidth: { md: INPUT_WIDTH },
-            }}
-          />
-        )}
+        renderInput={(params) => <TextField fullWidth {...params} />}
       />
 
       <TextField
         fullWidth
         value={filterName}
         onChange={(event) => onFilterName(event.target.value)}
-        placeholder="Recherche le client par le code..."
+        placeholder="Recherche le client..."
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">

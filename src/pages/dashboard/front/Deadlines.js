@@ -41,7 +41,13 @@ import Page from '../../../components/Page';
 import Iconify from '../../../components/Iconify';
 import Scrollbar from '../../../components/Scrollbar';
 import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
-import { TableEmptyRows, TableHeadCustom, TableNoData, TableSelectedActions } from '../../../components/table';
+import {
+  TableEmptyRows,
+  TableHeadCustom,
+  TableSkeleton,
+  TableNoData,
+  TableSelectedActions,
+} from '../../../components/table';
 // sections
 import { UserTableToolbarTx, UserTableRowTx } from '../../../sections/@dashboard/user/list';
 import useAuth from '../../../hooks/useAuth';
@@ -108,12 +114,8 @@ export default function Deadlines() {
     const booking = await axios.get(`/ws-booking-payment/payment-schedule/booking/${option.booking_reference}`);
     setTableData(booking.data);
 
-    if (response.status === 200 && booking.status === 200) {
-      setIsGet(true);
-    }
-
     setTimeout(() => {
-      setIsGet(false);
+      setIsGet(true);
     }, 3000);
   }, []);
 
@@ -125,9 +127,9 @@ export default function Deadlines() {
   };
 
   const handleFilterDate = (event) => {
-    setIsGet(true);
+    setIsGet(false);
     setTimeout(() => {
-      setIsGet(false);
+      setIsGet(true);
     }, 3000);
 
     setFilterDate(event);
@@ -135,12 +137,9 @@ export default function Deadlines() {
 
   const handleFilterProgramme = async (event) => {
     const response = await axios.get(`/ws-booking-payment/payment-schedule/booking/${event.target.value}`);
-    if (response.status === 200) {
-      setIsGet(true);
-    }
 
     setTimeout(() => {
-      setIsGet(false);
+      setIsGet(true);
     }, 3000);
 
     setTableData(response.data);
@@ -256,33 +255,31 @@ export default function Deadlines() {
 
                 <TableBody>
                   {isGet ? (
-                    <>
-                      <SkeletonConversationItem />
-                      <SkeletonConversationItem />
-                      <SkeletonConversationItem />
-                    </>
-                  ) : dataFiltered.length > 0 ? (
-                    dataFiltered
-                      .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                      .map((row, index) => (
-                        <UserTableRowTx
-                          key={index}
-                          tableData={tableData}
-                          row={row}
-                          selected={selected.includes(row.id)}
-                          onSelectRow={() => onSelectRow(row.id)}
-                        />
-                      ))
-                  ) : (
-                    isNotFound && (
-                      <>
-                        <TableEmptyRows
-                          height={denseHeight}
-                          emptyRows={emptyRows(page, rowsPerPage, tableData.length)}
-                        />
-                        <TableNoData isNotFound={isNotFound} />
-                      </>
+                    dataFiltered.length > 0 ? (
+                      dataFiltered
+                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                        .map((row, index) => (
+                          <UserTableRowTx
+                            key={index}
+                            tableData={tableData}
+                            row={row}
+                            selected={selected.includes(row.id)}
+                            onSelectRow={() => onSelectRow(row.id)}
+                          />
+                        ))
+                    ) : (
+                      isNotFound && (
+                        <>
+                          <TableEmptyRows
+                            height={denseHeight}
+                            emptyRows={emptyRows(page, rowsPerPage, tableData.length)}
+                          />
+                          <TableNoData isNotFound={isNotFound} />
+                        </>
+                      )
                     )
+                  ) : (
+                    <TableSkeleton />
                   )}
                 </TableBody>
               </Table>

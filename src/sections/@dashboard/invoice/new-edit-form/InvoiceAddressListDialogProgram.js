@@ -1,6 +1,6 @@
 /* eslint-disable prefer-template */
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // @mui
 import { Dialog, ListItemButton, Stack, Typography, Button } from '@mui/material';
@@ -12,16 +12,25 @@ import { InvoiceTableToolbarTx } from '../list';
 
 // ----------------------------------------------------------------------
 
-InvoiceAddressListDialog.propTypes = {
+InvoiceAddressListDialogProgram.propTypes = {
   addressOptions: PropTypes.array,
   dialogTitle: PropTypes.string,
   onClose: PropTypes.func,
   onSelect: PropTypes.func,
   open: PropTypes.bool,
+  customer: PropTypes.object,
   selected: PropTypes.func,
 };
 
-export default function InvoiceAddressListDialog({ open, dialogTitle, selected, onClose, onSelect, addressOptions }) {
+export default function InvoiceAddressListDialogProgram({
+  open,
+  dialogTitle,
+  selected,
+  onClose,
+  onSelect,
+  addressOptions,
+  customer,
+}) {
   const handleSelect = (address) => {
     onSelect(address);
     onClose();
@@ -36,8 +45,8 @@ export default function InvoiceAddressListDialog({ open, dialogTitle, selected, 
     setPage,
     //
   } = useTable({ defaultOrderBy: 'createDate' });
-  const [tableData, setTableData] = useState(addressOptions);
 
+  const [tableData, setTableData] = useState(addressOptions);
   const [filterName, setFilterName] = useState('');
 
   const handleFilterName = (filterName) => {
@@ -46,10 +55,12 @@ export default function InvoiceAddressListDialog({ open, dialogTitle, selected, 
   };
 
   const dataFiltered = applySortFilter({
-    tableData,
+    addressOptions,
     comparator: getComparator(order, orderBy),
     filterName,
   });
+
+  console.log('addressOptions', addressOptions);
 
   return (
     <Dialog fullWidth maxWidth="xs" open={open} onClose={onClose}>
@@ -61,11 +72,11 @@ export default function InvoiceAddressListDialog({ open, dialogTitle, selected, 
       </Stack>
 
       <Scrollbar sx={{ p: 1.5, pt: 0, maxHeight: 80 * 8 }}>
-        {dataFiltered.map((address) => (
+        {dataFiltered.map((program) => (
           <ListItemButton
-            key={address.id}
-            selected={selected(address.id)}
-            onClick={() => handleSelect(address)}
+            key={program.id}
+            selected={selected(program.id)}
+            onClick={() => handleSelect(program)}
             sx={{
               p: 1.5,
               borderRadius: 1,
@@ -73,14 +84,14 @@ export default function InvoiceAddressListDialog({ open, dialogTitle, selected, 
               alignItems: 'flex-start',
             }}
           >
-            <Typography variant="subtitle2">{address.lastname + ' ' + address.firstname}</Typography>
-
+            <Typography variant="subtitle2">{program.label + ' ' + program.formula}</Typography>
+            {console.log('program.real_estate_program_type', program.real_estate_program_type)}
             <Typography variant="caption" sx={{ color: 'primary.main', my: 0.5, fontWeight: 'fontWeightMedium' }}>
-              {address.customer_reference}
+              <b>Type d'habitation</b>: {program.real_estate_program_type}
             </Typography>
 
             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              {address.email}
+              <b>Localisation</b>: {program.location}
             </Typography>
           </ListItemButton>
         ))}
@@ -89,26 +100,26 @@ export default function InvoiceAddressListDialog({ open, dialogTitle, selected, 
   );
 }
 
-function applySortFilter({ tableData, comparator, filterName }) {
-  const stabilizedThis = tableData.map((el, index) => [el, index]);
+function applySortFilter({ addressOptions, comparator, filterName }) {
+  const stabilizedThis = addressOptions.map((el, index) => [el, index]);
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
     if (order !== 0) return order;
     return a[1] - b[1];
   });
 
-  tableData = stabilizedThis.map((el) => el[0]);
+  addressOptions = stabilizedThis.map((el) => el[0]);
 
   if (filterName) {
-    tableData = tableData.filter(
+    addressOptions = addressOptions.filter(
       (item) =>
-        item.customer_reference.toLowerCase().indexOf(filterName.toLowerCase()) !== -1 ||
-        item.firstname.toLowerCase().indexOf(filterName.toLowerCase()) !== -1 ||
-        item.lastname.toLowerCase().indexOf(filterName.toLowerCase()) !== -1 ||
-        item.phone_number.toLowerCase().indexOf(filterName.toLowerCase()) !== -1 ||
-        item.email.toLowerCase().indexOf(filterName.toLowerCase()) !== -1
+        item.label.toLowerCase().indexOf(filterName.toLowerCase()) !== -1 ||
+        item.formula.toLowerCase().indexOf(filterName.toLowerCase()) !== -1 ||
+        item.real_estate_program_type.toLowerCase().indexOf(filterName.toLowerCase()) !== -1 ||
+        item.location.toLowerCase().indexOf(filterName.toLowerCase()) !== -1
+      // item.email.toLowerCase().indexOf(filterName.toLowerCase()) !== -1
     );
   }
 
-  return tableData;
+  return addressOptions;
 }

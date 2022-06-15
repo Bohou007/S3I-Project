@@ -35,6 +35,7 @@ import {
   CardActions,
   Grid,
   MenuItem,
+  Dialog,
 } from '@mui/material';
 import Button from '@mui/material/Button';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -64,69 +65,18 @@ class UserTableRowAdminTx extends Component {
     this.state = {
       detailRow: '',
       program: '',
-      item: {},
-      booking: '',
-      nameProgram: [],
-      isOpenModal: false,
       openMenu: null,
     };
-    this.handleAddEvent = this.handleAddEvent.bind(this);
-    this.handleCloseModal = this.handleCloseModal.bind(this);
     this.sepMillier = this.sepMillier.bind(this);
     this.handleOpenMenu = this.handleOpenMenu.bind(this);
     this.handleCloseMenu = this.handleCloseMenu.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.handleChangeEdit = this.handleChangeEdit.bind(this);
   }
 
-  componentDidMount() {
-    this.handleGetProgramme(this.props.row.real_estate_program_reference);
-  }
-
-  handleAddEvent = async (value) => {
-    this.setState({
-      isOpenModal: true,
-      detailRow: value,
-    });
-  };
-
-  handleGetProgramme = async (value) => {
-    const response = await axios.get(`/ws-booking-payment/real-estate-program/${value}`);
-    const programme = response.data.label + ' ' + response.data.formula;
-    this.setState({
-      nameProgram: programme,
-    });
-    return programme;
-  };
+  componentDidMount() {}
 
   sepMillier(number) {
     const Primenumeral = numeral(number).format(+0, 0);
     return Primenumeral.replace(/[,]+/g, ' ');
-  }
-
-  handleCloseModal() {
-    this.setState({
-      // eslint-disable-next-line react/no-unused-state
-      isOpenModal: false,
-    });
-  }
-
-  handleChange(event) {
-    const target = event.target;
-    const value = target.value;
-    const name = target.name;
-    let item = { ...this.state.item };
-    item[name] = value;
-    this.setState({ item });
-  }
-
-  handleChangeEdit(event) {
-    const target = event.target;
-    const value = target.value;
-    const name = target.name;
-    let detailRow = { ...this.state.detailRow };
-    detailRow[name] = value;
-    this.setState({ detailRow });
   }
 
   handleOpenMenu = (event) => {
@@ -169,11 +119,7 @@ class UserTableRowAdminTx extends Component {
             onClose={this.handleCloseMenu}
             actions={
               <>
-                <MenuItem
-                  onClick={() => {
-                    this.handleAddEvent(this.props.row);
-                  }}
-                >
+                <MenuItem onClick={this.props.handleAddEvent}>
                   <Iconify icon={'eva:edit-fill'} />
                   Modifier
                 </MenuItem>
@@ -190,101 +136,6 @@ class UserTableRowAdminTx extends Component {
               </>
             }
           />
-
-          <DialogAnimate open={this.state.isOpenModal} onClose={this.handleCloseModal}>
-            <DialogTitle sx={{ width: '100%', backgroundColor: '#D7B94D', paddingBottom: 2 }}>
-              S3I - Bâtisseur du confort
-            </DialogTitle>
-            {console.log('detailRow', this.state.detailRow)}
-            <Stack spacing={3} sx={{ p: 3 }}>
-              {/* <Typography variant="h4" component="div">
-                Modification du programme {this.state.detailRow.label} {this.state.detailRow.formula}
-              </Typography> */}
-              <Card sx={{ minWidth: 275 }}>
-                <Grid container spacing={2}>
-                  <Grid item xs={12}>
-                    <CardContent sx={{ marginTop: 2 }}>
-                      <TextField
-                        name="label"
-                        // id="outlined-basic"
-                        onChange={this.handleChangeEdit}
-                        value={this.state.detailRow.label}
-                        label="Nom du programme"
-                        sx={{ width: '100%' }}
-                      />
-                    </CardContent>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <CardContent sx={{ marginTop: 0 }}>
-                      <TextField
-                        id="outlined-basic"
-                        value={this.state.detailRow.formula}
-                        onChange={this.handleChangeEdit}
-                        label="Formule"
-                        sx={{ width: '100%' }}
-                      />
-                    </CardContent>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <CardContent sx={{ marginTop: 0 }}>
-                      <TextField
-                        id="outlined-basic"
-                        value={this.state.detailRow.real_estate_program_type}
-                        onChange={this.handleChangeEdit}
-                        label="Type d'habitation"
-                        sx={{ width: '100%' }}
-                      />
-                    </CardContent>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <CardContent sx={{ marginTop: 0 }}>
-                      <TextField
-                        id="outlined-basic"
-                        value={this.state.detailRow.location}
-                        onChange={this.handleChangeEdit}
-                        label="Localisation"
-                        sx={{ width: '100%' }}
-                      />
-                    </CardContent>
-                  </Grid>
-                </Grid>
-              </Card>
-            </Stack>
-            <DialogActions>
-              <Box sx={{ flexGrow: 1 }} />
-              <Button variant="contained" color="inherit" onClick={this.handleCloseModal}>
-                Fermer
-              </Button>
-            </DialogActions>
-          </DialogAnimate>
-          {/* <TableMoreMenu
-          open={openMenu}
-          onOpen={handleOpenMenu}
-          onClose={handleCloseMenu}
-          actions={
-            <>
-              <MenuItem
-                onClick={() => {
-                  onDeleteRow();
-                  handleCloseMenu();
-                }}
-                sx={{ color: 'error.main' }}
-              >
-                <Iconify icon={'eva:trash-2-outline'} />
-                Delete
-              </MenuItem>
-              <MenuItem
-                onClick={() => {
-                  onEditRow();
-                  handleCloseMenu();
-                }}
-              >
-                <Iconify icon={'eva:edit-fill'} />
-                Edit
-              </MenuItem>
-            </>
-          }
-        /> */}
         </TableCell>
       </TableRow>
     );
@@ -297,6 +148,12 @@ UserTableRowAdminTx.propTypes = {
   onEditRow: PropTypes.func,
   onSelectRow: PropTypes.func,
   onDeleteRow: PropTypes.func,
+  handleAddEvent: PropTypes.func,
+  handleCloseModal: PropTypes.func,
+  handleSubmitToUpdate: PropTypes.func,
+  handleChangeEdit: PropTypes.func,
+  detailRow: PropTypes.object,
+  isOpenModal: PropTypes.bool,
 };
 
 export default UserTableRowAdminTx;

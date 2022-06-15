@@ -40,7 +40,13 @@ import axios from '../../../../utils/axios';
 import useAuth from '../../../../hooks/useAuth';
 
 import { SkeletonConversationItem, SkeletonMailSidebarItem } from '../../../../components/skeleton';
-import { TableEmptyRows, TableHeadCustom, TableNoData, TableSelectedActions } from '../../../../components/table';
+import {
+  TableEmptyRows,
+  TableHeadCustom,
+  TableSkeleton,
+  TableNoData,
+  TableSelectedActions,
+} from '../../../../components/table';
 
 import { UserTableToolbarReservation, UserTableRowPaimentTx } from '../../user/list';
 
@@ -60,12 +66,9 @@ export default function Versements() {
 
   useEffect(async () => {
     const response = await axios.get(`/ws-booking-payment/payment/customer/${user?.customer_reference}`);
-    if (response.status === 200) {
-      setIsGet(true);
-    }
 
     setTimeout(() => {
-      setIsGet(false);
+      setIsGet(true);
     }, 3000);
     setTableData(response.data);
   }, []);
@@ -99,20 +102,18 @@ export default function Versements() {
               </TableHead>
               <TableBody>
                 {isGet ? (
-                  <>
-                    <SkeletonConversationItem />
-                    <SkeletonConversationItem />
-                    <SkeletonConversationItem />
-                  </>
-                ) : tableData.length > 0 ? (
-                  tableData.map((row, index) => <UserTableRowPaimentTx key={index} tableData={tableData} row={row} />)
-                ) : (
-                  isNotFound && (
-                    <>
-                      <TableEmptyRows height={'72'} />
-                      <TableNoData isNotFound={isNotFound} />
-                    </>
+                  tableData.length > 0 ? (
+                    tableData.map((row, index) => <UserTableRowPaimentTx key={index} tableData={tableData} row={row} />)
+                  ) : (
+                    isNotFound && (
+                      <>
+                        <TableEmptyRows height={'72'} />
+                        <TableNoData isNotFound={isNotFound} />
+                      </>
+                    )
                   )
+                ) : (
+                  <TableSkeleton />
                 )}
               </TableBody>
             </Table>

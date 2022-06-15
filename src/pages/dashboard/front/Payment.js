@@ -37,7 +37,13 @@ import Page from '../../../components/Page';
 import Iconify from '../../../components/Iconify';
 import Scrollbar from '../../../components/Scrollbar';
 import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
-import { TableEmptyRows, TableHeadCustom, TableNoData, TableSelectedActions } from '../../../components/table';
+import {
+  TableEmptyRows,
+  TableHeadCustom,
+  TableSkeleton,
+  TableNoData,
+  TableSelectedActions,
+} from '../../../components/table';
 // sections
 import { UserTableToolbarReservation, UserTableRowPaiment } from '../../../sections/@dashboard/user/list';
 import useAuth from '../../../hooks/useAuth';
@@ -284,11 +290,7 @@ export default function Payment() {
                       )
                     )
                   ) : (
-                    <>
-                      <SkeletonConversationItem />
-                      <SkeletonConversationItem />
-                      <SkeletonConversationItem />
-                    </>
+                    <TableSkeleton />
                   )}
                 </TableBody>
               </Table>

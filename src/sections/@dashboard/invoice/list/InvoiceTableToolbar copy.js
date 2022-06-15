@@ -6,15 +6,13 @@ import Iconify from '../../../../components/Iconify';
 
 // ----------------------------------------------------------------------
 
-const INPUT_WIDTH = 190;
+const INPUT_WIDTH = 160;
 
 InvoiceTableToolbar.propTypes = {
   filterName: PropTypes.string,
   filterService: PropTypes.string,
-  filterProgramme: PropTypes.string,
   filterEndDate: PropTypes.instanceOf(Date),
   filterStartDate: PropTypes.instanceOf(Date),
-  handleFilterProgramme: PropTypes.func,
   onFilterName: PropTypes.func,
   onFilterEndDate: PropTypes.func,
   onFilterService: PropTypes.func,
@@ -25,11 +23,9 @@ InvoiceTableToolbar.propTypes = {
 export default function InvoiceTableToolbar({
   optionsService,
   filterStartDate,
-  filterProgramme,
   filterEndDate,
   filterName,
   filterService,
-  handleFilterProgramme,
   onFilterName,
   onFilterService,
   onFilterStartDate,
@@ -40,9 +36,9 @@ export default function InvoiceTableToolbar({
       <TextField
         fullWidth
         select
-        label="Programmes"
-        value={filterProgramme}
-        onChange={handleFilterProgramme}
+        label="Service type"
+        value={filterService}
+        onChange={onFilterService}
         SelectProps={{
           MenuProps: {
             sx: { '& .MuiPaper-root': { maxHeight: 260 } },
@@ -53,22 +49,10 @@ export default function InvoiceTableToolbar({
           textTransform: 'capitalize',
         }}
       >
-        <MenuItem
-          value={'all'}
-          sx={{
-            mx: 1,
-            my: 0.5,
-            borderRadius: 0.75,
-            typography: 'body2',
-            textTransform: 'capitalize',
-          }}
-        >
-          All
-        </MenuItem>
         {optionsService.map((option) => (
           <MenuItem
-            key={option.real_estate_program_reference}
-            value={option.real_estate_program_reference}
+            key={option}
+            value={option}
             sx={{
               mx: 1,
               my: 0.5,
@@ -77,17 +61,15 @@ export default function InvoiceTableToolbar({
               textTransform: 'capitalize',
             }}
           >
-            {option.label} {option.formula}
+            {option}
           </MenuItem>
         ))}
       </TextField>
 
       <DatePicker
-        label="Date de début"
+        label="Start date"
         value={filterStartDate}
-        onChange={(newValue) => {
-          onFilterStartDate(newValue);
-        }}
+        onChange={onFilterStartDate}
         renderInput={(params) => (
           <TextField
             {...params}
@@ -100,11 +82,9 @@ export default function InvoiceTableToolbar({
       />
 
       <DatePicker
-        label="Date de fin"
+        label="End date"
         value={filterEndDate}
-        onChange={(newValue) => {
-          onFilterEndDate(newValue);
-        }}
+        onChange={onFilterEndDate}
         renderInput={(params) => (
           <TextField
             {...params}
@@ -120,7 +100,7 @@ export default function InvoiceTableToolbar({
         fullWidth
         value={filterName}
         onChange={(event) => onFilterName(event.target.value)}
-        placeholder="Recherche le client par le code..."
+        placeholder="Search client or invoice number..."
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">

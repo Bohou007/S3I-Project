@@ -170,25 +170,25 @@ class UserTableRowPaiment extends Component {
             <Stack spacing={3} sx={{ p: 3 }}>
               <Card sx={{ minWidth: 275, backgroundColor: '#D7B94D' }}>
                 <Grid container spacing={2}>
-                  <Grid item xs={3}>
+                  <Grid item xs={6} md={3}>
                     <CardContent sx={{}}>
                       <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Nom du programme</Typography>
                       <Typography variant="body2">{this.state.program.label} </Typography>
                     </CardContent>
                   </Grid>
-                  <Grid item xs={3}>
+                  <Grid item xs={6} md={3}>
                     <CardContent sx={{}}>
                       <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Formule</Typography>
                       <Typography variant="body2">{this.state.program.formula}</Typography>
                     </CardContent>
                   </Grid>
-                  <Grid item xs={3}>
+                  <Grid item xs={6} md={3}>
                     <CardContent sx={{}}>
                       <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Localisation</Typography>
                       <Typography variant="body2">{this.state.program.location}</Typography>
                     </CardContent>
                   </Grid>
-                  <Grid item xs={3}>
+                  <Grid item xs={6} md={3}>
                     <CardContent sx={{}}>
                       <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Type d'habitation</Typography>
                       <Typography variant="body2">{this.state.program.real_estate_program_type}</Typography>
@@ -201,32 +201,32 @@ class UserTableRowPaiment extends Component {
               </Typography>
               <Card sx={{ minWidth: 275 }}>
                 <Grid container spacing={2}>
-                  <Grid item xs={4}>
+                  <Grid item xs={6} md={4}>
                     <CardContent sx={{}}>
                       <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Mode de paiement</Typography>
                       <Typography variant="body2">{this.state.detailRow.payment_method}</Typography>
                     </CardContent>
                   </Grid>
-                  <Grid item xs={4}>
+                  <Grid item xs={6} md={4}>
                     <CardContent sx={{}}>
                       <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Banque</Typography>
                       <Typography variant="body2">{this.state.detailRow.bank}</Typography>
                     </CardContent>
                   </Grid>
 
-                  <Grid item xs={4}>
+                  <Grid item xs={6} md={4}>
                     <CardContent sx={{}}>
                       <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Reference de paiement</Typography>
                       <Typography variant="body2">{this.state.detailRow.input_payment_reference}</Typography>
                     </CardContent>
                   </Grid>
-                  <Grid item xs={4}>
+                  <Grid item xs={6} md={4}>
                     <CardContent sx={{}}>
                       <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Code reservation</Typography>
                       <Typography variant="body2">{this.state.detailRow.booking_reference}</Typography>
                     </CardContent>
                   </Grid>
-                  <Grid item xs={4}>
+                  <Grid item xs={6} md={4}>
                     <CardContent sx={{}}>
                       <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Date de paiement</Typography>
                       <Typography variant="body2">
@@ -234,7 +234,7 @@ class UserTableRowPaiment extends Component {
                       </Typography>
                     </CardContent>
                   </Grid>
-                  {/* <Grid item xs={4}>
+                  {/* <Grid item xs={6} md={4}>
                     <CardContent sx={{}}>
                       <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Nombre d'echeance</Typography>
                       <Typography variant="body2">

@@ -12,8 +12,10 @@ import { InvoiceTableToolbarTx } from '../list';
 
 // ----------------------------------------------------------------------
 
-InvoiceAddressListDialog.propTypes = {
+InvoiceAddressListDialogBooking.propTypes = {
   addressOptions: PropTypes.array,
+  customer: PropTypes.object,
+  program: PropTypes.object,
   dialogTitle: PropTypes.string,
   onClose: PropTypes.func,
   onSelect: PropTypes.func,
@@ -21,7 +23,16 @@ InvoiceAddressListDialog.propTypes = {
   selected: PropTypes.func,
 };
 
-export default function InvoiceAddressListDialog({ open, dialogTitle, selected, onClose, onSelect, addressOptions }) {
+export default function InvoiceAddressListDialogBooking({
+  open,
+  dialogTitle,
+  customer,
+  program,
+  selected,
+  onClose,
+  onSelect,
+  addressOptions,
+}) {
   const handleSelect = (address) => {
     onSelect(address);
     onClose();
@@ -46,7 +57,7 @@ export default function InvoiceAddressListDialog({ open, dialogTitle, selected, 
   };
 
   const dataFiltered = applySortFilter({
-    tableData,
+    addressOptions,
     comparator: getComparator(order, orderBy),
     filterName,
   });
@@ -61,11 +72,11 @@ export default function InvoiceAddressListDialog({ open, dialogTitle, selected, 
       </Stack>
 
       <Scrollbar sx={{ p: 1.5, pt: 0, maxHeight: 80 * 8 }}>
-        {dataFiltered.map((address) => (
+        {dataFiltered.map((booking) => (
           <ListItemButton
-            key={address.id}
-            selected={selected(address.id)}
-            onClick={() => handleSelect(address)}
+            key={booking.id}
+            selected={selected(booking.id)}
+            onClick={() => handleSelect(booking)}
             sx={{
               p: 1.5,
               borderRadius: 1,
@@ -73,14 +84,14 @@ export default function InvoiceAddressListDialog({ open, dialogTitle, selected, 
               alignItems: 'flex-start',
             }}
           >
-            <Typography variant="subtitle2">{address.lastname + ' ' + address.firstname}</Typography>
+            <Typography variant="subtitle2">{booking.booking_reference}</Typography>
 
             <Typography variant="caption" sx={{ color: 'primary.main', my: 0.5, fontWeight: 'fontWeightMedium' }}>
-              {address.customer_reference}
+              <b>Lot</b>: {booking.lot}
             </Typography>
 
             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              {address.email}
+              <b>Sous-lot</b>: {booking.sub_lot}
             </Typography>
           </ListItemButton>
         ))}
@@ -89,26 +100,24 @@ export default function InvoiceAddressListDialog({ open, dialogTitle, selected, 
   );
 }
 
-function applySortFilter({ tableData, comparator, filterName }) {
-  const stabilizedThis = tableData.map((el, index) => [el, index]);
+function applySortFilter({ addressOptions, comparator, filterName }) {
+  const stabilizedThis = addressOptions.map((el, index) => [el, index]);
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
     if (order !== 0) return order;
     return a[1] - b[1];
   });
 
-  tableData = stabilizedThis.map((el) => el[0]);
+  addressOptions = stabilizedThis.map((el) => el[0]);
 
   if (filterName) {
-    tableData = tableData.filter(
+    addressOptions = addressOptions.filter(
       (item) =>
-        item.customer_reference.toLowerCase().indexOf(filterName.toLowerCase()) !== -1 ||
-        item.firstname.toLowerCase().indexOf(filterName.toLowerCase()) !== -1 ||
-        item.lastname.toLowerCase().indexOf(filterName.toLowerCase()) !== -1 ||
-        item.phone_number.toLowerCase().indexOf(filterName.toLowerCase()) !== -1 ||
-        item.email.toLowerCase().indexOf(filterName.toLowerCase()) !== -1
+        item.booking_reference.toLowerCase().indexOf(filterName.toLowerCase()) !== -1 ||
+        item.lot.toLowerCase().indexOf(filterName.toLowerCase()) !== -1 ||
+        item.sub_lot.toLowerCase().indexOf(filterName.toLowerCase()) !== -1
     );
   }
 
-  return tableData;
+  return addressOptions;
 }

@@ -141,25 +141,25 @@ class UserTableRowReservation extends Component {
             <Stack spacing={3} sx={{ p: 3 }}>
               <Card sx={{ minWidth: 275, backgroundColor: '#D7B94D' }}>
                 <Grid container spacing={2}>
-                  <Grid item xs={3}>
+                  <Grid item xs={6} md={3}>
                     <CardContent sx={{}}>
                       <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Nom du programme</Typography>
                       <Typography variant="body2">{this.state.program.label} </Typography>
                     </CardContent>
                   </Grid>
-                  <Grid item xs={3}>
+                  <Grid item xs={6} md={3}>
                     <CardContent sx={{}}>
                       <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Formule</Typography>
                       <Typography variant="body2">{this.state.program.formula}</Typography>
                     </CardContent>
                   </Grid>
-                  <Grid item xs={3}>
+                  <Grid item xs={6} md={3}>
                     <CardContent sx={{}}>
                       <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Localisation</Typography>
                       <Typography variant="body2">{this.state.program.location}</Typography>
                     </CardContent>
                   </Grid>
-                  <Grid item xs={3}>
+                  <Grid item xs={6} md={3}>
                     <CardContent sx={{}}>
                       <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Type d'habitation</Typography>
                       <Typography variant="body2">{this.state.program.real_estate_program_type}</Typography>
@@ -172,19 +172,19 @@ class UserTableRowReservation extends Component {
               </Typography> */}
               <Card sx={{ minWidth: 275 }}>
                 <Grid container spacing={2}>
-                  <Grid item xs={4}>
+                  <Grid item xs={6} md={4}>
                     <CardContent sx={{}}>
                       <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Lot</Typography>
                       <Typography variant="body2">{this.state.detailRow.lot}</Typography>
                     </CardContent>
                   </Grid>
-                  <Grid item xs={4}>
+                  <Grid item xs={6} md={4}>
                     <CardContent sx={{}}>
                       <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Sous-Lot</Typography>
                       <Typography variant="body2">{this.state.detailRow.sub_lot}</Typography>
                     </CardContent>
                   </Grid>
-                  <Grid item xs={4}>
+                  <Grid item xs={6} md={4}>
                     <CardContent>
                       <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Statut</Typography>
                       <Label color="info">Non reglé</Label>
@@ -197,7 +197,7 @@ class UserTableRowReservation extends Component {
               </Typography>
               <Card sx={{ minWidth: 275 }}>
                 <Grid container spacing={2}>
-                  <Grid item xs={4}>
+                  <Grid item xs={6} md={4}>
                     <CardContent sx={{}}>
                       <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Code de mon logement</Typography>
                       <Typography variant="body2">
@@ -205,7 +205,7 @@ class UserTableRowReservation extends Component {
                       </Typography>
                     </CardContent>
                   </Grid>
-                  <Grid item xs={4}>
+                  <Grid item xs={6} md={4}>
                     <CardContent sx={{}}>
                       <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Terrain supplémentaire</Typography>
                       <Typography variant="body2">
@@ -213,7 +213,7 @@ class UserTableRowReservation extends Component {
                       </Typography>
                     </CardContent>
                   </Grid>
-                  <Grid item xs={4}>
+                  <Grid item xs={6} md={4}>
                     <CardContent sx={{}}>
                       <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>
                         Montant du terrain supplémentaire
@@ -225,7 +225,7 @@ class UserTableRowReservation extends Component {
                     </CardContent>
                   </Grid>
 
-                  <Grid item xs={4}>
+                  <Grid item xs={6} md={4}>
                     <CardContent sx={{}}>
                       <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>
                         Montant de la clôture supplémentaire
@@ -236,7 +236,7 @@ class UserTableRowReservation extends Component {
                       </Typography>
                     </CardContent>
                   </Grid>
-                  <Grid item xs={4}>
+                  <Grid item xs={6} md={4}>
                     <CardContent sx={{}}>
                       <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Frais de demande</Typography>
                       <Typography variant="body2">
@@ -245,7 +245,7 @@ class UserTableRowReservation extends Component {
                       </Typography>
                     </CardContent>
                   </Grid>
-                  <Grid item xs={4}>
+                  <Grid item xs={6} md={4}>
                     <CardContent sx={{}}>
                       <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Frais de réservation</Typography>
                       <Typography variant="body2">
@@ -254,7 +254,7 @@ class UserTableRowReservation extends Component {
                       </Typography>
                     </CardContent>
                   </Grid>
-                  <Grid item xs={4}>
+                  <Grid item xs={6} md={4}>
                     <CardContent sx={{}}>
                       <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Montant versé</Typography>
                       <Typography variant="body2">
@@ -263,7 +263,7 @@ class UserTableRowReservation extends Component {
                       </Typography>
                     </CardContent>
                   </Grid>
-                  <Grid item xs={4}>
+                  <Grid item xs={6} md={4}>
                     <CardContent sx={{}}>
                       <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Montant total de mon logement</Typography>
                       <Typography variant="body2">
@@ -288,7 +288,7 @@ class UserTableRowReservation extends Component {
               </Typography>
               <Card sx={{ minWidth: 275 }}>
                 <Grid container spacing={2}>
-                  <Grid item xs={4}>
+                  <Grid item xs={6} md={4}>
                     <CardContent sx={{}}>
                       <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>
                         Date de début de l'échéancier de paiement
@@ -298,7 +298,7 @@ class UserTableRowReservation extends Component {
                       </Typography>
                     </CardContent>
                   </Grid>
-                  <Grid item xs={4}>
+                  <Grid item xs={6} md={4}>
                     <CardContent sx={{}}>
                       <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>
                         Date de fin de paiement de la reservation
@@ -308,7 +308,7 @@ class UserTableRowReservation extends Component {
                       </Typography>
                     </CardContent>
                   </Grid>
-                  <Grid item xs={4}>
+                  <Grid item xs={6} md={4}>
                     <CardContent sx={{}}>
                       <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Nombre d'echeance de paiement</Typography>
                       <Typography variant="body2">{this.state.detailRow.payment_deadlines_number}</Typography>

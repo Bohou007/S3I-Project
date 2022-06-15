@@ -1,4 +1,4 @@
-import * as Yup from 'yup'; 
+import * as Yup from 'yup';
 import { useState } from 'react';
 // form
 import { useForm } from 'react-hook-form';

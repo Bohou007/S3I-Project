@@ -15,12 +15,12 @@ InvoiceTableToolbarTx.propTypes = {
 
 export default function InvoiceTableToolbarTx({ filterName, onFilterName }) {
   return (
-    <Stack spacing={2} direction={{ xs: 'column', md: 'row' }} sx={{ py: 2.5, px: 3 }}>
+    <Stack spacing={2} direction={{ xs: 'column', md: 'row' }} sx={{ width: '100%' }}>
       <TextField
         fullWidth
         value={filterName}
         onChange={(event) => onFilterName(event.target.value)}
-        placeholder="Search client or invoice number..."
+        placeholder="Recherchez par nom, code, tel ou email..."
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">

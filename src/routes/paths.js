@@ -100,11 +100,10 @@ export const PATH_DASHBOARD_ADMIN = {
   payments: {
     root: path(ROOTS_DASHBOARD_ADMIN, '/payments'),
     paymentList: path(ROOTS_DASHBOARD_ADMIN, '/payments/suivi-des-versements'),
+    paymentView: (paymentReference) => path(ROOTS_DASHBOARD_ADMIN, `/payments/${paymentReference}`),
+
     // paymentAdd: path(ROOTS_DASHBOARD_ADMIN, '/payments/nouveau-versement'),
-    paymentView: (id) => path(ROOTS_DASHBOARD_ADMIN, `/payments/${id}`),
     paymentEdit: (id) => path(ROOTS_DASHBOARD_ADMIN, `/payments/${id}/edit`),
-    demoEdit: path(ROOTS_DASHBOARD_ADMIN, '/invoice/e99f09a7-dd88-49d5-b1c8-1daf80c2d7b1/edit'),
-    demoView: path(ROOTS_DASHBOARD_ADMIN, '/invoice/e99f09a7-dd88-49d5-b1c8-1daf80c2d7b5'),
   },
 
   user: {

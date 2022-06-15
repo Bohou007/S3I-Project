@@ -13,3 +13,5 @@ export { default as UserTableRowPaimentTx } from './UserTableRowPaimentTx';
 
 export { default as UserTableToolbarAdminTx } from './UserTableToolbarAdminTx';
 export { default as UserTableRowAdminTx } from './UserTableRowAdminTx';
+export { default as UserTableRowAdminReserv } from './UserTableRowAdminReserv';
+export { default as UserTableToolbarReservationAdmin } from './UserTableToolbarReservationAdmin';

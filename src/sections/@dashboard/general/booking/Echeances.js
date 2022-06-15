@@ -38,7 +38,13 @@ import useAuth from '../../../../hooks/useAuth';
 import { PATH_DASHBOARD } from '../../../../routes/paths';
 
 import { SkeletonConversationItem, SkeletonMailSidebarItem } from '../../../../components/skeleton';
-import { TableEmptyRows, TableHeadCustom, TableNoData, TableSelectedActions } from '../../../../components/table';
+import {
+  TableEmptyRows,
+  TableHeadCustom,
+  TableSkeleton,
+  TableNoData,
+  TableSelectedActions,
+} from '../../../../components/table';
 
 // ----------------------------------------------------------------------
 import { UserTableToolbarReservation, UserTableRowTx } from '../../user/list';
@@ -60,12 +66,8 @@ export default function Echeances() {
       `/ws-booking-payment/payment-schedule/customer/${user?.customer_reference}/limit/5`
     );
 
-    if (deadline.status === 200) {
-      setIsGet(true);
-    }
-
     setTimeout(() => {
-      setIsGet(false);
+      setIsGet(true);
     }, 3000);
     setTableData(deadline.data);
   }, []);
@@ -99,20 +101,18 @@ export default function Echeances() {
               </TableHead>
               <TableBody>
                 {isGet ? (
-                  <>
-                    <SkeletonConversationItem />
-                    <SkeletonConversationItem />
-                    <SkeletonConversationItem />
-                  </>
-                ) : tableData.length > 0 ? (
-                  tableData.map((row, index) => <UserTableRowTx key={index} tableData={tableData} row={row} />)
-                ) : (
-                  isNotFound && (
-                    <>
-                      <TableEmptyRows height={'72'} />
-                      <TableNoData isNotFound={isNotFound} />
-                    </>
+                  tableData.length > 0 ? (
+                    tableData.map((row, index) => <UserTableRowTx key={index} tableData={tableData} row={row} />)
+                  ) : (
+                    isNotFound && (
+                      <>
+                        <TableEmptyRows height={'72'} />
+                        <TableNoData isNotFound={isNotFound} />
+                      </>
+                    )
                   )
+                ) : (
+                  <TableSkeleton />
                 )}
               </TableBody>
             </Table>

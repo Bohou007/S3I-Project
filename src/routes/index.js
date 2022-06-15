@@ -199,9 +199,7 @@ export default function Router() {
           children: [
             { element: <Navigate to="tableau-de-bord/admin/payments/suivi-des-versements" replace />, index: true },
             { path: 'suivi-des-versements', element: <PaymentList /> },
-            // { path: ':id', element: <InvoiceDetails /> },
-            { path: ':id/edit', element: <EditPayment /> },
-            // { path: 'nouveau-versement', element: <AddPayment /> },
+            { path: ':paymentReference', element: <PaymentAdminView /> },
           ],
         },
         {
@@ -258,6 +256,8 @@ const BuildingPrograms = Loadable(lazy(() => import('../pages/dashboard/back/Bui
 const AddClient = Loadable(lazy(() => import('../pages/dashboard/back/users/AddClient')));
 const CustomerReservations = Loadable(lazy(() => import('../pages/dashboard/back/CustomerReservations')));
 const PaymentList = Loadable(lazy(() => import('../pages/dashboard/back/PaymentList')));
+const PaymentAdminView = Loadable(lazy(() => import('../pages/dashboard/back/PaymentView')));
+
 const AddPayment = Loadable(lazy(() => import('../pages/dashboard/back/payment/AddPayment')));
 const EditPayment = Loadable(lazy(() => import('../pages/dashboard/back/payment/EditPayment')));
 

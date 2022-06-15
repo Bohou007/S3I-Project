@@ -1,50 +1,41 @@
 /* eslint-disable import/first */
 /* eslint-disable import/newline-after-import */
-/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable prefer-template */
 import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
 import numeral from 'numeral';
 import moment from 'moment/min/moment-with-locales';
 const locale = moment.locale('fr');
+
 // @mui
 import { useTheme } from '@mui/material/styles';
-import { Checkbox, TableRow, TableCell, Typography, Stack, Link, MenuItem } from '@mui/material';
-// utils
-import { fDate } from '../../../../utils/formatTime';
-import createAvatar from '../../../../utils/createAvatar';
-import { fCurrency } from '../../../../utils/formatNumber';
+import { Checkbox, TableRow, TableCell, Typography, MenuItem, Stack } from '@mui/material';
 // components
 import Label from '../../../../components/Label';
-import Avatar from '../../../../components/Avatar';
 import Iconify from '../../../../components/Iconify';
+import Avatar from '../../../../components/Avatar';
+
 import { TableMoreMenu } from '../../../../components/table';
+import createAvatar from '../../../../utils/createAvatar';
 import axios from '../../../../utils/axios';
 
 // ----------------------------------------------------------------------
 
-InvoiceTableRow.propTypes = {
-  row: PropTypes.object.isRequired,
-  handleAddEvent: PropTypes.func,
+UserTableRowAdminReserv.propTypes = {
+  row: PropTypes.object,
   selected: PropTypes.bool,
   onSelectRow: PropTypes.func,
-  onViewRow: PropTypes.func,
-  onEditRow: PropTypes.func,
-  onDeleteRow: PropTypes.func,
+  handleAddEvent: PropTypes.func,
+  handleCloseModal: PropTypes.func,
+  handleSubmitToUpdate: PropTypes.func,
+  handleChangeEdit: PropTypes.func,
+  detailRow: PropTypes.object,
+  isOpenModal: PropTypes.bool,
 };
 
-export default function InvoiceTableRow({
-  row,
-  selected,
-  handleAddEvent,
-  onSelectRow,
-  onViewRow,
-  onEditRow,
-  onDeleteRow,
-}) {
+export default function UserTableRowAdminReserv({ row, selected, onSelectRow, handleAddEvent }) {
   const theme = useTheme();
-
-  const { sent, invoiceNumber, createDate, dueDate, status, invoiceTo, totalPrice } = row;
+  const { avatarUrl, company, role, isVerified, status } = row;
 
   const [openMenu, setOpenMenuActions] = useState(null);
   const [customer, setCustomer] = useState({});
@@ -52,7 +43,7 @@ export default function InvoiceTableRow({
 
   useEffect(() => {
     handleCustomer(row.customer_reference);
-    handleGetProgramme(row.real_estate_program_reference);
+    handleGetProgramme(row.real_estate_programe_reference);
   }, []);
 
   const handleOpenMenu = (event) => {
@@ -75,6 +66,7 @@ export default function InvoiceTableRow({
   };
 
   const name = customer?.lastname + ' ' + customer?.firstname;
+  console.log('customer', customer);
 
   const sepMillier = (number) => {
     const Primenumeral = numeral(number).format(+0, 0);
@@ -88,26 +80,21 @@ export default function InvoiceTableRow({
         <Avatar alt={name} color={createAvatar(name).color} sx={{ mr: 2 }}>
           {createAvatar(name).name}
         </Avatar>
-
         <Stack>
           <Typography variant="subtitle2" noWrap>
             {name}
           </Typography>
-
           <Typography noWrap variant="body2" sx={{ color: 'text.disabled', cursor: 'pointer' }}>
             {customer?.customer_reference}
           </Typography>
         </Stack>
       </TableCell>
+
       <TableCell align="left">{program}</TableCell>
+      <TableCell align="left">{sepMillier(row.house_amount)} FCFA</TableCell>
+      <TableCell align="left">{sepMillier(row.amount_paid)} FCFA</TableCell>
 
-      <TableCell align="left">{sepMillier(row.amount)}</TableCell>
-
-      <TableCell align="left">{row.payment_method}</TableCell>
-
-      <TableCell align="left">{row.bank}</TableCell>
-
-      <TableCell align="left">{moment(row.payment_date).format('DD MMM YYYY')}</TableCell>
+      <TableCell align="left">{moment(row.payment_schedule_end_date).format('DD MMM YYYY')}</TableCell>
 
       <TableCell align="right">
         <TableMoreMenu
@@ -116,7 +103,7 @@ export default function InvoiceTableRow({
           onClose={handleCloseMenu}
           actions={
             <>
-              {/* <MenuItem
+              <MenuItem
                 onClick={() => {
                   handleCloseMenu();
                   handleAddEvent();
@@ -124,16 +111,6 @@ export default function InvoiceTableRow({
               >
                 <Iconify icon={'eva:edit-fill'} />
                 Modifier
-
-              </MenuItem> */}
-              <MenuItem
-                onClick={() => {
-                  onViewRow();
-                  // handleCloseMenu();
-                }}
-              >
-                <Iconify icon={'eva:corner-down-right-outline'} />
-                Votre facture
               </MenuItem>
               <MenuItem
                 onClick={() => {
