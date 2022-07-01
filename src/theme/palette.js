@@ -57,7 +57,28 @@ const DARK = {
   dark: '#000000',
   darker: '#000000',
 };
+const MARON = {
+  lighter: '#000000',
+  light: '#000000',
+  main: '#000000',
+  dark: '#000000',
+  darker: '#000000',
+};
 
+const LIGHT_M = {
+  lighter: '#000000',
+  light: '#000000',
+  main: '#F7EFED',
+  dark: '#000000',
+  darker: '#000000',
+};
+const MARON_S = {
+  lighter: '#000000',
+  light: '#000000',
+  main: '#D7B94D',
+  dark: '#000000',
+  darker: '#000000',
+};
 const GREY = {
   0: '#FFFFFF',
   100: '#F9FAFB',
@@ -104,6 +125,8 @@ const COMMON = {
   warning: { ...WARNING, contrastText: GREY[800] },
   error: { ...ERROR, contrastText: '#fff' },
   dark: { ...DARK, contrastText: '#000' },
+  light_m: { ...LIGHT_M, contrastText: '#9B3A1C' },
+  light_s: { ...MARON_S, contrastText: '#000' },
   grey: GREY,
   gradients: GRADIENTS,
   chart: CHART_COLORS,

@@ -180,7 +180,7 @@ export default function Router() {
           path: 'user',
           children: [
             { element: <Navigate to="tableau-de-bord/admin/user/account" replace />, index: true },
-            { path: 'account', element: <UserAccount /> },
+            { path: 'account', element: <AdminAccount /> },
             { path: 'new', element: <AddClient /> },
           ],
         },
@@ -200,15 +200,6 @@ export default function Router() {
             { element: <Navigate to="tableau-de-bord/admin/payments/suivi-des-versements" replace />, index: true },
             { path: 'suivi-des-versements', element: <PaymentList /> },
             { path: ':paymentReference', element: <PaymentAdminView /> },
-          ],
-        },
-        {
-          path: 'blog',
-          children: [
-            { element: <Navigate to="tableau-de-bord/admin/blog/posts" replace />, index: true },
-            { path: 'posts', element: <BlogPosts /> },
-            { path: 'post/:title', element: <BlogPost /> },
-            { path: 'new', element: <BlogNewPost /> },
           ],
         },
       ],
@@ -257,6 +248,7 @@ const AddClient = Loadable(lazy(() => import('../pages/dashboard/back/users/AddC
 const CustomerReservations = Loadable(lazy(() => import('../pages/dashboard/back/CustomerReservations')));
 const PaymentList = Loadable(lazy(() => import('../pages/dashboard/back/PaymentList')));
 const PaymentAdminView = Loadable(lazy(() => import('../pages/dashboard/back/PaymentView')));
+const AdminAccount = Loadable(lazy(() => import('../pages/dashboard/back/AdminAccount')));
 
 const AddPayment = Loadable(lazy(() => import('../pages/dashboard/back/payment/AddPayment')));
 const EditPayment = Loadable(lazy(() => import('../pages/dashboard/back/payment/EditPayment')));

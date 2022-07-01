@@ -55,7 +55,7 @@ export default function NotificationsPopover() {
   return (
     <>
       <IconButtonAnimate color={open ? 'primary' : 'default'} onClick={handleOpen} sx={{ width: 40, height: 40 }}>
-        <Badge badgeContent={totalUnRead} color="error">
+        <Badge badgeContent={0} color="error">
           <Iconify icon="eva:bell-fill" width={20} height={20} />
         </Badge>
       </IconButtonAnimate>
@@ -70,7 +70,7 @@ export default function NotificationsPopover() {
           <Box sx={{ flexGrow: 1 }}>
             <Typography variant="subtitle1">Notifications</Typography>
             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              Vous avez {totalUnRead} messages non lus
+              Vous avez {0} messages non lus
             </Typography>
           </Box>
 
@@ -88,6 +88,44 @@ export default function NotificationsPopover() {
         <Scrollbar sx={{ height: { xs: 340, sm: 'auto' } }}>
           <List
             disablePadding
+            // subheader={
+            //   <ListSubheader disableSticky sx={{ py: 1, px: 2.5, typography: 'overline' }}>
+            //     Nouveau
+            //   </ListSubheader>
+            // }
+          >
+            <ListItemButton
+              sx={{
+                py: 1.5,
+                px: 2.5,
+                mt: '1px',
+              }}
+            >
+              {/* <ListItemAvatar>
+                <Avatar sx={{ bgcolor: 'background.neutral' }}>{avatar}</Avatar>
+              </ListItemAvatar> */}
+              <ListItemText
+                // primary={title}
+                secondary={
+                  <Typography
+                    variant="caption"
+                    sx={{
+                      mt: 0.5,
+                      display: 'flex',
+                      alignItems: 'center',
+                      color: 'text.disabled',
+                    }}
+                  >
+                    <Iconify icon="eva:clock-outline" sx={{ mr: 0.5, width: 16, height: 16 }} />
+                    Pas de notification
+                  </Typography>
+                }
+              />
+            </ListItemButton>
+            {/* <ListItemText>Pas de notifications</ListItemText> */}
+          </List>
+          {/* <List
+            disablePadding
             subheader={
               <ListSubheader disableSticky sx={{ py: 1, px: 2.5, typography: 'overline' }}>
                 Nouveau
@@ -97,9 +135,9 @@ export default function NotificationsPopover() {
             {notifications.slice(0, 2).map((notification) => (
               <NotificationItem key={notification.id} notification={notification} />
             ))}
-          </List>
+          </List> */}
 
-          <List
+          {/* <List
             disablePadding
             subheader={
               <ListSubheader disableSticky sx={{ py: 1, px: 2.5, typography: 'overline' }}>
@@ -110,7 +148,7 @@ export default function NotificationsPopover() {
             {notifications.slice(2, 5).map((notification) => (
               <NotificationItem key={notification.id} notification={notification} />
             ))}
-          </List>
+          </List> */}
         </Scrollbar>
 
         <Divider sx={{ borderStyle: 'dashed' }} />

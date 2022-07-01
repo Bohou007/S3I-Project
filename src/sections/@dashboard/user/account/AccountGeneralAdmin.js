@@ -43,7 +43,7 @@ const handlers = {
 
 const reducer = (state, action) => (handlers[action.type] ? handlers[action.type](state, action) : state);
 
-export default function AccountGeneral() {
+export default function AccountGeneralAdmin() {
   const { enqueueSnackbar } = useSnackbar();
   const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -54,26 +54,12 @@ export default function AccountGeneral() {
     lastname: Yup.string().required('Vos prenoms sont requisent'),
   });
 
-  const SEXE = [
-    {
-      label: 'Masculin',
-      value: 'M',
-    },
-    {
-      label: 'Féminin',
-      value: 'F',
-    },
-  ];
-
   const defaultValues = {
     firstname: user?.firstName || '',
     lastname: user?.lastName || '',
-    customerReference: user?.customer_reference || '',
     email: user?.email || '',
     phoneNumber: user?.phoneNumber || '',
-    sexe: user?.sexe || '',
-    marital_status: user?.maritalStatus || '',
-    role: user?.role === 'customer' ? 'Client' : user?.role || '',
+    role: user?.role || '',
     // isPublic: user?.isPublic || false,
   };
 
@@ -98,15 +84,11 @@ export default function AccountGeneral() {
           // dispatch({ type: 'LOGOUT' });
           const user = {
             id: userId,
-            customer_reference: data.customerReference,
             email: data.email,
             lastName: data.lastname,
             firstName: data.firstname,
-            password: data.password,
-            role: 'customer',
+            role: data.role,
             phoneNumber: data.phoneNumber,
-            sexe: data.sexe,
-            maritalStatus: data.marital_status,
           };
 
           dispatch({
@@ -150,10 +132,13 @@ export default function AccountGeneral() {
   );
 
   return (
-    <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+    <FormProvider
+      methods={methods}
+      // onSubmit={handleSubmit(onSubmit)}
+    >
       <Grid container spacing={3}>
         <Grid item xs={12} md={4}>
-          <Card sx={{ py: 10, px: 3, textAlign: 'center', height: 400 }}>
+          <Card sx={{ py: 3, px: 3, textAlign: 'center', height: 324 }}>
             <Image src={userAvartar} alt="avatar" />
           </Card>
         </Grid>
@@ -170,30 +155,18 @@ export default function AccountGeneral() {
             >
               <RHFTextField name="firstname" label="Nom" />
               <RHFTextField name="lastname" label="Prenoms" />
-              <RHFTextField name="customerReference" label="Code Client" disabled sx={{ backgroundColor: '#f9f9f9' }} />
               <RHFTextField name="email" label="Adresse Email" disabled sx={{ backgroundColor: '#f9f9f9' }} />
               <RHFTextField
                 name="phoneNumber"
                 label="Numero de telephone"
-                disabled
+                disabled={user.phoneNumber == null ? false : true}
                 sx={{ backgroundColor: '#f9f9f9' }}
               />
-
-              <RHFSelect name="sexe" label="Genre" placeholder="Genre">
-                <option value="" />
-                {SEXE.map((option, index) => (
-                  <option key={index} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </RHFSelect>
-
-              <RHFTextField name="marital_status" label="Status marital" />
               <RHFTextField name="role" label="Role" disabled sx={{ backgroundColor: '#f9f9f9' }} />
             </Box>
 
             <Stack spacing={3} alignItems="flex-end" sx={{ mt: 3 }}>
-              <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
+              <LoadingButton type="submit" variant="contained" disabled loading={isSubmitting}>
                 Modifier mon compte
               </LoadingButton>
             </Stack>

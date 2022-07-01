@@ -1,10 +1,8 @@
 // ----------------------------------------------------------------------
 
-const PRIMARY_NAME = ['A', 'N', 'H', 'L', 'Q', '9', '8'];
-const WARNING_NAME = ['F', 'G', 'T', 'I', 'J', '1', '2', '3'];
-const SUCCESS_NAME = ['K', 'D', 'Y', 'B', 'O', '4', '5'];
-const INFO_NAME = ['P', 'E', 'R', 'S', 'C', 'U', '6', '7'];
-const ERROR_NAME = ['V', 'W', 'X', 'M', 'Z'];
+const PRIMARY_NAME = ['A', 'N', 'H', 'L', 'Q', 'V', 'W', 'X', 'M', 'Z', '9', '8'];
+const SUCCESS_NAME = ['K', 'D', 'Y', 'B', 'O', 'T', 'I', 'J', '1', '4', '5'];
+const INFO_NAME = ['P', 'E', 'R', 'S', 'C', 'U', '6', '7', 'F', 'G', '2', '3'];
 
 function getFirstCharacter(name) {
   return name && name.charAt(0).toUpperCase();
@@ -12,10 +10,8 @@ function getFirstCharacter(name) {
 
 function getAvatarColor(name) {
   if (PRIMARY_NAME.includes(getFirstCharacter(name))) return 'primary';
-  if (INFO_NAME.includes(getFirstCharacter(name))) return 'info';
-  if (SUCCESS_NAME.includes(getFirstCharacter(name))) return 'success';
-  if (WARNING_NAME.includes(getFirstCharacter(name))) return 'warning';
-  if (ERROR_NAME.includes(getFirstCharacter(name))) return 'warning';
+  if (INFO_NAME.includes(getFirstCharacter(name))) return 'light_s';
+  if (SUCCESS_NAME.includes(getFirstCharacter(name))) return 'light_m';
   return 'default';
 }
 

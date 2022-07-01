@@ -31,7 +31,7 @@ import MenuPopover from '../../../../components/MenuPopover';
 
 // ----------------------------------------------------------------------
 
-export default function BookingDetails() {
+export default function VersementsAdmin() {
   const theme = useTheme();
 
   const isLight = theme.palette.mode === 'light';

@@ -135,7 +135,7 @@ export default function InvoiceTableRow({
                 <Iconify icon={'eva:corner-down-right-outline'} />
                 Votre facture
               </MenuItem>
-              <MenuItem
+              {/* <MenuItem
                 onClick={() => {
                   handleCloseMenu();
                 }}
@@ -143,7 +143,7 @@ export default function InvoiceTableRow({
               >
                 <Iconify icon={'eva:trash-2-outline'} />
                 Supprimer
-              </MenuItem>
+              </MenuItem> */}
             </>
           }
         />

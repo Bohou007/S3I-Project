@@ -112,7 +112,7 @@ export default function UserTableRowAdminReserv({ row, selected, onSelectRow, ha
                 <Iconify icon={'eva:edit-fill'} />
                 Modifier
               </MenuItem>
-              <MenuItem
+              {/* <MenuItem
                 onClick={() => {
                   handleCloseMenu();
                 }}
@@ -120,7 +120,7 @@ export default function UserTableRowAdminReserv({ row, selected, onSelectRow, ha
               >
                 <Iconify icon={'eva:trash-2-outline'} />
                 Supprimer
-              </MenuItem>
+              </MenuItem> */}
             </>
           }
         />

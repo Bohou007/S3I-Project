@@ -123,7 +123,7 @@ class UserTableRowAdminTx extends Component {
                   <Iconify icon={'eva:edit-fill'} />
                   Modifier
                 </MenuItem>
-                <MenuItem
+                {/* <MenuItem
                   onClick={() => {
                     // onDeleteRow();
                     // handleCloseMenu();
@@ -132,7 +132,7 @@ class UserTableRowAdminTx extends Component {
                 >
                   <Iconify icon={'eva:trash-2-outline'} />
                   Supprimer
-                </MenuItem>
+                </MenuItem> */}
               </>
             }
           />

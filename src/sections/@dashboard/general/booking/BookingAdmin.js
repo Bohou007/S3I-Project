@@ -45,44 +45,44 @@ import {
   DialogActions,
   CircularProgress,
   Typography,
+  CardHeader,
 } from '@mui/material';
 // routes
-import { PATH_DASHBOARD, PATH_DASHBOARD_ADMIN } from '../../../routes/paths';
+import { PATH_DASHBOARD, PATH_DASHBOARD_ADMIN } from '../../../../routes/paths';
 // hooks
-import useTabs from '../../../hooks/useTabs';
-import useSettings from '../../../hooks/useSettings';
-import useTable, { getComparator, emptyRows } from '../../../hooks/useTable';
+import useTabs from '../../../../hooks/useTabs';
+import useSettings from '../../../../hooks/useSettings';
+import useTable, { getComparator, emptyRows } from '../../../../hooks/useTable';
 // _mock_
-import { _invoices } from '../../../_mock';
+// import { _invoices } from '../../../_mock';
 // components
-import Page from '../../../components/Page';
-import Label from '../../../components/Label';
-import Iconify from '../../../components/Iconify';
-import Scrollbar from '../../../components/Scrollbar';
-import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
+import Page from '../../../../components/Page';
+import Label from '../../../../components/Label';
+import Iconify from '../../../../components/Iconify';
+import Scrollbar from '../../../../components/Scrollbar';
+import HeaderBreadcrumbs from '../../../../components/HeaderBreadcrumbs';
 import {
   TableEmptyRows,
   TableHeadCustom,
   TableNoData,
   TableSkeleton,
   TableSelectedActions,
-} from '../../../components/table';
+} from '../../../../components/table';
 // sections
-import InvoiceAnalytic from '../../../sections/@dashboard/invoice/InvoiceAnalytic';
-import { UserTableToolbarReservationAdmin, UserTableRowAdminReserv } from '../../../sections/@dashboard/user/list';
+import InvoiceAnalytic from '../../invoice/InvoiceAnalytic';
+import { UserTableToolbarReservationAdmin, UserTableRowAdminReserv } from '../../user/list';
 
-import { DialogAnimate } from '../../../components/animate';
+import { DialogAnimate } from '../../../../components/animate';
 // import AddPayment from './payment/AddPayment';
-import InvoiceNewEditForm from '../../../sections/@dashboard/invoice/new-edit-form';
-import useAuth from '../../../hooks/useAuth';
-import axios from '../../../utils/axios';
-import { AppFeatured, AppWelcome, AppWidget } from '../../../sections/@dashboard/general/app';
-import { SkeletonConversationItem, SkeletonMailSidebarItem } from '../../../components/skeleton';
-import InvoiceAddressListDialog from '../../../sections/@dashboard/invoice/new-edit-form/InvoiceAddressListDialog';
-import InvoiceAddressListDialogProgram from '../../../sections/@dashboard/invoice/new-edit-form/InvoiceAddressListDialogProgram';
-import useToggle from '../../../hooks/useToggle';
-import useResponsive from '../../../hooks/useResponsive';
-import BookingNewEditForm from '../../../sections/@dashboard/form/BookingNewEditForm';
+import InvoiceNewEditForm from '../../invoice/new-edit-form';
+import useAuth from '../../../../hooks/useAuth';
+import axios from '../../../../utils/axios';
+import { AppFeatured, AppWelcome, AppWidget } from '../app';
+import { SkeletonConversationItem, SkeletonMailSidebarItem } from '../../../../components/skeleton';
+import InvoiceAddressListDialog from '../../invoice/new-edit-form/InvoiceAddressListDialog';
+import InvoiceAddressListDialogProgram from '../../invoice/new-edit-form/InvoiceAddressListDialogProgram';
+import useToggle from '../../../../hooks/useToggle';
+import useResponsive from '../../../../hooks/useResponsive';
 
 // ----------------------------------------------------------------------
 
@@ -95,7 +95,7 @@ const TABLE_HEAD = [
   { id: '' },
 ];
 
-export default function CustomerReservations() {
+export default function BookingAdmin() {
   const {
     dense,
     page,
@@ -185,8 +185,13 @@ export default function CustomerReservations() {
   // } = useFormContext();
 
   // const values = watch();
+  const navigate = useNavigate();
 
   const PROGRAMME_OPTIONS = program;
+
+  const handleClick = () => {
+    navigate(PATH_DASHBOARD_ADMIN.general.customerReservation);
+  };
 
   const handleFilterName = (filterName) => {
     setFilterName(filterName);
@@ -311,216 +316,106 @@ export default function CustomerReservations() {
       .catch((error) => {});
   };
 
-  const handleSubmitToCreate = (data) => {
+  const handleSubmitToCreate = (event) => {
     setIsLoading(true);
-    console.log('====================================');
-    console.log(data);
-    console.log('====================================');
-    // const item = {
-    //   customer_reference: oneCustomer.customer_reference,
-    //   real_estate_programe_reference: oneProgram.real_estate_program_reference,
-    //   lot: detailRow.lot,
-    //   sub_lot: detailRow.sub_lot,
-    //   additional_land: detailRow.additional_land,
-    //   additional_land_amount: detailRow.additional_land_amount.split(' ').join(''),
-    //   additional_fence_amount: detailRow.additional_fence_amount.split(' ').join(''),
-    //   purchase_amount: detailRow.purchase_amount.split(' ').join(''),
-    //   application_fees: detailRow.application_fees.split(' ').join(''),
-    //   booking_fees: detailRow.booking_fees.split(' ').join(''),
-    //   house_amount: detailRow.house_amount.split(' ').join(''),
-    //   balance_due: detailRow.balance_due.split(' ').join(''),
-    //   payment_schedule_start_date: startDate,
-    //   payment_schedule_end_date: endDate,
-    //   amount_paid: '0',
-    // };
 
-    // axios
-    //   .post(`/ws-booking-payment/booking`, item)
-    //   .then((res) => {
-    //     console.log(res.data);
-    //     handleChargePage();
-    //     setTimeout(() => {
-    //       setIsGet(false);
-    //       setIsOpenModal(false);
-    //       setEvent(false);
-    //       enqueueSnackbar('La reservation été enregistrer avec succès', { variant: 'success' });
-    //     }, 3000);
-    //   })
-    //   .catch((error) => {});
+    const item = {
+      customer_reference: oneCustomer.customer_reference,
+      real_estate_programe_reference: oneProgram.real_estate_program_reference,
+      lot: detailRow.lot,
+      sub_lot: detailRow.sub_lot,
+      additional_land: detailRow.additional_land,
+      additional_land_amount: detailRow.additional_land_amount.split(' ').join(''),
+      additional_fence_amount: detailRow.additional_fence_amount.split(' ').join(''),
+      purchase_amount: detailRow.purchase_amount.split(' ').join(''),
+      application_fees: detailRow.application_fees.split(' ').join(''),
+      booking_fees: detailRow.booking_fees.split(' ').join(''),
+      house_amount: detailRow.house_amount.split(' ').join(''),
+      balance_due: detailRow.balance_due.split(' ').join(''),
+      payment_schedule_start_date: startDate,
+      payment_schedule_end_date: endDate,
+      amount_paid: '0',
+    };
+
+    axios
+      .post(`/ws-booking-payment/booking`, item)
+      .then((res) => {
+        console.log(res.data);
+        handleChargePage();
+        setTimeout(() => {
+          setIsGet(false);
+          setIsOpenModal(false);
+          setEvent(false);
+          enqueueSnackbar('La reservation été enregistrer avec succès', { variant: 'success' });
+        }, 3000);
+      })
+      .catch((error) => {});
   };
 
   return (
-    <Page title="Reservations">
-      <Container maxWidth={themeStretch ? false : 'lg'}>
-        <HeaderBreadcrumbs
-          heading="Reservations"
-          links={[{ name: 'Tableau de bord', href: PATH_DASHBOARD_ADMIN.root }, { name: 'Reservations' }]}
-          action={
-            <Button
-              variant="contained"
-              component={RouterLink}
-              onClick={() => {
-                handleAddEvent('');
-                setEvent(true);
-              }}
-              to=""
-              startIcon={<Iconify icon={'eva:plus-fill'} />}
-            >
-              Nouvelle reservation
-            </Button>
-          }
-        />
-
-        {/* <Card sx={{ padding: 5, marginBottom: 5 }}>
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={6}>
-              <AppWidget
-                title="Montant verser"
-                total={totalAmountPay}
-                icon={'eva:credit-card-ffill'}
-                color="warning"
-                chartData={statisticsAmount(totalReservationAmount, totalAmountPay)}
-                isGet={isGet}
+    <>
+      <Card>
+        <CardHeader title="Reservations" sx={{ mb: 3 }} />
+        <Scrollbar>
+          <TableContainer sx={{ minWidth: 720 }}>
+            <Table size={dense ? 'small' : 'medium'}>
+              <TableHeadCustom
+                order={order}
+                orderBy={orderBy}
+                headLabel={TABLE_HEAD}
+                rowCount={tableData.length}
+                numSelected={selected.length}
+                onSort={onSort}
+                onSelectAllRows={(checked) =>
+                  onSelectAllRows(
+                    checked,
+                    tableData.map((row) => row.id)
+                  )
+                }
               />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <AppWidget
-                title="Montant restant "
-                total={totalReservationAmount - totalAmountPay}
-                icon={'eva:person-ffill'}
-                chartData={statisticsAmount(totalReservationAmount, totalReservationAmount - totalAmountPay)}
-                isGet={isGet}
-              />
-            </Grid>
-          </Grid>
-        </Card> */}
-
-        <Card>
-          {/* <Tabs
-            allowScrollButtonsMobile
-            variant="scrollable"
-            scrollButtons="auto"
-            value={filterStatus}
-            onChange={onChangeFilterStatus}
-            sx={{ px: 2, bgcolor: 'background.neutral' }}
-          >
-            {STATUS_OPTIONS.map((tab) => (
-              <Tab disableRipple key={tab} label={tab} value={tab} />
-            ))}
-          </Tabs> */}
-
-          {/* <Divider /> */}
-
-          <UserTableToolbarReservationAdmin
-            filterName={filterName}
-            filterProgramme={filterProgramme}
-            filterDate={filterDate}
-            onFilterDate={handleFilterDate}
-            onFilterName={handleFilterName}
-            onFilterProgramme={handleFilterProgramme}
-            optionsProgrmme={PROGRAMME_OPTIONS}
-          />
-
-          <Scrollbar>
-            <TableContainer sx={{ minWidth: 800, position: 'relative' }}>
-              {selected.length > 0 && (
-                <TableSelectedActions
-                  dense={dense}
-                  numSelected={selected.length}
-                  rowCount={tableData.length}
-                  onSelectAllRows={(checked) =>
-                    onSelectAllRows(
-                      checked,
-                      tableData.map((row) => row.id)
-                    )
-                  }
-                  actions={
-                    <Tooltip title="Delete">
-                      <IconButton color="primary">
-                        <Iconify icon={'eva:trash-2-outline'} />
-                      </IconButton>
-                    </Tooltip>
-                  }
-                />
-              )}
-
-              <Table size={dense ? 'small' : 'medium'}>
-                <TableHeadCustom
-                  order={order}
-                  orderBy={orderBy}
-                  headLabel={TABLE_HEAD}
-                  rowCount={tableData.length}
-                  numSelected={selected.length}
-                  onSort={onSort}
-                  onSelectAllRows={(checked) =>
-                    onSelectAllRows(
-                      checked,
-                      tableData.map((row) => row.id)
-                    )
-                  }
-                />
-
-                <TableBody>
-                  {isGet ? (
-                    dataFiltered.length > 0 ? (
-                      dataFiltered
-                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                        .map((row, index) => (
-                          <UserTableRowAdminReserv
-                            key={index}
-                            tableData={tableData}
-                            row={row}
-                            handleCustomer={() => handleCustomer(row.customer_reference)}
-                            customer={customer}
-                            selected={selected.includes(row.id)}
-                            onSelectRow={() => onSelectRow(row.id)}
-                            handleChangeEdit={(event) => handleChangeEdit(event)}
-                            detailRow={detailRow}
-                            handleAddEvent={() => handleAddEvent(row)}
-                            isOpenModal={isOpenModal}
-                            handleCloseModal={() => handleCloseModal()}
-                            handleSubmitToUpdate={(event) => handleSubmitToUpdate(event)}
-                          />
-                        ))
-                    ) : (
-                      isNotFound && (
-                        <>
-                          <TableEmptyRows
-                            height={denseHeight}
-                            emptyRows={emptyRows(page, rowsPerPage, tableData.length)}
-                          />
-                          <TableNoData isNotFound={isNotFound} />
-                        </>
-                      )
-                    )
+              <TableBody>
+                {isGet ? (
+                  dataFiltered.length > 0 ? (
+                    dataFiltered
+                      .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                      .map((row, index) => (
+                        <UserTableRowAdminReserv
+                          key={index}
+                          tableData={tableData}
+                          row={row}
+                          handleCustomer={() => handleCustomer(row.customer_reference)}
+                          customer={customer}
+                          selected={selected.includes(row.id)}
+                          onSelectRow={() => onSelectRow(row.id)}
+                          handleChangeEdit={(event) => handleChangeEdit(event)}
+                          detailRow={detailRow}
+                          handleAddEvent={() => handleAddEvent(row)}
+                          isOpenModal={isOpenModal}
+                          handleCloseModal={() => handleCloseModal()}
+                          handleSubmitToUpdate={(event) => handleSubmitToUpdate(event)}
+                        />
+                      ))
                   ) : (
-                    <>
-                      <TableSkeleton />
-                    </>
-                  )}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Scrollbar>
+                    isNotFound && (
+                      <>
+                        <TableEmptyRows
+                          height={denseHeight}
+                          emptyRows={emptyRows(page, rowsPerPage, tableData.length)}
+                        />
+                        <TableNoData isNotFound={isNotFound} />
+                      </>
+                    )
+                  )
+                ) : (
+                  <>
+                    <TableSkeleton />
+                  </>
+                )}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Scrollbar>
 
-          <Box sx={{ position: 'relative' }}>
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 25]}
-              component="div"
-              count={dataFiltered.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onPageChange={onChangePage}
-              onRowsPerPageChange={onChangeRowsPerPage}
-            />
-
-            {/* <FormControlLabel
-              control={<Switch checked={dense} onChange={onChangeDense} />}
-              label="Dense"
-              sx={{ px: 3, py: 1.5, top: 0, position: { md: 'absolute' } }}
-            /> */}
-          </Box>
-        </Card>
         <Dialog open={isOpenModal} onClose={handleCloseModal} fullWidth="true" maxWidth="md">
           <DialogTitle sx={{ width: '100%', backgroundColor: '#D7B94D', paddingBottom: 2 }}>
             S3I - Bâtisseur du confort
@@ -616,13 +511,6 @@ export default function CustomerReservations() {
                 </Stack>
               </Stack>
             </Card>
-            {/* <BookingNewEditForm
-              isEdit={event}
-              onSubmit={event ? handleSubmitToCreate : handleSubmitToUpdate}
-              handleCloseModal={handleCloseModal}
-              isLoading={isLoading}
-              booking={detailRow}
-            /> */}
             <Card sx={{ minWidth: 275 }}>
               <Grid container spacing={1}>
                 <Grid item xs={12} md={6}>
@@ -822,11 +710,25 @@ export default function CustomerReservations() {
             </Button>
           </DialogActions>
         </Dialog>
-      </Container>
-    </Page>
+
+        <Divider />
+
+        <Box sx={{ p: 2, textAlign: 'right' }}>
+          <Button
+            onClick={handleClick}
+            size="small"
+            color="inherit"
+            endIcon={<Iconify icon={'eva:arrow-ios-forward-fill'} />}
+          >
+            Voir tout
+          </Button>
+        </Box>
+      </Card>
+    </>
   );
 }
 
+// ----------------------------------------------------------------------
 function applySortFilter({ tableData, comparator, filterName, filterProgramme, filterDate }) {
   const stabilizedThis = tableData.map((el, index) => [el, index]);
 

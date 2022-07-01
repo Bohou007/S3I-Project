@@ -68,6 +68,8 @@ import { UserTableToolbarAdminTx, UserTableRowAdminTx } from '../../../sections/
 import useAuth from '../../../hooks/useAuth';
 import axios from '../../../utils/axios';
 import { SkeletonConversationItem, SkeletonMailSidebarItem } from '../../../components/skeleton';
+import ProgramNewEditForm from '../../../sections/@dashboard/form/ProgramNewEditForm';
+// import UserNewEditForm from '../../../sections/@dashboard/form/';
 
 // ----------------------------------------------------------------------
 
@@ -223,10 +225,13 @@ export default function BuildingPrograms() {
     return Primenumeral.replace(/[,]+/g, ' ');
   };
 
-  const handleSubmitToUpdate = (event) => {
+  const handleSubmitToUpdate = (data) => {
     setIsLoading(true);
+    const item = {
+      ...data,
+    };
     axios
-      .put(`/ws-booking-payment/real-estate-program/${codeProgrm}`, detailRow)
+      .put(`/ws-booking-payment/real-estate-program/${codeProgrm}`, item)
       .then((res) => {
         console.log(res.data);
         setTimeout(() => {
@@ -241,9 +246,10 @@ export default function BuildingPrograms() {
       .catch((error) => {});
   };
 
-  const handleSubmitToCreate = (event) => {
+  const handleSubmitToCreate = (data) => {
+    setIsLoading(true);
     axios
-      .post(`/ws-booking-payment/real-estate-program`, detailRow)
+      .post(`/ws-booking-payment/real-estate-program`, data)
       .then((res) => {
         console.log(res.data);
         setTimeout(() => {
@@ -383,7 +389,14 @@ export default function BuildingPrograms() {
             S3I - Bâtisseur du confort
           </DialogTitle>
           <Stack spacing={3} sx={{ p: 3 }}>
-            <Card sx={{ minWidth: 275 }}>
+            <ProgramNewEditForm
+              isEdit={event}
+              onSubmit={event ? handleSubmitToCreate : handleSubmitToUpdate}
+              handleCloseModal={handleCloseModal}
+              isLoading={isLoading}
+              program={detailRow}
+            />
+            {/* <Card sx={{ minWidth: 275 }}>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <CardContent sx={{ marginTop: 2 }}>
@@ -447,9 +460,9 @@ export default function BuildingPrograms() {
                   </CardContent>
                 </Grid>
               </Grid>
-            </Card>
+            </Card> */}
           </Stack>
-          <DialogActions>
+          {/* <DialogActions>
             <Box sx={{ flexGrow: 1 }} />
             <Button
               variant="contained"
@@ -485,7 +498,7 @@ export default function BuildingPrograms() {
                 ' Enregistrer les modifications'
               )}
             </Button>
-          </DialogActions>
+          </DialogActions> */}
         </Dialog>
       </Container>
     </Page>

@@ -1,13 +1,18 @@
+/* eslint-disable import/order */
+/* eslint-disable react-hooks/exhaustive-deps */
 // @mui
 import { Grid, Container, Stack } from '@mui/material';
 // hooks
 import useAuth from '../../../hooks/useAuth';
 import useSettings from '../../../hooks/useSettings';
+import { useEffect, useState } from 'react';
+
 // components
 import Page from '../../../components/Page';
 // sections
 import {
-  BookingDetails,
+  VersementsAdmin,
+  BookingAdmin,
   BookingBookedRoom,
   BookingTotalIncomes,
   BookingRoomAvailable,
@@ -20,6 +25,7 @@ import {
 // assets
 import { BookingIllustration, CheckInIllustration, CheckOutIllustration } from '../../../assets';
 import { AppFeatured, AppWelcome, AppWidget } from '../../../sections/@dashboard/general/app';
+import axios from '../../../utils/axios';
 
 // ----------------------------------------------------------------------
 
@@ -27,6 +33,22 @@ export default function DashboardAdmin() {
   const { user } = useAuth();
   const displayName = `${user.firstName} ${user.lastName}`;
   const { themeStretch } = useSettings();
+
+  const [bookings, setBookings] = useState([]);
+
+  const [totalBooked, setTotalBooked] = useState(0);
+  const [totalCheckIn, setTotalCheckIn] = useState(0);
+  const [totalCheckOut, setTotalCheckOut] = useState(0);
+
+  useEffect(async () => {
+    const response = await axios.get(`/ws-booking-payment/booking`);
+    const responseCheckIN = await axios.get(`/ws-booking-payment/booking/status/not-sold-out`);
+    const responseCheckOUT = await axios.get(`/ws-booking-payment/booking/status/sold-out`);
+
+    setTotalBooked(response.data.length);
+    setTotalCheckIn(responseCheckIN.data.length);
+    setTotalCheckOut(responseCheckOUT.data.length);
+  }, []);
 
   return (
     <Page title="Tableau de bord">
@@ -44,25 +66,29 @@ export default function DashboardAdmin() {
           </Grid> */}
 
           <Grid item xs={12} md={4}>
-            <BookingWidgetSummary title="Réservations totales" total={710} icon={<BookingIllustration />} />
+            <BookingWidgetSummary title="Réservations totales" total={totalBooked} icon={<BookingIllustration />} />
           </Grid>
 
           <Grid item xs={12} md={4}>
-            <BookingWidgetSummary title="Réservations soldées" total={210} icon={<CheckInIllustration />} />
+            <BookingWidgetSummary title="Réservations soldées" total={totalCheckOut} icon={<CheckInIllustration />} />
           </Grid>
 
           <Grid item xs={12} md={4}>
-            <BookingWidgetSummary title="Réservations non soldées" total={300} icon={<CheckOutIllustration />} />
+            <BookingWidgetSummary
+              title="Réservations non soldées"
+              total={totalCheckIn}
+              icon={<CheckOutIllustration />}
+            />
           </Grid>
 
           <Grid item xs={12} md={12}>
             <Grid container spacing={3}>
               <Grid item xs={12} md={12}>
-                <BookingDetails />
+                <BookingAdmin />
               </Grid>
 
               <Grid item xs={12} md={12}>
-                <BookingDetails />
+                <VersementsAdmin />
               </Grid>
             </Grid>
           </Grid>

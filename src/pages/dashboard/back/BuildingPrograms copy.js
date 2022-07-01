@@ -1,4 +1,3 @@
-/* eslint-disable no-unneeded-ternary */
 /* eslint-disable no-unused-expressions */
 /* eslint-disable prefer-const */
 /* eslint-disable no-nested-ternary */
@@ -10,7 +9,7 @@ import { paramCase } from 'change-case';
 import { useState, useEffect } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
-import * as Yup from 'yup';
+import numeral from 'numeral';
 
 import moment from 'moment';
 moment.locale('fr');
@@ -41,9 +40,6 @@ import {
   DialogActions,
   CircularProgress,
 } from '@mui/material';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm } from 'react-hook-form';
-
 // routes
 import { PATH_DASHBOARD, PATH_DASHBOARD_ADMIN } from '../../../routes/paths';
 // hooks
@@ -59,7 +55,6 @@ import Iconify from '../../../components/Iconify';
 import Scrollbar from '../../../components/Scrollbar';
 import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
 import { DialogAnimate } from '../../../components/animate';
-import { FormProvider, RHFTextField } from '../../../components/hook-form';
 
 import {
   TableEmptyRows,
@@ -121,39 +116,12 @@ export default function BuildingPrograms() {
   const [detailRow, setDetailRow] = useState('');
   const [codeProgrm, setCodeProgrm] = useState('');
   const [isOpenModal, setIsOpenModal] = useState(false);
-
+  const [errorText, setErrorText] = useState('');
   const [event, setEvent] = useState(false);
 
   const [isNotFound, setIsNotFound] = useState(false);
   const [isGet, setIsGet] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
-  const ProgramSchema = Yup.object().shape({
-    label: Yup.string().required('First name required'),
-    formula: Yup.string().required('Last name required'),
-    real_estate_program_type: Yup.string().required('Email is required'),
-    location: Yup.string().required('Password is required'),
-  });
-
-  const defaultValues = {
-    label: detailRow ? detailRow.label : '',
-    formula: detailRow ? detailRow.formula : '',
-    real_estate_program_type: detailRow ? detailRow.real_estate_program_type : '',
-    location: detailRow ? detailRow.location : '',
-  };
-
-  const methods = useForm({
-    resolver: yupResolver(ProgramSchema),
-    defaultValues,
-  });
-
-  const {
-    reset,
-
-    setError,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-  } = methods;
 
   useEffect(async () => {
     getAllProgramm();
@@ -241,6 +209,18 @@ export default function BuildingPrograms() {
   const handleChangeEdit = (event) => {
     const { name, value } = event.target;
     setDetailRow({ ...detailRow, [name]: value });
+  };
+
+  const handleRuleChange = (event) => {
+    const { name, value } = event.target;
+    if (value === '') {
+      setErrorText('Veuillez remplir le champ');
+    }
+  };
+
+  const sepMillier = (number) => {
+    const Primenumeral = numeral(number).format(+0, 0);
+    return Primenumeral.replace(/[,]+/g, ' ');
   };
 
   const handleSubmitToUpdate = (event) => {
@@ -399,125 +379,113 @@ export default function BuildingPrograms() {
         </Card>
 
         <Dialog open={isOpenModal} onClose={handleCloseModal}>
-          <FormProvider methods={methods}>
-            <DialogTitle sx={{ width: '100%', backgroundColor: '#D7B94D', paddingBottom: 2 }}>
-              S3I - Bâtisseur du confort
-            </DialogTitle>
-            <Stack spacing={3} sx={{ p: 3 }}>
-              <Card sx={{ minWidth: 275 }}>
-                <Grid container spacing={2}>
-                  <Grid item xs={12}>
-                    <CardContent sx={{ marginTop: 2 }}>
-                      {/* <TextField
-                        name="label"
-                        // id="outlined-basic"
-                        onChange={handleChangeEdit}
-                        value={detailRow.label}
-                        required={detailRow.label === '' ? true : false}
-                        defaultValue={event ? '' : ' '}
-                        label="Nom du programme"
-                        sx={{ width: '100%' }}
-                      /> */}
-                      <RHFTextField
-                        name="label"
-                        // id="outlined-basic"
-                        onChange={handleChangeEdit}
-                        value={detailRow.label}
-                        required={detailRow.label === '' ? true : false}
-                        defaultValue={event ? '' : ' '}
-                        label="Nom du programme"
-                        sx={{ width: '100%' }}
-                      />
-                    </CardContent>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <CardContent sx={{ marginTop: 0 }}>
-                      <TextField
-                        name="formula"
-                        id="outlined-basic"
-                        value={detailRow.formula}
-                        onChange={handleChangeEdit}
-                        defaultValue={event ? '' : ' '}
-                        label="Formule"
-                        sx={{ width: '100%' }}
-                      />
-                      <RHFTextField
-                        name="formula"
-                        onChange={handleChangeEdit}
-                        value={detailRow.formula}
-                        defaultValue={event ? '' : ' '}
-                        label="Formule"
-                        sx={{ width: '100%' }}
-                      />
-                    </CardContent>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <CardContent sx={{ marginTop: 0 }}>
-                      <TextField
-                        id="outlined-basic"
-                        name="real_estate_program_type"
-                        value={detailRow.real_estate_program_type}
-                        defaultValue={event ? '' : ' '}
-                        onChange={handleChangeEdit}
-                        label="Type d'habitation"
-                        sx={{ width: '100%' }}
-                      />
-                    </CardContent>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <CardContent sx={{ marginTop: 0 }}>
-                      <TextField
-                        id="outlined-basic"
-                        value={detailRow.location}
-                        name="location"
-                        defaultValue={event ? '' : ' '}
-                        onChange={handleChangeEdit}
-                        label="Localisation"
-                        sx={{ width: '100%' }}
-                      />
-                    </CardContent>
-                  </Grid>
-                </Grid>
-              </Card>
-            </Stack>
-            <DialogActions>
-              <Box sx={{ flexGrow: 1 }} />
-              <Button
-                variant="contained"
-                color="inherit"
-                onClick={() => {
-                  handleCloseModal();
-                  setEvent(false);
-                }}
-              >
-                Fermer
-              </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => {
-                  event ? handleSubmit(handleSubmitToCreate) : handleSubmit(handleSubmitToUpdate);
-                }}
-              >
-                {isLoading ? (
-                  <>
-                    {event ? ' Enregistrement du programme...' : 'Modification du programme...'}
-                    <CircularProgress
-                      size={14}
-                      sx={{
-                        color: '#fff',
-                        marginLeft: 2,
-                      }}
+          <DialogTitle sx={{ width: '100%', backgroundColor: '#D7B94D', paddingBottom: 2 }}>
+            S3I - Bâtisseur du confort
+          </DialogTitle>
+          <Stack spacing={3} sx={{ p: 3 }}>
+            <Card sx={{ minWidth: 275 }}>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <CardContent sx={{ marginTop: 2 }}>
+                    <TextField
+                      name="label"
+                      onChange={handleChangeEdit}
+                      value={detailRow.label}
+                      defaultValue={event ? '' : ' '}
+                      label="Nom du programme"
+                      sx={{ width: '100%' }}
+                      error={errorText.label === ''}
+                      helperText={errorText.label}
                     />
-                  </>
-                ) : event ? (
-                  'Enregistrer le programme immobilier'
-                ) : (
-                  ' Enregistrer les modifications'
-                )}
-              </Button>
-            </DialogActions>
-          </FormProvider>
+                  </CardContent>
+                </Grid>
+                <Grid item xs={12}>
+                  <CardContent sx={{ marginTop: 0 }}>
+                    <TextField
+                      name="formula"
+                      id="outlined-basic"
+                      value={detailRow.formula}
+                      onChange={handleChangeEdit}
+                      defaultValue={event ? '' : ' '}
+                      label="Formule"
+                      onClick={handleRuleChange}
+                      sx={{ width: '100%' }}
+                      error={errorText.formula === ''}
+                      helperText={errorText.formula}
+                    />
+                  </CardContent>
+                </Grid>
+                <Grid item xs={12}>
+                  <CardContent sx={{ marginTop: 0 }}>
+                    <TextField
+                      id="outlined-basic"
+                      name="real_estate_program_type"
+                      value={detailRow.real_estate_program_type}
+                      defaultValue={event ? '' : ' '}
+                      onChange={handleChangeEdit}
+                      required
+                      label="Type d'habitation"
+                      sx={{ width: '100%' }}
+                      error={errorText.real_estate_program_type === ''}
+                      helperText={errorText.real_estate_program_type}
+                    />
+                  </CardContent>
+                </Grid>
+                <Grid item xs={12}>
+                  <CardContent sx={{ marginTop: 0 }}>
+                    <TextField
+                      id="outlined-basic"
+                      value={detailRow.location}
+                      name="location"
+                      defaultValue={event ? '' : ' '}
+                      onChange={handleChangeEdit}
+                      label="Localisation"
+                      sx={{ width: '100%' }}
+                      error={errorText.location === ''}
+                      helperText={errorText.location}
+                    />
+                  </CardContent>
+                </Grid>
+              </Grid>
+            </Card>
+          </Stack>
+          <DialogActions>
+            <Box sx={{ flexGrow: 1 }} />
+            <Button
+              variant="contained"
+              color="inherit"
+              onClick={() => {
+                handleCloseModal();
+                setEvent(false);
+              }}
+            >
+              Fermer
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => {
+                event ? handleSubmitToCreate() : handleSubmitToUpdate();
+              }}
+            >
+              {isLoading ? (
+                <>
+                  {event ? ' Enregistrement du programme...' : 'Modification du programme...'}
+                  <CircularProgress
+                    size={14}
+                    sx={{
+                      color: '#fff',
+                      marginLeft: 2,
+                    }}
+                  />
+                </>
+              ) : event ? (
+                'Enregistrer le programme immobilier'
+              ) : (
+                ' Enregistrer les modifications'
+              )}
+            </Button>
+          </DialogActions>
         </Dialog>
       </Container>
     </Page>

@@ -1,3 +1,4 @@
+/* eslint-disable object-shorthand */
 import PropTypes from 'prop-types';
 import { forwardRef } from 'react';
 import { useTheme } from '@mui/material/styles';
@@ -21,6 +22,7 @@ const Avatar = forwardRef(({ color = 'default', children, sx, ...other }, ref) =
       ref={ref}
       sx={{
         fontWeight: theme.typography.fontWeightMedium,
+        // color: color,
         color: theme.palette[color].contrastText,
         backgroundColor: theme.palette[color].main,
         ...sx,

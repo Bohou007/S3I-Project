@@ -5,7 +5,7 @@ import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { alpha } from '@mui/material/styles';
 import { Box, Divider, Typography, Stack, MenuItem } from '@mui/material';
 // routes
-import { PATH_DASHBOARD, PATH_AUTH } from '../../../routes/paths';
+import { PATH_DASHBOARD, PATH_AUTH, PATH_DASHBOARD_ADMIN } from '../../../routes/paths';
 // hooks
 import useAuth from '../../../hooks/useAuth';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
@@ -13,21 +13,6 @@ import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import MyAvatar from '../../../components/MyAvatar';
 import MenuPopover from '../../../components/MenuPopover';
 import { IconButtonAnimate } from '../../../components/animate';
-
-// ----------------------------------------------------------------------
-
-const MENU_OPTIONS = [
-  {
-    label: 'Tableau de bord',
-    linkTo: '/',
-  },
-  {
-    label: 'Gérer mon compte',
-    linkTo: PATH_DASHBOARD.user.account,
-  },
-];
-
-// ----------------------------------------------------------------------
 
 export default function AccountPopover() {
   const navigate = useNavigate();
@@ -47,6 +32,21 @@ export default function AccountPopover() {
   const handleClose = () => {
     setOpen(null);
   };
+
+  // ----------------------------------------------------------------------
+
+  const MENU_OPTIONS = [
+    {
+      label: 'Tableau de bord',
+      linkTo: '/',
+    },
+    {
+      label: 'Gérer mon compte',
+      linkTo: user?.role === 'customer' ? PATH_DASHBOARD.user.account : PATH_DASHBOARD_ADMIN.user.account,
+    },
+  ];
+
+  // ----------------------------------------------------------------------
 
   const handleLogout = async () => {
     try {

@@ -1,3 +1,4 @@
+/* eslint-disable no-unneeded-ternary */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable object-shorthand */
 import PropTypes from 'prop-types';
@@ -8,8 +9,10 @@ import { useNavigate } from 'react-router-dom';
 // form
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import numeral from 'numeral';
+
 // @mui
-import { LoadingButton } from '@mui/lab';
+import { DatePicker, LoadingButton } from '@mui/lab';
 import {
   Box,
   Card,
@@ -39,45 +42,62 @@ import Iconify from '../../../components/Iconify';
 
 // ----------------------------------------------------------------------
 
-UserNewEditForm.propTypes = {
+BookingNewEditForm.propTypes = {
   isEdit: PropTypes.bool,
-  currentUser: PropTypes.object,
+  booking: PropTypes.object,
   onSubmit: PropTypes.func,
   handleCloseModal: PropTypes.func,
   isLoading: PropTypes.bool,
 };
 
-export default function UserNewEditForm({ isEdit, onSubmit, currentUser, handleCloseModal, isLoading }) {
+export default function BookingNewEditForm({ isEdit, onSubmit, booking, handleCloseModal, isLoading }) {
   const navigate = useNavigate();
+
+  const [startDate, setStartDate] = useState(booking?.payment_schedule_start_date);
+  const [endDate, setEndDate] = useState(booking?.payment_schedule_end_date);
 
   const { enqueueSnackbar } = useSnackbar();
   const [showPasswordField, setShowPasswordField] = useState(false);
 
   const NewUserSchema = Yup.object().shape({
-    lastname: Yup.string().required('le nom de famille est obligatoire'),
-    firstname: Yup.string().required('le prénom est obligatoire'),
-    email: Yup.string().required("L'Email est obligatoire").email(),
-    phone_number: Yup.string().required('Le numero de téléphone est obligatoire'),
-    password: Yup.string().required('Le mot de passe est obligatoire'),
-    password_confirmation: Yup.string().oneOf([Yup.ref('password'), null], 'Les mots de passe doivent correspondre'),
-    sexe: Yup.string().required('Le genre est obligatoire'),
-    marital_status: Yup.string().required('Le status matrimonial est obligatoire'),
+    lot: Yup.string().required('le nom de famille est obligatoire'),
+    sub_lot: Yup.string().required('le prénom est obligatoire'),
+    additional_land: Yup.string().required("L'Email est obligatoire"),
+    additional_land_amount: Yup.string().required('Le numero de téléphone est obligatoire'),
+    additional_fence_amount: Yup.string().required('Le mot de passe est obligatoire'),
+    purchase_amount: Yup.string().required('Les mots de passe doivent correspondre'),
+    application_fees: Yup.string().required('Le genre est obligatoire'),
+    booking_fees: Yup.string().required('Le status matrimonial est obligatoire'),
+
+    house_amount: Yup.string().required('Le status matrimonial est obligatoire'),
+    balance_due: Yup.string().required('Le status matrimonial est obligatoire'),
+    // payment_schedule_start_date: Yup.string().required('Le status matrimonial est obligatoire'),
+    // payment_schedule_end_date: Yup.string().required('Le status matrimonial est obligatoire'),
   });
+
+  const sepMillier = (number) => {
+    const Primenumeral = numeral(number).format(+0, 0);
+    return Primenumeral.replace(/[,]+/g, ' ');
+  };
 
   const defaultValues = useMemo(
     () => ({
-      lastname: currentUser?.lastname || '',
-      firstname: currentUser?.firstname || '',
-      email: currentUser?.email || '',
-      phone_number: currentUser?.phone_number || '',
-      // customer_reference: currentUser?.customer_reference || '',
-      password: currentUser?.password || '',
-      password_confirmation: currentUser?.password || '',
-      sexe: currentUser?.sexe || '',
-      marital_status: currentUser?.marital_status || '',
+      lot: booking?.lot || '',
+      sub_lot: booking?.sub_lot || '',
+      additional_land: booking?.additional_land || '',
+      additional_land_amount: booking.additional_land_amount ? sepMillier(booking.additional_land_amount) : '',
+      additional_fence_amount: booking.additional_fence_amount ? sepMillier(booking.additional_fence_amount) : '',
+      purchase_amount: booking.purchase_amount ? sepMillier(booking.purchase_amount) : '',
+      application_fees: booking.application_fees ? sepMillier(booking.application_fees) : '',
+      booking_fees: booking.booking_fees ? sepMillier(booking.booking_fees) : '',
+      house_amount: booking.house_amount ? sepMillier(booking.house_amount) : '',
+      balance_due: booking.balance_due ? sepMillier(booking.balance_due) : '',
+
+      payment_schedule_start_date: startDate || '',
+      payment_schedule_end_date: endDate || '',
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [currentUser]
+    [booking]
   );
 
   const methods = useForm({
@@ -99,14 +119,14 @@ export default function UserNewEditForm({ isEdit, onSubmit, currentUser, handleC
   useEffect(() => {
     console.log('isEdit', isEdit);
 
-    if (isEdit && currentUser) {
+    if (isEdit && booking) {
       reset(defaultValues);
     }
     if (!isEdit) {
       reset(defaultValues);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isEdit, currentUser]);
+  }, [isEdit, booking]);
 
   const handleDrop = useCallback(
     (acceptedFiles) => {
@@ -127,13 +147,7 @@ export default function UserNewEditForm({ isEdit, onSubmit, currentUser, handleC
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={3}>
-        <Grid item xs={12} md={4}>
-          <Card sx={{ py: py, px: 3 }}>
-            <Image src={userAvartar} alt="avatar" />
-          </Card>
-        </Grid>
-
-        <Grid item xs={12} md={8}>
+        <Grid item xs={12} md={12}>
           <Card sx={{ p: 3 }}>
             <Box
               sx={{
@@ -143,58 +157,33 @@ export default function UserNewEditForm({ isEdit, onSubmit, currentUser, handleC
                 gridTemplateColumns: { xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)' },
               }}
             >
-              <RHFTextField name="lastname" label="Nom de famille" />
-              <RHFTextField name="firstname" label="Prenom(s)" />
-              <RHFTextField name="phone_number" label="Numero de téléphone" />
-              {/* <RHFTextField name="customer_reference" disabled label="Reference client" /> */}
-              <RHFTextField name="email" label="Adresse Email" />
+              <RHFTextField name="lot" label="Lot" />
+              <RHFTextField name="sub_lot" label="Sous-Lot" />
+              <RHFTextField name="additional_land" label="Terrain supplémentaires (m²)" />
+              <RHFTextField name="additional_land_amount" label="Montant du terrain supplémentaire" />
+              <RHFTextField name="additional_fence_amount" label="montant de la clôture supplémentaire" />
 
-              {isEdit ? (
-                <>
-                  <RHFTextField
-                    name="password"
-                    label="Mot de passe"
-                    type={showPasswordField ? 'text' : 'password'}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton onClick={() => setShowPasswordField(!showPasswordField)} edge="end">
-                            <Iconify icon={showPasswordField ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                  <RHFTextField
-                    name="password_confirmation"
-                    label="Confirmation du mot de passe"
-                    type={showPasswordField ? 'text' : 'password'}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton onClick={() => setShowPasswordField(!showPasswordField)} edge="end">
-                            <Iconify icon={showPasswordField ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                </>
-              ) : (
-                ''
-              )}
-
-              <RHFSelect name="sexe" label="sexe" placeholder="sexe">
-                <option value="" />
-                <option value="M">MUSCULIN</option>
-                <option value="F">FEMININ</option>
-              </RHFSelect>
-
-              <RHFSelect name="marital_status" label="Status matrimonial" placeholder="Status matrimonial">
-                <option value="" />
-                <option value="CELIBATAIRE">CELIBATAIRE</option>
-                <option value="MARIE">MARIE</option>
-              </RHFSelect>
+              <RHFTextField name="purchase_amount" label="Montant de l'achat" />
+              <RHFTextField name="application_fees" label="Frais de demande" />
+              <RHFTextField name="booking_fees" label="Frais de réservation" />
+              <RHFTextField name="house_amount" label="Montant total de la maison" />
+              <RHFTextField name="balance_due" label="Solde dû" />
+              <DatePicker
+                label="Date de début de paiement"
+                value={startDate ? startDate : ''}
+                onChange={(newValue) => {
+                  setStartDate(newValue);
+                }}
+                renderInput={(params) => <RHFTextField fullWidth {...params} />}
+              />
+              <DatePicker
+                label="Date de fin de paiement"
+                value={endDate ? endDate : ''}
+                onChange={(newValue) => {
+                  setEndDate(newValue);
+                }}
+                renderInput={(params) => <RHFTextField fullWidth {...params} />}
+              />
             </Box>
 
             <Stack alignItems="flex-end" sx={{ mt: 3 }}>
@@ -225,7 +214,7 @@ export default function UserNewEditForm({ isEdit, onSubmit, currentUser, handleC
                 >
                   {isLoading ? (
                     <>
-                      {isEdit ? " Création de l'utilisateur..." : 'Modification du de compte...'}
+                      {isEdit ? ' Enregistrement de la reservation...' : 'Modification de la reservation...'}
                       <CircularProgress
                         size={14}
                         sx={{
@@ -235,7 +224,7 @@ export default function UserNewEditForm({ isEdit, onSubmit, currentUser, handleC
                       />
                     </>
                   ) : isEdit ? (
-                    "Creer l'utilisateur"
+                    'Enregistrer la reservation'
                   ) : (
                     ' Enregistrer les modifications'
                   )}
