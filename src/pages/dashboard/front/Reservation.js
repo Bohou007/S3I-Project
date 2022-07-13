@@ -1,10 +1,13 @@
+/* eslint-disable arrow-body-style */
+/* eslint-disable import/no-unresolved */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable import/first */
 /* eslint-disable import/newline-after-import */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { paramCase } from 'change-case';
 import { useState, useEffect } from 'react';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { Link as RouterLink, useNavigate, useLocation, matchPath } from 'react-router-dom';
+
 import moment from 'moment';
 moment.locale('fr');
 
@@ -92,7 +95,7 @@ export default function Reservation() {
     onChangeRowsPerPage,
   } = useTable();
   const { user } = useAuth();
-
+  const { pathname } = useLocation();
   const { themeStretch } = useSettings();
 
   const navigate = useNavigate();
@@ -160,6 +163,19 @@ export default function Reservation() {
     }, 3000);
   };
 
+  const getActive = (path, pathname) => {
+    return path ? !!matchPath({ path, end: true }, pathname) : false;
+  };
+
+  const active = getActive(PATH_DASHBOARD.general.reservation, pathname);
+  console.log('================active====================');
+  console.log(active);
+  console.log('====================================');
+
+  console.log('================pathname====================');
+  console.log(pathname);
+  console.log('====================================');
+
   const handleFilterProgramme = async (event) => {
     console.log('event.target.value', event.target.value);
     const programData = await axios.get(
@@ -191,6 +207,10 @@ export default function Reservation() {
 
   const handleEditRow = (id) => {
     navigate(PATH_DASHBOARD.user.edit(paramCase(id)));
+  };
+
+  const handleViewRow = (bookingReference) => {
+    navigate(PATH_DASHBOARD.general.detailsReservation(bookingReference));
   };
 
   const statisticsAmount = (total, partial) => {
@@ -325,6 +345,7 @@ export default function Reservation() {
                             key={index}
                             tableData={tableData}
                             row={row}
+                            onViewRow={() => handleViewRow(row.booking_reference)}
                             selected={selected.includes(row.id)}
                             onSelectRow={() => onSelectRow(row.id)}
                           />

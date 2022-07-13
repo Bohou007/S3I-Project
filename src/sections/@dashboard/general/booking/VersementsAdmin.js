@@ -425,6 +425,7 @@ export default function VersementsAdmin() {
                           detailRow={detailRow}
                           handleAddEvent={() => handleAddEvent(row)}
                           isOpenModal={isOpenModal}
+                          hide="true"
                           handleCloseModal={() => handleCloseModal()}
                           handleSubmitToUpdate={(event) => handleSubmitToUpdate(event)}
                         />

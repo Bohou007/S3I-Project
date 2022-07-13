@@ -58,7 +58,7 @@ export default function AccountGeneralAdmin() {
     firstname: user?.firstName || '',
     lastname: user?.lastName || '',
     email: user?.email || '',
-    phoneNumber: user?.phoneNumber || '',
+    // phoneNumber: user?.phoneNumber || '',
     role: user?.role || '',
     // isPublic: user?.isPublic || false,
   };
@@ -88,7 +88,7 @@ export default function AccountGeneralAdmin() {
             lastName: data.lastname,
             firstName: data.firstname,
             role: data.role,
-            phoneNumber: data.phoneNumber,
+            // phoneNumber: data.phoneNumber,
           };
 
           dispatch({
@@ -156,16 +156,16 @@ export default function AccountGeneralAdmin() {
               <RHFTextField name="firstname" label="Nom" />
               <RHFTextField name="lastname" label="Prenoms" />
               <RHFTextField name="email" label="Adresse Email" disabled sx={{ backgroundColor: '#f9f9f9' }} />
-              <RHFTextField
+              {/* <RHFTextField
                 name="phoneNumber"
                 label="Numero de telephone"
                 disabled={user.phoneNumber == null ? false : true}
                 sx={{ backgroundColor: '#f9f9f9' }}
-              />
+              /> */}
               <RHFTextField name="role" label="Role" disabled sx={{ backgroundColor: '#f9f9f9' }} />
             </Box>
 
-            <Stack spacing={3} alignItems="flex-end" sx={{ mt: 3 }}>
+            <Stack spacing={3} alignItems="flex-end" sx={{ mt: 13 }}>
               <LoadingButton type="submit" variant="contained" disabled loading={isSubmitting}>
                 Modifier mon compte
               </LoadingButton>

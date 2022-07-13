@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { NavLink as RouterLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 // @mui
 import { Box, Link, ListItemText } from '@mui/material';
 //
@@ -25,6 +25,30 @@ NavItemRoot.propTypes = {
 
 export function NavItemRoot({ item, isCollapse, open = false, active, onOpen }) {
   const { title, path, icon, info, children } = item;
+  const { pathname } = useLocation();
+
+  const reallyPath = (data) => {
+    const domain = data.substr(0, data.lastIndexOf('/') + 1);
+    return domain;
+  };
+
+  const cordsPath = reallyPath(pathname);
+  // const clodPath = reallyPath(list.path);
+
+  if (cordsPath === '/tableau-de-bord/versements/' && path === '/tableau-de-bord/versements/consulter-mes-versements') {
+    active = true;
+  }
+
+  if (cordsPath === '/tableau-de-bord/logements/' && path === '/tableau-de-bord/logements/consulter-mes-logements') {
+    active = true;
+  }
+
+  if (
+    cordsPath === '/tableau-de-bord/admin/payments/' &&
+    path === '/tableau-de-bord/admin/payments/suivi-des-versements'
+  ) {
+    active = true;
+  }
 
   const renderContent = (
     <>
@@ -52,7 +76,7 @@ export function NavItemRoot({ item, isCollapse, open = false, active, onOpen }) 
       {renderContent}
     </ListItemStyle>
   ) : (
-    <ListItemStyle component={RouterLink} to={path} activeRoot={active}>
+    <ListItemStyle component={NavLink} to={path} activeRoot={active}>
       {renderContent}
     </ListItemStyle>
   );
@@ -97,9 +121,9 @@ export function NavItemSub({ item, open = false, active = false, onOpen }) {
       {renderContent}
     </ListItemStyle>
   ) : (
-    <ListItemStyle component={RouterLink} to={path} activeSub={active} subItem>
+    <NavLink to={path} activeSub={active} subItem>
       {renderContent}
-    </ListItemStyle>
+    </NavLink>
   );
 }
 

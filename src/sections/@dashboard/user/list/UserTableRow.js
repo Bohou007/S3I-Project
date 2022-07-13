@@ -21,12 +21,21 @@ UserTableRow.propTypes = {
   row: PropTypes.object,
   selected: PropTypes.bool,
   handleAddEvent: PropTypes.func,
+  handleOpeneModalPassword: PropTypes.func,
   onEditRow: PropTypes.func,
   onSelectRow: PropTypes.func,
   onDeleteRow: PropTypes.func,
 };
 
-export default function UserTableRow({ row, selected, handleAddEvent, onEditRow, onSelectRow, onDeleteRow }) {
+export default function UserTableRow({
+  row,
+  selected,
+  handleAddEvent,
+  handleOpeneModalPassword,
+  onEditRow,
+  onSelectRow,
+  onDeleteRow,
+}) {
   const theme = useTheme();
 
   const [openMenu, setOpenMenuActions] = useState(null);
@@ -80,15 +89,16 @@ export default function UserTableRow({ row, selected, handleAddEvent, onEditRow,
                 <Iconify icon={'eva:edit-fill'} />
                 Modifier
               </MenuItem>
-              {/* <MenuItem
+              <MenuItem
                 onClick={() => {
                   handleCloseMenu();
+                  handleOpeneModalPassword();
                 }}
                 sx={{ color: 'error.main' }}
               >
-                <Iconify icon={'eva:trash-2-outline'} />
-                Delete
-              </MenuItem> */}
+                <Iconify icon={'eva:lock-outline'} />
+                Changer le mot de passe
+              </MenuItem>
             </>
           }
         />

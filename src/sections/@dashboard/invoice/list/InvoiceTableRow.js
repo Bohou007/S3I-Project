@@ -27,6 +27,7 @@ InvoiceTableRow.propTypes = {
   row: PropTypes.object.isRequired,
   handleAddEvent: PropTypes.func,
   selected: PropTypes.bool,
+  hide: PropTypes.bool,
   onSelectRow: PropTypes.func,
   onViewRow: PropTypes.func,
   onEditRow: PropTypes.func,
@@ -36,6 +37,7 @@ InvoiceTableRow.propTypes = {
 export default function InvoiceTableRow({
   row,
   selected,
+  hide,
   handleAddEvent,
   onSelectRow,
   onViewRow,
@@ -108,15 +110,15 @@ export default function InvoiceTableRow({
       <TableCell align="left">{row.bank}</TableCell>
 
       <TableCell align="left">{moment(row.payment_date).format('DD MMM YYYY')}</TableCell>
-
-      <TableCell align="right">
-        <TableMoreMenu
-          open={openMenu}
-          onOpen={handleOpenMenu}
-          onClose={handleCloseMenu}
-          actions={
-            <>
-              {/* <MenuItem
+      {!hide ? (
+        <TableCell align="right">
+          <TableMoreMenu
+            open={openMenu}
+            onOpen={handleOpenMenu}
+            onClose={handleCloseMenu}
+            actions={
+              <>
+                {/* <MenuItem
                 onClick={() => {
                   handleCloseMenu();
                   handleAddEvent();
@@ -126,16 +128,16 @@ export default function InvoiceTableRow({
                 Modifier
 
               </MenuItem> */}
-              <MenuItem
-                onClick={() => {
-                  onViewRow();
-                  // handleCloseMenu();
-                }}
-              >
-                <Iconify icon={'eva:corner-down-right-outline'} />
-                Votre facture
-              </MenuItem>
-              {/* <MenuItem
+                <MenuItem
+                  onClick={() => {
+                    onViewRow();
+                    // handleCloseMenu();
+                  }}
+                >
+                  <Iconify icon={'eva:corner-down-right-outline'} />
+                  Votre facture
+                </MenuItem>
+                {/* <MenuItem
                 onClick={() => {
                   handleCloseMenu();
                 }}
@@ -144,10 +146,13 @@ export default function InvoiceTableRow({
                 <Iconify icon={'eva:trash-2-outline'} />
                 Supprimer
               </MenuItem> */}
-            </>
-          }
-        />
-      </TableCell>
+              </>
+            }
+          />
+        </TableCell>
+      ) : (
+        ''
+      )}
     </TableRow>
   );
 }

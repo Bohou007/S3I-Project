@@ -391,6 +391,7 @@ export default function BookingAdmin() {
                           detailRow={detailRow}
                           handleAddEvent={() => handleAddEvent(row)}
                           isOpenModal={isOpenModal}
+                          hide="true"
                           handleCloseModal={() => handleCloseModal()}
                           handleSubmitToUpdate={(event) => handleSubmitToUpdate(event)}
                         />

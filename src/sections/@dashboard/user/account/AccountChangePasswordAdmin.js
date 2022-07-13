@@ -55,7 +55,7 @@ export default function AccountChangePasswordAdmin() {
 
     try {
       await axios
-        .put(`${HOST_API}/ws-booking-payment/customer/update-password/${user?.customer_reference}`, data)
+        .put(`${HOST_API}/ws-booking-payment/agent-back-office/update-password/${user?.uuid}`, data)
         .then((res) => {
           enqueueSnackbar('Votre mot de password ont été mise à jour', { variant: 'success' });
           setTimeout(() => {
@@ -121,7 +121,7 @@ export default function AccountChangePasswordAdmin() {
             }}
           />
 
-          <LoadingButton type="submit" disabled variant="contained" loading={isSubmitting}>
+          <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
             Modifier mon mot de passe
           </LoadingButton>
         </Stack>

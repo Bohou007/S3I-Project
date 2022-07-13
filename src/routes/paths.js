@@ -39,10 +39,11 @@ export const PATH_DASHBOARD = {
   general: {
     booking: path(ROOTS_DASHBOARD, '/app'),
     deadlines: path(ROOTS_DASHBOARD, '/consulter-mes-echeances'),
-    payment: path(ROOTS_DASHBOARD, '/consulter-mes-versements/listes'),
-    paymentView: (paymentReference) => path(ROOTS_DASHBOARD, `/consulter-mes-versements/${paymentReference}`),
+    payment: path(ROOTS_DASHBOARD, '/versements/consulter-mes-versements'),
+    paymentView: (paymentReference) => path(ROOTS_DASHBOARD, `/versements/${paymentReference}`),
 
-    reservation: path(ROOTS_DASHBOARD, '/consulter-mes-logements'),
+    reservation: path(ROOTS_DASHBOARD, '/logements/consulter-mes-logements'),
+    detailsReservation: (bookingReference) => path(ROOTS_DASHBOARD, `/logements/${bookingReference}`),
   },
 
   user: {
@@ -92,10 +93,7 @@ export const PATH_DASHBOARD_ADMIN = {
     buildingPrograms: path(ROOTS_DASHBOARD_ADMIN, '/programmes-immobiliers'),
     userLists: path(ROOTS_DASHBOARD_ADMIN, '/listes-des-utilisateurs'),
     customerReservation: path(ROOTS_DASHBOARD_ADMIN, '/reservations'),
-    // paymentList: path(ROOTS_DASHBOARD_ADMIN, '/suivi-des-versements'),
-    // paymentAdd: path(ROOTS_DASHBOARD_ADMIN, '/suivi-des-versements/new'),
-    // paymentView: (id) => path(ROOTS_DASHBOARD_ADMIN, `/suivi-des-versements/${id}`),
-    // paymentEdit: (id) => path(ROOTS_DASHBOARD_ADMIN, `/suivi-des-versements/${id}/edit`),
+    customerDetailsReservation: (bookingReference) => path(ROOTS_DASHBOARD_ADMIN, `/reservations/${bookingReference}`),
   },
   payments: {
     root: path(ROOTS_DASHBOARD_ADMIN, '/payments'),

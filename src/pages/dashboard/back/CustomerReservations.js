@@ -1,3 +1,7 @@
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable dot-notation */
+/* eslint-disable array-callback-return */
+/* eslint-disable import/no-duplicates */
 /* eslint-disable no-unneeded-ternary */
 /* eslint-disable prefer-template */
 /* eslint-disable camelcase */
@@ -8,13 +12,16 @@
 /* eslint-disable import/newline-after-import */
 import sumBy from 'lodash/sumBy';
 import PropTypes from 'prop-types';
-import { useFormContext } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as Yup from 'yup';
+import { useSnackbar } from 'notistack';
+import { styled } from '@mui/material/styles';
+import { LoadingButton } from '@mui/lab';
 import numeral from 'numeral';
 import DatePicker from '@mui/lab/DatePicker';
 
-import { useSnackbar } from 'notistack';
-
-import { useState, useEffect } from 'react';
+import { useState, useCallback, useEffect, useMemo } from 'react';
 import moment from 'moment';
 moment.locale('fr');
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
@@ -45,6 +52,9 @@ import {
   DialogActions,
   CircularProgress,
   Typography,
+  Chip,
+  Autocomplete,
+  InputAdornment,
 } from '@mui/material';
 // routes
 import { PATH_DASHBOARD, PATH_DASHBOARD_ADMIN } from '../../../routes/paths';
@@ -83,6 +93,17 @@ import InvoiceAddressListDialogProgram from '../../../sections/@dashboard/invoic
 import useToggle from '../../../hooks/useToggle';
 import useResponsive from '../../../hooks/useResponsive';
 import BookingNewEditForm from '../../../sections/@dashboard/form/BookingNewEditForm';
+// components
+import {
+  FormProvider,
+  RHFSwitch,
+  RHFSelect,
+  RHFEditor,
+  RHFTextField,
+  RHFRadioGroup,
+  RHFUploadMultiFile,
+} from '../../../components/hook-form';
+import { UploadMultiFile } from '../../../components/upload';
 
 // ----------------------------------------------------------------------
 
@@ -96,6 +117,14 @@ const TABLE_HEAD = [
 ];
 
 export default function CustomerReservations() {
+  const LabelStyle = styled(Typography)(({ theme }) => ({
+    ...theme.typography.subtitle2,
+    color: theme.palette.text.secondary,
+    marginBottom: theme.spacing(1),
+  }));
+
+  const navigate = useNavigate();
+
   const {
     dense,
     page,
@@ -103,12 +132,10 @@ export default function CustomerReservations() {
     orderBy,
     rowsPerPage,
     setPage,
-    //
     selected,
     setSelected,
     onSelectRow,
     onSelectAllRows,
-    //
     onSort,
     onChangeDense,
     onChangePage,
@@ -125,6 +152,7 @@ export default function CustomerReservations() {
 
   const [tableData, setTableData] = useState([]);
   const [program, setProgram] = useState([]);
+  const [imageView, setImageView] = useState([]);
   const [customer, setCustomer] = useState({});
   const [oneCustomer, setOneCustomer] = useState({});
   const [oneProgram, setOneProgram] = useState({});
@@ -140,9 +168,12 @@ export default function CustomerReservations() {
   const [filterDate, setFilterDate] = useState('');
   const [isNotFound, setIsNotFound] = useState(false);
 
+  const [currentBook, setCurrentBook] = useState('');
   const [detailRow, setDetailRow] = useState('');
   const [codeProgrm, setCodeProgrm] = useState('');
   const [isOpenModal, setIsOpenModal] = useState(false);
+
+  const [isOpenModalImage, setIsOpenModalImage] = useState(false);
 
   const [event, setEvent] = useState(false);
 
@@ -158,33 +189,14 @@ export default function CustomerReservations() {
   const handleChargePage = async () => {
     const response = await axios.get(`/ws-booking-payment/booking`);
     const programData = await axios.get(`/ws-booking-payment/real-estate-program`);
-
     const users = await axios.get(`/ws-booking-payment/customer`);
     setAllCustomer(users.data);
-    // const totalReservationAmountData = await axios.get(
-    //   `/ws-booking-payment/booking/customer/${user?.customer_reference}/total_house_amount`
-    // );
-    // setTotalReservationAmount(totalReservationAmountData.data);
-    // setTotalAmountPay(totalAmountPayData.data);
     setTableData(response.data);
     setProgram(programData.data);
-
-    // if (response.status === 200 && programData.status === 200) {
-    //   setIsGet(true);
-    // }
-
     setTimeout(() => {
       setIsGet(true);
     }, 3000);
   };
-
-  // const {
-  //   watch,
-  //   setValue,
-  //   formState: { errors },
-  // } = useFormContext();
-
-  // const values = watch();
 
   const PROGRAMME_OPTIONS = program;
 
@@ -267,12 +279,68 @@ export default function CustomerReservations() {
     setIsOpenModal(false);
     setEvent(false);
   };
-
+  const handleOpenModalImage = (value) => {
+    setIsOpenModalImage(true);
+    setCurrentBook(value);
+  };
+  const handleCloseModalImage = () => {
+    setIsOpenModalImage(false);
+  };
   const handleChangeDaté = (event) => {};
 
   const handleChangeEdit = (event) => {
     const { name, value } = event.target;
     setDetailRow({ ...detailRow, [name]: value });
+  };
+
+  const NewProductSchema = Yup.object().shape({
+    image: Yup.array().min(1, 'Les images sont requises'),
+  });
+  const defaultValues = useMemo(
+    () => ({
+      image: [],
+    }),
+    [currentBook]
+  );
+  const methods = useForm({
+    resolver: yupResolver(NewProductSchema),
+    defaultValues,
+  });
+  const {
+    reset,
+    watch,
+    control,
+    setValue,
+    getValues,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = methods;
+
+  const values = watch();
+
+  const handleDropMultiFile = useCallback(
+    (acceptedFiles) => {
+      const dd = acceptedFiles.map((file) =>
+        Object.assign(file, {
+          preview: URL.createObjectURL(file),
+        })
+      );
+      setValue('image', [...getValues().image, ...dd]);
+    },
+    [setValue]
+  );
+
+  const handleRemoveAll = () => {
+    setValue('image', []);
+  };
+
+  const handleViewRow = (bookingReference) => {
+    navigate(PATH_DASHBOARD_ADMIN.general.customerDetailsReservation(bookingReference));
+  };
+
+  const handleRemove = (file) => {
+    const filteredItems = values.image?.filter((_file) => _file !== file);
+    setValue('image', filteredItems);
   };
 
   const handleSubmitToUpdate = (event) => {
@@ -308,45 +376,91 @@ export default function CustomerReservations() {
           enqueueSnackbar('Les informations de la reservation ont été mise à jour', { variant: 'success' });
         }, 3000);
       })
-      .catch((error) => {});
+      .catch((error) => {
+        enqueueSnackbar("Les informations de la reservation n'ont pas été mise à jour", { variant: 'error' });
+        setIsLoading(false);
+        setIsOpenModal(false);
+        setEvent(false);
+      });
   };
 
   const handleSubmitToCreate = (data) => {
     setIsLoading(true);
-    console.log('====================================');
-    console.log(data);
-    console.log('====================================');
-    // const item = {
-    //   customer_reference: oneCustomer.customer_reference,
-    //   real_estate_programe_reference: oneProgram.real_estate_program_reference,
-    //   lot: detailRow.lot,
-    //   sub_lot: detailRow.sub_lot,
-    //   additional_land: detailRow.additional_land,
-    //   additional_land_amount: detailRow.additional_land_amount.split(' ').join(''),
-    //   additional_fence_amount: detailRow.additional_fence_amount.split(' ').join(''),
-    //   purchase_amount: detailRow.purchase_amount.split(' ').join(''),
-    //   application_fees: detailRow.application_fees.split(' ').join(''),
-    //   booking_fees: detailRow.booking_fees.split(' ').join(''),
-    //   house_amount: detailRow.house_amount.split(' ').join(''),
-    //   balance_due: detailRow.balance_due.split(' ').join(''),
-    //   payment_schedule_start_date: startDate,
-    //   payment_schedule_end_date: endDate,
-    //   amount_paid: '0',
-    // };
+    const item = {
+      customer_reference: oneCustomer.customer_reference,
+      real_estate_programe_reference: oneProgram.real_estate_program_reference,
+      lot: detailRow.lot,
+      sub_lot: detailRow.sub_lot,
+      additional_land: detailRow.additional_land,
+      additional_land_amount: detailRow.additional_land_amount.split(' ').join(''),
+      additional_fence_amount: detailRow.additional_fence_amount.split(' ').join(''),
+      purchase_amount: detailRow.purchase_amount.split(' ').join(''),
+      application_fees: detailRow.application_fees.split(' ').join(''),
+      booking_fees: detailRow.booking_fees.split(' ').join(''),
+      house_amount: detailRow.house_amount.split(' ').join(''),
+      balance_due: detailRow.balance_due.split(' ').join(''),
+      payment_schedule_start_date: startDate,
+      payment_schedule_end_date: endDate,
+      amount_paid: '0',
+    };
+    axios
+      .post(`/ws-booking-payment/booking`, item)
+      .then((res) => {
+        console.log(res.data);
+        handleChargePage();
+        setTimeout(() => {
+          setIsGet(false);
+          setIsOpenModal(false);
+          setEvent(false);
+          enqueueSnackbar('La reservation été enregistrer avec succès', { variant: 'success' });
+        }, 3000);
+      })
+      .catch((error) => {
+        enqueueSnackbar("La reservation n'a pas enregistrer.", { variant: 'error' });
+        setIsLoading(false);
+        setIsOpenModal(false);
+        setEvent(false);
+      });
+  };
 
-    // axios
-    //   .post(`/ws-booking-payment/booking`, item)
-    //   .then((res) => {
-    //     console.log(res.data);
-    //     handleChargePage();
-    //     setTimeout(() => {
-    //       setIsGet(false);
-    //       setIsOpenModal(false);
-    //       setEvent(false);
-    //       enqueueSnackbar('La reservation été enregistrer avec succès', { variant: 'success' });
-    //     }, 3000);
-    //   })
-    //   .catch((error) => {});
+  const onSubmitImage = async (data) => {
+    setIsLoading(true);
+    const formData = new FormData();
+    formData.append('booking_reference', currentBook.booking_reference);
+    for (const key of Object.keys(data.image)) {
+      formData.append('image', data.image[key]);
+    }
+
+    const item = {
+      image: data.image,
+      booking_reference: currentBook.booking_reference,
+    };
+    console.log('==============formData send======================');
+    console.log(formData);
+    console.log('====================================');
+
+    axios
+      .post(`/ws-booking-payment/image/upload`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+      .then((res) => {
+        console.log(res.data);
+        handleChargePage();
+        setTimeout(() => {
+          setIsGet(false);
+          setIsOpenModalImage(false);
+          setIsLoading(false);
+
+          enqueueSnackbar('Les images ont été enregistrées avec succès', { variant: 'success' });
+        }, 3000);
+      })
+      .catch((error) => {
+        setIsOpenModalImage(false);
+        enqueueSnackbar("Les images n'ont pas enregistrées.", { variant: 'error' });
+        setIsLoading(false);
+      });
   };
 
   return (
@@ -371,46 +485,7 @@ export default function CustomerReservations() {
           }
         />
 
-        {/* <Card sx={{ padding: 5, marginBottom: 5 }}>
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={6}>
-              <AppWidget
-                title="Montant verser"
-                total={totalAmountPay}
-                icon={'eva:credit-card-ffill'}
-                color="warning"
-                chartData={statisticsAmount(totalReservationAmount, totalAmountPay)}
-                isGet={isGet}
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <AppWidget
-                title="Montant restant "
-                total={totalReservationAmount - totalAmountPay}
-                icon={'eva:person-ffill'}
-                chartData={statisticsAmount(totalReservationAmount, totalReservationAmount - totalAmountPay)}
-                isGet={isGet}
-              />
-            </Grid>
-          </Grid>
-        </Card> */}
-
         <Card>
-          {/* <Tabs
-            allowScrollButtonsMobile
-            variant="scrollable"
-            scrollButtons="auto"
-            value={filterStatus}
-            onChange={onChangeFilterStatus}
-            sx={{ px: 2, bgcolor: 'background.neutral' }}
-          >
-            {STATUS_OPTIONS.map((tab) => (
-              <Tab disableRipple key={tab} label={tab} value={tab} />
-            ))}
-          </Tabs> */}
-
-          {/* <Divider /> */}
-
           <UserTableToolbarReservationAdmin
             filterName={filterName}
             filterProgramme={filterProgramme}
@@ -478,8 +553,11 @@ export default function CustomerReservations() {
                             detailRow={detailRow}
                             handleAddEvent={() => handleAddEvent(row)}
                             isOpenModal={isOpenModal}
+                            onViewRow={() => handleViewRow(row.booking_reference)}
                             handleCloseModal={() => handleCloseModal()}
                             handleSubmitToUpdate={(event) => handleSubmitToUpdate(event)}
+                            handleOpenModalImage={() => handleOpenModalImage(row)}
+                            handleCloseModalImage={() => handleCloseModalImage()}
                           />
                         ))
                     ) : (
@@ -821,6 +899,74 @@ export default function CustomerReservations() {
               )}
             </Button>
           </DialogActions>
+        </Dialog>
+        <Dialog open={isOpenModalImage} onClose={handleCloseModalImage} fullWidth="true" maxWidth="md">
+          <DialogTitle sx={{ width: '100%', backgroundColor: '#D7B94D', paddingBottom: 2 }}>
+            S3I - Bâtisseur du confort
+          </DialogTitle>
+          <Stack spacing={1} sx={{ p: 3 }}>
+            <Card sx={{ minWidth: 275 }}>
+              <FormProvider methods={methods} onSubmit={handleSubmit(onSubmitImage)}>
+                <Grid container spacing={3}>
+                  <Grid item xs={12} md={12}>
+                    <Card sx={{ p: 3 }}>
+                      <Stack spacing={3}>
+                        <div>
+                          <LabelStyle>Images</LabelStyle>
+                          {/* <UploadMultiFile
+                            showPreview
+                            files={files}
+                            onDrop={handleDropMultiFile}
+                            onRemove={handleRemove}
+                            onRemoveAll={handleRemoveAll}
+                          /> */}
+                          <RHFUploadMultiFile
+                            name="image"
+                            showPreview
+                            accept="image/*"
+                            maxSize={3145728}
+                            onDrop={handleDropMultiFile}
+                            onRemove={handleRemove}
+                            onRemoveAll={handleRemoveAll}
+                          />
+                        </div>
+                      </Stack>
+                    </Card>
+                  </Grid>
+                </Grid>
+
+                <DialogActions>
+                  <Box sx={{ flexGrow: 1 }} />
+                  <Button
+                    variant="contained"
+                    color="inherit"
+                    onClick={() => {
+                      handleCloseModalImage();
+                    }}
+                  >
+                    Fermer
+                  </Button>
+
+                  <LoadingButton type="submit" variant="contained" size="" loading={isSubmitting}>
+                    {isLoading ? (
+                      <>
+                        Enregistrement des images...
+                        <CircularProgress
+                          size={14}
+                          sx={{
+                            color: '#fff',
+                            marginLeft: 2,
+                          }}
+                        />
+                      </>
+                    ) : (
+                      'Enregistrer les images'
+                    )}
+                  </LoadingButton>
+                </DialogActions>
+              </FormProvider>
+            </Card>
+          </Stack>
         </Dialog>
       </Container>
     </Page>

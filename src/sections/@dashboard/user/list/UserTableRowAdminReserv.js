@@ -25,15 +25,28 @@ UserTableRowAdminReserv.propTypes = {
   row: PropTypes.object,
   selected: PropTypes.bool,
   onSelectRow: PropTypes.func,
+  onViewRow: PropTypes.func,
   handleAddEvent: PropTypes.func,
+  handleOpenModalImage: PropTypes.func,
+  handleCloseModalImage: PropTypes.func,
   handleCloseModal: PropTypes.func,
   handleSubmitToUpdate: PropTypes.func,
   handleChangeEdit: PropTypes.func,
   detailRow: PropTypes.object,
   isOpenModal: PropTypes.bool,
+  hide: PropTypes.bool,
 };
 
-export default function UserTableRowAdminReserv({ row, selected, onSelectRow, handleAddEvent }) {
+export default function UserTableRowAdminReserv({
+  row,
+  selected,
+  handleOpenModalImage,
+  onViewRow,
+  hide,
+  handleCloseModalImage,
+  onSelectRow,
+  handleAddEvent,
+}) {
   const theme = useTheme();
   const { avatarUrl, company, role, isVerified, status } = row;
 
@@ -89,42 +102,53 @@ export default function UserTableRowAdminReserv({ row, selected, onSelectRow, ha
           </Typography>
         </Stack>
       </TableCell>
-
       <TableCell align="left">{program}</TableCell>
       <TableCell align="left">{sepMillier(row.house_amount)} FCFA</TableCell>
       <TableCell align="left">{sepMillier(row.amount_paid)} FCFA</TableCell>
-
       <TableCell align="left">{moment(row.payment_schedule_end_date).format('DD MMM YYYY')}</TableCell>
-
-      <TableCell align="right">
-        <TableMoreMenu
-          open={openMenu}
-          onOpen={handleOpenMenu}
-          onClose={handleCloseMenu}
-          actions={
-            <>
-              <MenuItem
-                onClick={() => {
-                  handleCloseMenu();
-                  handleAddEvent();
-                }}
-              >
-                <Iconify icon={'eva:edit-fill'} />
-                Modifier
-              </MenuItem>
-              {/* <MenuItem
-                onClick={() => {
-                  handleCloseMenu();
-                }}
-                sx={{ color: 'error.main' }}
-              >
-                <Iconify icon={'eva:trash-2-outline'} />
-                Supprimer
-              </MenuItem> */}
-            </>
-          }
-        />
-      </TableCell>
+      {!hide ? (
+        <TableCell align="right">
+          <TableMoreMenu
+            open={openMenu}
+            onOpen={handleOpenMenu}
+            onClose={handleCloseMenu}
+            actions={
+              <>
+                <MenuItem
+                  onClick={() => {
+                    onViewRow();
+                  }}
+                  // sx={{ color: 'error.main' }}
+                >
+                  <Iconify icon={'eva:eye-outline'} />
+                  Voir detail
+                </MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    handleCloseMenu();
+                    handleAddEvent();
+                  }}
+                >
+                  <Iconify icon={'eva:edit-fill'} />
+                  Modifier
+                </MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    handleCloseMenu();
+                    handleOpenModalImage();
+                  }}
+                  // sx={{ color: 'error.main' }}
+                >
+                  <Iconify icon={'eva:download-outline'} />
+                  Image de suivie
+                </MenuItem>
+              </>
+            }
+          />
+        </TableCell>
+      ) : (
+        ''
+      )}
     </TableRow>
   );
 }

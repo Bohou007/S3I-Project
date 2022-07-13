@@ -61,7 +61,7 @@ export default function InvoicePDF({ invoice, customer, program, facture }) {
             <Text style={styles.body1}>Email: {customer.email}</Text>
           </View>
 
-          <View style={(styles.col6, styles.textAligne)}>
+          <View style={[styles.col6, styles.alignRight]}>
             <Text style={[styles.overline, styles.mb8]}>Payer à</Text>
             <Text style={styles.body1}>S3I - bâtisseur du confort</Text>
             <Text style={styles.body1}>Tel: (+225) 07 77 001 002</Text>

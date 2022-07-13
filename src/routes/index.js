@@ -79,25 +79,21 @@ export default function Router() {
         },
         { path: 'consulter-mes-echeances', element: <Deadlines /> },
         {
-          path: 'consulter-mes-versements',
+          path: 'versements',
           children: [
-            { element: <Navigate to="/tableau-de-bord/consulter-mes-versements/listes" replace />, index: true },
-            { path: 'listes', element: <Payment /> },
+            { element: <Navigate to="/tableau-de-bord/versements/consulter-mes-versements" replace />, index: true },
+            { path: 'consulter-mes-versements', element: <Payment /> },
             { path: ':paymentReference', element: <PaymentView /> },
           ],
         },
 
-        { path: 'consulter-mes-logements', element: <Reservation /> },
+        // { path: 'consulter-mes-logements', element: <Reservation /> },
         {
-          path: 'e-commerce',
+          path: 'logements',
           children: [
-            { element: <Navigate to="/dashboard/e-commerce/shop" replace />, index: true },
-            { path: 'shop', element: <EcommerceShop /> },
-            { path: 'product/:name', element: <EcommerceProductDetails /> },
-            { path: 'list', element: <EcommerceProductList /> },
-            { path: 'product/new', element: <EcommerceProductCreate /> },
-            { path: 'product/:name/edit', element: <EcommerceProductCreate /> },
-            { path: 'checkout', element: <EcommerceCheckout /> },
+            { element: <Navigate to="/tableau-de-bord/logements/consulter-mes-logements" replace />, index: true },
+            { path: 'consulter-mes-logements', element: <Reservation /> },
+            { path: ':bookingReference', element: <DetailsReservation /> },
           ],
         },
         {
@@ -162,20 +158,18 @@ export default function Router() {
         },
         { path: 'programmes-immobiliers', element: <BuildingPrograms /> },
         { path: 'listes-des-utilisateurs', element: <UserLists /> },
-        { path: 'reservations', element: <CustomerReservations /> },
-        // { path: 'suivi-des-versements', element: <PaymentList /> },
+        // { path: 'reservations', element: <CustomerReservations /> },
         {
-          path: 'e-commerce',
+          path: 'reservations',
           children: [
-            { element: <Navigate to="/dashboard/e-commerce/shop" replace />, index: true },
-            { path: 'shop', element: <EcommerceShop /> },
-            { path: 'product/:name', element: <EcommerceProductDetails /> },
-            { path: 'list', element: <EcommerceProductList /> },
-            { path: 'product/new', element: <EcommerceProductCreate /> },
-            { path: 'product/:name/edit', element: <EcommerceProductCreate /> },
-            { path: 'checkout', element: <EcommerceCheckout /> },
+            {
+              element: <CustomerReservations />,
+              index: true,
+            },
+            { path: ':bookingReference', element: <CustomerDetailsReservation /> },
           ],
         },
+
         {
           path: 'user',
           children: [
@@ -200,6 +194,18 @@ export default function Router() {
             { element: <Navigate to="tableau-de-bord/admin/payments/suivi-des-versements" replace />, index: true },
             { path: 'suivi-des-versements', element: <PaymentList /> },
             { path: ':paymentReference', element: <PaymentAdminView /> },
+          ],
+        },
+        {
+          path: 'e-commerce',
+          children: [
+            { element: <Navigate to="/dashboard/e-commerce/shop" replace />, index: true },
+            { path: 'shop', element: <EcommerceShop /> },
+            { path: 'product/:name', element: <EcommerceProductDetails /> },
+            { path: 'list', element: <EcommerceProductList /> },
+            { path: 'product/new', element: <EcommerceProductCreate /> },
+            { path: 'product/:name/edit', element: <EcommerceProductCreate /> },
+            { path: 'checkout', element: <EcommerceCheckout /> },
           ],
         },
       ],
@@ -239,6 +245,7 @@ const Deadlines = Loadable(lazy(() => import('../pages/dashboard/front/Deadlines
 const Payment = Loadable(lazy(() => import('../pages/dashboard/front/Payment')));
 const PaymentView = Loadable(lazy(() => import('../pages/dashboard/front/PaymentView')));
 const Reservation = Loadable(lazy(() => import('../pages/dashboard/front/Reservation')));
+const DetailsReservation = Loadable(lazy(() => import('../pages/dashboard/front/DetailsReservation')));
 
 // GENERAL ADMIN
 const DashboardAdmin = Loadable(lazy(() => import('../pages/dashboard/back/DashboardAdmin')));
@@ -246,6 +253,7 @@ const UserLists = Loadable(lazy(() => import('../pages/dashboard/back/UserList')
 const BuildingPrograms = Loadable(lazy(() => import('../pages/dashboard/back/BuildingPrograms')));
 const AddClient = Loadable(lazy(() => import('../pages/dashboard/back/users/AddClient')));
 const CustomerReservations = Loadable(lazy(() => import('../pages/dashboard/back/CustomerReservations')));
+const CustomerDetailsReservation = Loadable(lazy(() => import('../pages/dashboard/back/CustomerDetailsReservation')));
 const PaymentList = Loadable(lazy(() => import('../pages/dashboard/back/PaymentList')));
 const PaymentAdminView = Loadable(lazy(() => import('../pages/dashboard/back/PaymentView')));
 const AdminAccount = Loadable(lazy(() => import('../pages/dashboard/back/AdminAccount')));

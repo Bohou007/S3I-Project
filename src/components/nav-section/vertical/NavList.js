@@ -1,3 +1,4 @@
+/* eslint-disable no-unneeded-ternary */
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -17,7 +18,14 @@ NavListRoot.propTypes = {
 export function NavListRoot({ list, isCollapse }) {
   const { pathname } = useLocation();
 
+  const [enable, setEnable] = useState(false);
+
   const active = getActive(list.path, pathname);
+
+  const reallyPath = (data) => {
+    const domain = data.substr(0, data.lastIndexOf('/') + 1);
+    return domain;
+  };
 
   const [open, setOpen] = useState(active);
 

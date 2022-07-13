@@ -27,6 +27,7 @@ import {
   CardContent,
   CardActions,
   Grid,
+  MenuItem,
 } from '@mui/material';
 import Button from '@mui/material/Button';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -75,6 +76,7 @@ class UserTableRowReservation extends Component {
       isOpenModal: true,
       detailRow: value,
       program: response.data,
+      openMenu: null,
     });
   };
 
@@ -104,6 +106,18 @@ class UserTableRowReservation extends Component {
     });
   }
 
+  handleOpenMenu = (event) => {
+    this.setState({
+      openMenu: event.currentTarget,
+    });
+  };
+
+  handleCloseMenu = () => {
+    this.setState({
+      openMenu: null,
+    });
+  };
+
   render() {
     const { row } = this.props;
     console.log('Program', this.state.program);
@@ -124,14 +138,25 @@ class UserTableRowReservation extends Component {
         <TableCell align="left"> {moment(row.payment_schedule_end_date).format('DD MMM YYYY')}</TableCell>
 
         <TableCell align="left">
-          <Button
-            variant="outlined"
-            color={'primary'}
-            onClick={() => this.handleAddEvent(this.props.row)}
-            startIcon={<VisibilityIcon />}
-          >
-            Details
-          </Button>
+          <TableMoreMenu
+            open={this.state.openMenu}
+            onOpen={this.handleOpenMenu}
+            onClose={this.handleCloseMenu}
+            actions={
+              <>
+                <MenuItem
+                  variant="outlined"
+                  color={'primary'}
+                  onClick={() => {
+                    this.props.onViewRow();
+                  }}
+                >
+                  <Iconify icon={'eva:eye-outline'} />
+                  Voir details
+                </MenuItem>
+              </>
+            }
+          />
 
           <DialogAnimate open={this.state.isOpenModal} onClose={this.handleCloseModal} maxWidth={'md'}>
             <DialogTitle sx={{ width: '100%', backgroundColor: '#D7B94D', paddingBottom: 2 }}>
@@ -332,6 +357,7 @@ class UserTableRowReservation extends Component {
 
 UserTableRowReservation.propTypes = {
   row: PropTypes.object,
+  onViewRow: PropTypes.func,
   selected: PropTypes.bool,
   onEditRow: PropTypes.func,
   onSelectRow: PropTypes.func,

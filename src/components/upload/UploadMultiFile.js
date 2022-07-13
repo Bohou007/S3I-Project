@@ -1,4 +1,6 @@
 import PropTypes from 'prop-types';
+import { useState } from 'react';
+
 import { useDropzone } from 'react-dropzone';
 // @mui
 import { styled } from '@mui/material/styles';
@@ -44,6 +46,9 @@ export default function UploadMultiFile({
   const { getRootProps, getInputProps, isDragActive, isDragReject, fileRejections } = useDropzone({
     ...other,
   });
+  const image = localStorage.getItem('image');
+
+  const [viewFile, setViewFile] = useState(image);
 
   return (
     <Box sx={{ width: '100%', ...sx }}>

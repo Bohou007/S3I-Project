@@ -1,3 +1,6 @@
+/* eslint-disable import/no-named-as-default-member */
+/* eslint-disable import/no-named-as-default */
+/* eslint-disable no-unused-vars */
 /* eslint-disable prefer-template */
 /* eslint-disable no-restricted-globals */
 /* eslint-disable no-nested-ternary */
@@ -55,6 +58,7 @@ import {
 // sections
 import { UserTableToolbar, UserTableRow } from '../../../sections/@dashboard/user/list';
 import UserNewEditForm from '../../../sections/@dashboard/user/UserNewEditForm';
+import UserNewEditFormPassword from '../../../sections/@dashboard/user/UserNewEditFormPassword';
 
 // ----------------------------------------------------------------------
 
@@ -109,6 +113,7 @@ export default function UserList() {
 
   const navigate = useNavigate();
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const [isOpenModalPassword, setIsOpenModalPassword] = useState(false);
   const [event, setEvent] = useState(false);
 
   const [tableData, setTableData] = useState([]);
@@ -139,6 +144,16 @@ export default function UserList() {
   const handleCloseModal = () => {
     setIsOpenModal(false);
     setEvent(false);
+  };
+
+  const handleCloseModalPassword = () => {
+    setIsOpenModalPassword(false);
+  };
+
+  const handleOpeneModalPassword = async (value) => {
+    // const response = await axios.get(`/ws-booking-payment/customer/${value.customer_reference}`);
+    setDetailRow(value);
+    setIsOpenModalPassword(true);
   };
 
   const handleFilterName = (filterName) => {
@@ -195,17 +210,31 @@ export default function UserList() {
     setIsOpenModal(true);
   };
 
-  const onSubmit = async (data) => {
-    console.log('====================================');
-    console.log('dataUser: ', data);
-    console.log('====================================');
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      enqueueSnackbar(!event ? 'Create success!' : 'Update success!');
-      setIsOpenModal(false);
-    } catch (error) {
-      console.error(error);
-    }
+  const onSubmitChangePassword = async (data) => {
+    setIsLoading(true);
+    const item = {
+      new_password: data.password,
+      confirm_password: data.password_confirmation,
+    };
+    axios
+      .put(`/ws-booking-payment/customer/update-password/${detailRow.customer_reference}`, item)
+      .then((res) => {
+        console.log(res.data);
+        handleChargePage();
+        setTimeout(() => {
+          setIsGet(false);
+          setIsOpenModalPassword(false);
+          setEvent(false);
+          setIsLoading(false);
+          enqueueSnackbar('Le mot de passe du client a été mise à jour.', { variant: 'success' });
+        }, 3000);
+      })
+      .catch((error) => {
+        setIsOpenModalPassword(false);
+        setEvent(false);
+        setIsLoading(false);
+        enqueueSnackbar("Le mot de passe du client n'a pas été mise à jour.", { variant: 'error' });
+      });
   };
 
   const handleSubmitToUpdate = (data) => {
@@ -228,7 +257,12 @@ export default function UserList() {
           enqueueSnackbar('Les informations du client ont été mise à jour', { variant: 'success' });
         }, 3000);
       })
-      .catch((error) => {});
+      .catch((error) => {
+        setIsOpenModal(false);
+        setEvent(false);
+        setIsLoading(false);
+        enqueueSnackbar("Les informations du client n'ont été pas mise à jour", { variant: 'error' });
+      });
   };
 
   const handleSubmitToCreate = (data) => {
@@ -249,10 +283,15 @@ export default function UserList() {
           setIsOpenModal(false);
           setEvent(false);
           setIsLoading(false);
-          enqueueSnackbar('Le client été enregistrer avec succès', { variant: 'success' });
+          enqueueSnackbar('Le client a été enregistré avec succès', { variant: 'success' });
         }, 3000);
       })
-      .catch((error) => {});
+      .catch((error) => {
+        setIsOpenModal(false);
+        setEvent(false);
+        setIsLoading(false);
+        enqueueSnackbar("Le client n' a pas été penregistré.", { variant: 'error' });
+      });
   };
 
   return (
@@ -339,6 +378,7 @@ export default function UserList() {
                           handleChangeEdit={(event) => handleChangeEdit(event)}
                           detailRow={detailRow}
                           handleAddEvent={() => handleAddEvent(row)}
+                          handleOpeneModalPassword={() => handleOpeneModalPassword(row)}
                           isOpenModal={isOpenModal}
                           handleCloseModal={() => handleCloseModal()}
                           // handleSubmitToUpdate={(event) => handleSubmitToUpdate(event)}
@@ -391,43 +431,19 @@ export default function UserList() {
               handleCloseModal={handleCloseModal}
             />
           </Stack>
-          {/* <DialogActions>
-            <Box sx={{ flexGrow: 1 }} />
-            <Button
-              variant="contained"
-              color="inherit"
-              onClick={() => {
-                handleCloseModal();
-                setEvent(false);
-              }}
-            >
-              Fermer
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => {
-                // event ? handleSubmitToCreate() : handleSubmitToUpdate();
-              }}
-            >
-              {isLoading ? (
-                <>
-                  {event ? ' Enregistrement du programme...' : 'Modification du programme...'}
-                  <CircularProgress
-                    size={14}
-                    sx={{
-                      color: '#fff',
-                      marginLeft: 2,
-                    }}
-                  />
-                </>
-              ) : event ? (
-                'Enregistrer le programme immobilier'
-              ) : (
-                ' Enregistrer les modifications'
-              )}
-            </Button>
-          </DialogActions> */}
+        </Dialog>
+        <Dialog open={isOpenModalPassword} onClose={handleCloseModalPassword} fullWidth="true" maxWidth="md">
+          <DialogTitle sx={{ width: '100%', backgroundColor: '#D7B94D', paddingBottom: 2 }}>
+            S3I - Bâtisseur du confort
+          </DialogTitle>
+          <Stack spacing={1} sx={{ p: 3 }}>
+            <UserNewEditFormPassword
+              currentUser={detailRow}
+              onSubmit={onSubmitChangePassword}
+              isLoading={isLoading}
+              handleCloseModal={handleCloseModalPassword}
+            />
+          </Stack>
         </Dialog>
       </Container>
     </Page>
