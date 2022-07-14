@@ -412,11 +412,12 @@ export default function CustomerReservations() {
           setIsGet(false);
           setIsOpenModal(false);
           setEvent(false);
-          enqueueSnackbar('La reservation été enregistrer avec succès', { variant: 'success' });
+          setIsLoading(false);
+          enqueueSnackbar('La reservation été enregistrée avec succès', { variant: 'success' });
         }, 3000);
       })
       .catch((error) => {
-        enqueueSnackbar("La reservation n'a pas enregistrer.", { variant: 'error' });
+        enqueueSnackbar("La reservation n'a pas enregistrée.", { variant: 'error' });
         setIsLoading(false);
         setIsOpenModal(false);
         setEvent(false);
@@ -452,7 +453,7 @@ export default function CustomerReservations() {
           setIsGet(false);
           setIsOpenModalImage(false);
           setIsLoading(false);
-
+          handleRemoveAll();
           enqueueSnackbar('Les images ont été enregistrées avec succès', { variant: 'success' });
         }, 3000);
       })
@@ -464,10 +465,10 @@ export default function CustomerReservations() {
   };
 
   return (
-    <Page title="Reservations">
+    <Page title="Réservations">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Reservations"
+          heading="Réservations"
           links={[{ name: 'Tableau de bord', href: PATH_DASHBOARD_ADMIN.root }, { name: 'Reservations' }]}
           action={
             <Button

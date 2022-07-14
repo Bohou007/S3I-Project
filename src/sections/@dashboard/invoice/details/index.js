@@ -1,5 +1,9 @@
+/* eslint-disable import/first */
+/* eslint-disable import/newline-after-import */
 import PropTypes from 'prop-types';
 import numeral from 'numeral';
+import moment from 'moment/min/moment-with-locales';
+const locale = moment.locale('fr');
 
 // @mui
 import { styled, useTheme } from '@mui/material/styles';
@@ -107,7 +111,7 @@ export default function InvoiceDetails({ invoice, customer, program }) {
             <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
               Date de facturation
             </Typography>
-            <Typography variant="body2">{fDate(invoice.payment_date)}</Typography>
+            <Typography variant="body2">{moment(invoice.payment_date).format('DD MMM YYYY')}</Typography>
           </Grid>
 
           <Grid item xs={12} sm={6} sx={{ mb: 5, textAlign: 'right' }}>

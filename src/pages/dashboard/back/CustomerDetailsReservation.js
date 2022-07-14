@@ -109,21 +109,21 @@ export default function CustomerDetailsReservation() {
       component: <IndexBooking program={program} detailRow={book} />,
     },
     {
-      value: 'galleries',
+      value: 'galerie',
       icon: <Iconify icon={'ic:round-perm-media'} width={20} height={20} />,
       component: <ProfileGallery gallery={galleries} isGet={isGet} />,
     },
   ];
 
   return (
-    <Page title="Details de la reservation">
+    <Page title="Détails de la réservation">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Details de la reservation"
+          heading="Détails de la réservation"
           links={[
             { name: 'Tableau de bord', href: PATH_DASHBOARD_ADMIN.root },
             { name: 'Listes des reservation', href: PATH_DASHBOARD_ADMIN.general.customerReservation },
-            { name: 'Details de la reservation' },
+            { name: 'Détails de la réservation' },
           ]}
         />
         <Card

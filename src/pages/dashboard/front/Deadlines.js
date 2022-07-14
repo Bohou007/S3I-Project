@@ -59,7 +59,7 @@ import { SkeletonConversationItem, SkeletonMailSidebarItem } from '../../../comp
 const STATUS_OPTIONS = ['Tous les echeances', 'Echances passées', 'Echanches à venir'];
 
 const TABLE_HEAD = [
-  { id: 'CodeReservation', label: 'Code de reservation', align: 'left' },
+  { id: 'CodeReservation', label: 'Code de mon logement', align: 'left' },
   { id: 'program', label: 'Programme immobillier', align: 'left' },
   // { id: 'ilot', label: 'I Lot', align: 'left' },
   { id: 'montant', label: 'Montant à payer', align: 'left' },

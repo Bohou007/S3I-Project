@@ -94,7 +94,7 @@ export default function Dashboard() {
           <Grid item xs={12} md={5}>
             <Stack spacing={1}>
               <AppWidget
-                title="Montant verser"
+                title="Montant versé"
                 total={totalAmountPay}
                 icon={'eva:credit-card-ffill'}
                 color="warning"

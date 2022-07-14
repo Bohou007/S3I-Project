@@ -216,13 +216,13 @@ class UserTableRowPaiment extends Component {
 
                   <Grid item xs={6} md={4}>
                     <CardContent sx={{}}>
-                      <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Reference de paiement</Typography>
+                      <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Référence du paiement</Typography>
                       <Typography variant="body2">{this.state.detailRow.input_payment_reference}</Typography>
                     </CardContent>
                   </Grid>
                   <Grid item xs={6} md={4}>
                     <CardContent sx={{}}>
-                      <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Code reservation</Typography>
+                      <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Code de mon logement</Typography>
                       <Typography variant="body2">{this.state.detailRow.booking_reference}</Typography>
                     </CardContent>
                   </Grid>
@@ -245,7 +245,7 @@ class UserTableRowPaiment extends Component {
                   </Grid> */}
                   <Grid item xs={12}>
                     <CardContent sx={{ width: '100%', backgroundColor: '#DFE3E8' }}>
-                      <Typography sx={{ fontSize: 15 }}>Montant du versements</Typography>
+                      <Typography sx={{ fontSize: 15 }}>Montant du versement</Typography>
                       <Typography variant="body2" sx={{ fontSize: 18, fontWeight: 'bold' }}>
                         {this.sepMillier(this.state.detailRow.amount)} {this.state.detailRow.amount === 0 ? '' : 'FCFA'}
                       </Typography>

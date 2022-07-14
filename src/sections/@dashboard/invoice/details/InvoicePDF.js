@@ -1,7 +1,11 @@
+/* eslint-disable import/first */
 import React, { useRef } from 'react';
 import { useReactToPrint } from 'react-to-print';
 import PropTypes from 'prop-types';
 import numeral from 'numeral';
+// eslint-disable-next-line import/newline-after-import
+import moment from 'moment/min/moment-with-locales';
+const locale = moment.locale('fr');
 
 import { Page, View, Text, Image, Document } from '@react-pdf/renderer';
 // utils
@@ -72,7 +76,7 @@ export default function InvoicePDF({ invoice, customer, program, facture }) {
         <View style={[styles.gridContainer, styles.mb40]}>
           <View style={styles.col6}>
             <Text style={[styles.overline, styles.mb8]}>Date de facturation</Text>
-            <Text style={styles.body1}>{fDate(invoice.payment_date)}</Text>
+            <Text style={styles.body1}>{moment(invoice.payment_date).format('DD MMM YYYY')}</Text>
           </View>
           <View style={(styles.col6, styles.textAlign)}>
             <Text style={[styles.overline, styles.mb8]}>Mode de paiement</Text>

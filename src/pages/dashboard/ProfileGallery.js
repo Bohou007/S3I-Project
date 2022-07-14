@@ -75,7 +75,7 @@ export default function ProfileGallery({ gallery, isGet }) {
             ))}
           </Box>
         ) : (
-          <EmptyContent title={'Votre gallerie est vide'} description={"Pas d'image de suivie des travaux"} />
+          <EmptyContent title={'Votre galerie est vide'} description={"Pas d'image de suivie des travaux"} />
         )}
 
         <LightboxModal

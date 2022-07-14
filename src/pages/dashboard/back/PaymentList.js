@@ -368,10 +368,15 @@ export default function PaymentList() {
           setIsOpenModal(false);
           setEvent(false);
           setIsLoading(false);
-          enqueueSnackbar('Les informations de la reservation ont été mise à jour', { variant: 'success' });
+          enqueueSnackbar('Les informations du versement ont été mise à jour', { variant: 'success' });
         }, 3000);
       })
-      .catch((error) => {});
+      .catch((error) => {
+        setIsOpenModal(false);
+        setEvent(false);
+        setIsLoading(false);
+        enqueueSnackbar("Les informations du versement n'ont pas été mise à jour", { variant: 'error' });
+      });
   };
 
   const handleSubmitToCreate = (event) => {
@@ -397,11 +402,17 @@ export default function PaymentList() {
         setTimeout(() => {
           setIsGet(false);
           setIsOpenModal(false);
+          setIsLoading(false);
           setEvent(false);
-          enqueueSnackbar('La reservation été enregistrer avec succès', { variant: 'success' });
+          enqueueSnackbar('Le versement a été enregistré avec succès', { variant: 'success' });
         }, 3000);
       })
-      .catch((error) => {});
+      .catch((error) => {
+        setIsOpenModal(false);
+        setIsLoading(false);
+        setEvent(false);
+        enqueueSnackbar("Le versement n'a pas été enregistré.", { variant: 'error' });
+      });
   };
 
   return (

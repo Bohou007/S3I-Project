@@ -236,13 +236,13 @@ class UserTableRowTx extends Component {
                 </Grid>
               </Card>
               <Typography variant="h4" component="div">
-                Datails de l'echeance
+                Détails de l'échéance
               </Typography>
               <Card sx={{ minWidth: 275 }}>
                 <Grid container spacing={2}>
                   <Grid item xs={6} md={4}>
                     <CardContent sx={{}}>
-                      <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Montant a verser</Typography>
+                      <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Montant à verser</Typography>
                       <Typography variant="body2">
                         {this.sepMillier(this.state.detailRow.amount_to_be_paid)} FCFA
                       </Typography>
@@ -256,7 +256,7 @@ class UserTableRowTx extends Component {
                   </Grid>
                   <Grid item xs={6} md={4}>
                     <CardContent sx={{}}>
-                      <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Date d'echance</Typography>
+                      <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Date de l'échéance</Typography>
                       {/* <Typography variant="body2">{moment(detailRow.deadlineAt).format('D MMMM YYYY')}</Typography> */}
                       <Typography variant="body2">
                         {moment(this.state.detailRow.due_date).format('DD MMMM YYYY')}
@@ -265,7 +265,7 @@ class UserTableRowTx extends Component {
                   </Grid>
                   <Grid item xs={12}>
                     <CardContent sx={{ width: '100%', backgroundColor: '#DFE3E8' }}>
-                      <Typography sx={{ fontSize: 15 }}>Reste a payer</Typography>
+                      <Typography sx={{ fontSize: 15 }}>Reste à payer</Typography>
                       <Typography variant="body2" sx={{ fontSize: 18, fontWeight: 'bold' }}>
                         {this.sepMillier(this.state.detailRow.amount_to_be_paid - this.state.detailRow.amount_paid)}
                         {parseInt(this.state.detailRow.amount_to_be_paid) -

@@ -152,7 +152,7 @@ class UserTableRowReservation extends Component {
                   }}
                 >
                   <Iconify icon={'eva:eye-outline'} />
-                  Voir details
+                  Voir détails
                 </MenuItem>
               </>
             }

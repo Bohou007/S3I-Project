@@ -58,7 +58,7 @@ export default function DetailsReservation() {
   const { user } = useAuth();
   const { bookingReference } = useParams();
 
-  const { currentTab, onChangeTab } = useTabs('details');
+  const { currentTab, onChangeTab } = useTabs('détails');
   const [program, setProgram] = useState({});
   const [book, setBook] = useState({});
   const [galleries, setGalleries] = useState([]);
@@ -93,7 +93,7 @@ export default function DetailsReservation() {
 
   const PROFILE_TABS = [
     {
-      value: 'details',
+      value: 'détails',
       icon: <Iconify icon={'eva:info-outline'} width={20} height={20} />,
       component: <IndexBooking program={program} detailRow={book} />,
     },
@@ -108,7 +108,7 @@ export default function DetailsReservation() {
     //   component: <ProfileFriends friends={_userFriends} findFriends={findFriends} onFindFriends={handleFindFriends} />,
     // },
     {
-      value: 'galleries',
+      value: 'galerie',
       icon: <Iconify icon={'ic:round-perm-media'} width={20} height={20} />,
       component: <ProfileGallery gallery={galleries} isGet={isGet} />,
     },
@@ -122,7 +122,7 @@ export default function DetailsReservation() {
           links={[
             { name: 'Tableau de bord', href: PATH_DASHBOARD.root },
             { name: 'Listes de mes logements', href: PATH_DASHBOARD.general.reservation },
-            { name: 'Details de mon logement' },
+            { name: 'Détails de mon logement' },
           ]}
         />
         <Card

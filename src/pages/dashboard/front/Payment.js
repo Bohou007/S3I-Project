@@ -57,7 +57,7 @@ const STATUS_OPTIONS = ['Tous les echeances', 'Echances passées', 'Echanches à
 const TABLE_HEAD = [
   { id: 'programmeImobillier', label: 'Programme Immobillier', align: 'left' },
   { id: 'montant', label: 'Montant versé', align: 'left' },
-  { id: 'input_payment_reference', label: 'Reference', align: 'left' },
+  { id: 'input_payment_reference', label: 'Réference', align: 'left' },
   { id: 'payment_method', label: 'Mode de paiement', align: 'left' },
   { id: 'bank', label: 'Banque', align: 'center' },
   { id: 'payment_date', label: 'Date de paiement', align: 'center' },

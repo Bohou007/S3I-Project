@@ -167,7 +167,7 @@ export default function IndexBooking({ program, detailRow }) {
           </Grid>
           <Grid item xs={12}>
             <CardContent sx={{ width: '100%', backgroundColor: '#DFE3E8' }}>
-              <Typography sx={{ fontSize: 15 }}>Reste a payer</Typography>
+              <Typography sx={{ fontSize: 15 }}>Reste à payer</Typography>
               <Typography variant="body2" sx={{ fontSize: 18, fontWeight: 'bold' }}>
                 {sepMillier(detailRow.house_amount - detailRow.amount_paid)}{' '}
                 {detailRow.house_amount - detailRow.amount_paid === 0 ? '' : 'FCFA'}
@@ -177,7 +177,7 @@ export default function IndexBooking({ program, detailRow }) {
         </Grid>
       </Card>
       <Typography variant="h4" component="div">
-        Detailes de l'echeance
+        Détails de l'échéance
       </Typography>
       <Card sx={{ minWidth: 275 }}>
         <Grid container spacing={2}>
@@ -194,7 +194,7 @@ export default function IndexBooking({ program, detailRow }) {
           <Grid item xs={6} md={4}>
             <CardContent sx={{}}>
               <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>
-                Date de fin de paiement de la reservation
+                Date de fin de paiement de la réservation
               </Typography>
               <Typography variant="body2">
                 {moment(detailRow.payment_schedule_end_date).format('DD MMM YYYY')}
@@ -203,7 +203,7 @@ export default function IndexBooking({ program, detailRow }) {
           </Grid>
           <Grid item xs={6} md={4}>
             <CardContent sx={{}}>
-              <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Nombre d'echeance de paiement</Typography>
+              <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Nombre d'échéance de paiement</Typography>
               <Typography variant="body2">{detailRow.payment_deadlines_number}</Typography>
             </CardContent>
           </Grid>

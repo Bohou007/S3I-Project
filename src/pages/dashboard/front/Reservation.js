@@ -250,7 +250,7 @@ export default function Reservation() {
           <Grid container spacing={3}>
             <Grid item xs={12} md={6}>
               <AppWidget
-                title="Montant verser"
+                title="Montant versé"
                 total={totalAmountPay}
                 icon={'eva:credit-card-ffill'}
                 color="warning"

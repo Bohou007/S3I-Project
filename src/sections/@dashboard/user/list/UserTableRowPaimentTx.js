@@ -129,7 +129,7 @@ class UserTableRowPaimentTx extends Component {
             onClick={() => this.handleAddEvent(this.props.row)}
             startIcon={<VisibilityIcon />}
           >
-            Details
+            Détails
           </Button>
 
           <DialogAnimate open={this.state.isOpenModal} onClose={this.handleCloseModal} maxWidth={'md'}>
