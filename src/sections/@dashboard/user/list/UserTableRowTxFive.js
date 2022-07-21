@@ -196,7 +196,7 @@ class UserTableRowTxFive extends Component {
                 <Grid container spacing={2}>
                   <Grid item xs={3}>
                     <CardContent sx={{}}>
-                      <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Code reservation</Typography>
+                      <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Référence du logement</Typography>
                       <Typography variant="body2">{this.state.booking.booking_reference}</Typography>
                     </CardContent>
                   </Grid>

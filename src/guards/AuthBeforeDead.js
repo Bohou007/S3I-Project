@@ -105,7 +105,7 @@ export default function AuthBeforeDead({ children }) {
           setIsOpenModal(false);
           setIsLoading(false);
           enqueueSnackbar('Accès validé', { variant: 'success' });
-        }, 3000);
+        }, 1000);
       })
       .catch((error) => {
         navigateBack();

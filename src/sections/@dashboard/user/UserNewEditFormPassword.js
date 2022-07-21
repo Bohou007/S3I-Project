@@ -179,6 +179,7 @@ export default function UserNewEditFormPassword({ isEdit, onSubmit, currentUser,
                   variant="contained"
                   type="submit"
                   color="primary"
+                  disabled={isLoading}
                   onClick={() => {
                     // event ? handleSubmitToCreate() : handleSubmitToUpdate();
                   }}

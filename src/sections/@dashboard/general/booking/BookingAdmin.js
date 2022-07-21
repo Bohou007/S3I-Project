@@ -310,7 +310,7 @@ export default function BookingAdmin() {
           setIsOpenModal(false);
           setEvent(false);
           setIsLoading(false);
-          enqueueSnackbar('Les informations de la reservation ont été mise à jour', { variant: 'success' });
+          enqueueSnackbar('Les informations du logement ont été mise à jour', { variant: 'success' });
         }, 3000);
       })
       .catch((error) => {});
@@ -346,7 +346,7 @@ export default function BookingAdmin() {
           setIsGet(false);
           setIsOpenModal(false);
           setEvent(false);
-          enqueueSnackbar('La reservation été enregistrer avec succès', { variant: 'success' });
+          enqueueSnackbar('Le logement été enregistré avec succès', { variant: 'success' });
         }, 3000);
       })
       .catch((error) => {});
@@ -355,7 +355,7 @@ export default function BookingAdmin() {
   return (
     <>
       <Card>
-        <CardHeader title="Reservations" sx={{ mb: 3 }} />
+        <CardHeader title="Logements" sx={{ mb: 3 }} />
         <Scrollbar>
           <TableContainer sx={{ minWidth: 720 }}>
             <Table size={dense ? 'small' : 'medium'}>
@@ -694,7 +694,7 @@ export default function BookingAdmin() {
             >
               {isLoading ? (
                 <>
-                  {event ? ' Enregistrement de la reservation...' : 'Modification de la reservation...'}
+                  {event ? ' Enregistrement du logement...' : 'Modification du logement...'}
                   <CircularProgress
                     size={14}
                     sx={{
@@ -704,7 +704,7 @@ export default function BookingAdmin() {
                   />
                 </>
               ) : event ? (
-                'Enregistrer la reservation'
+                'Enregistrer la logement'
               ) : (
                 ' Enregistrer les modifications'
               )}

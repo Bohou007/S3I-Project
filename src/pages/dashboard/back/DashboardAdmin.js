@@ -66,19 +66,15 @@ export default function DashboardAdmin() {
           </Grid> */}
 
           <Grid item xs={12} md={4}>
-            <BookingWidgetSummary title="Réservations totales" total={totalBooked} icon={<BookingIllustration />} />
+            <BookingWidgetSummary title="Logements totales" total={totalBooked} icon={<BookingIllustration />} />
           </Grid>
 
           <Grid item xs={12} md={4}>
-            <BookingWidgetSummary title="Réservations soldées" total={totalCheckOut} icon={<CheckInIllustration />} />
+            <BookingWidgetSummary title="Logements soldés" total={totalCheckOut} icon={<CheckInIllustration />} />
           </Grid>
 
           <Grid item xs={12} md={4}>
-            <BookingWidgetSummary
-              title="Réservations non soldées"
-              total={totalCheckIn}
-              icon={<CheckOutIllustration />}
-            />
+            <BookingWidgetSummary title="Logements non soldés" total={totalCheckIn} icon={<CheckOutIllustration />} />
           </Grid>
 
           <Grid item xs={12} md={12}>

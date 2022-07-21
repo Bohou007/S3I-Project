@@ -90,7 +90,7 @@ export default function Echeances() {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>Code de reservation</TableCell>
+                  <TableCell>Référence du logement</TableCell>
                   <TableCell>Programme immobillier</TableCell>
                   <TableCell>Montant à payer</TableCell>
                   <TableCell>Date Echeances</TableCell>

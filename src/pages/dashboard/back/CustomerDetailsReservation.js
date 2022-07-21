@@ -104,7 +104,7 @@ export default function CustomerDetailsReservation() {
       component: <UserInfo customer={customer} />,
     },
     {
-      value: 'details de la reservation',
+      value: 'details du logement',
       icon: <Iconify icon={'eva:info-outline'} width={20} height={20} />,
       component: <IndexBooking program={program} detailRow={book} />,
     },
@@ -116,14 +116,14 @@ export default function CustomerDetailsReservation() {
   ];
 
   return (
-    <Page title="Détails de la réservation">
+    <Page title="Détails du logement">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Détails de la réservation"
+          heading="Détails du logement"
           links={[
             { name: 'Tableau de bord', href: PATH_DASHBOARD_ADMIN.root },
-            { name: 'Listes des reservation', href: PATH_DASHBOARD_ADMIN.general.customerReservation },
-            { name: 'Détails de la réservation' },
+            { name: 'Listes des logements', href: PATH_DASHBOARD_ADMIN.general.customerReservation },
+            { name: 'Détails du logement' },
           ]}
         />
         <Card

@@ -682,7 +682,7 @@ export default function PaymentList() {
                 <Stack sx={{ p: 3 }}>
                   <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 1 }}>
                     <Typography variant="h6" sx={{ color: 'text.disabled' }}>
-                      Information de la reservation:
+                      Information du logement:
                     </Typography>
 
                     <Button
@@ -696,7 +696,7 @@ export default function PaymentList() {
 
                     <InvoiceAddressListDialogBooking
                       open={openBooking}
-                      dialogTitle="Selectionner la reservation"
+                      dialogTitle="Selectionner le logement"
                       onClose={onCloseBooking}
                       selected={(selectedId) => oneBooking?.id === selectedId}
                       onSelect={(book) => setOneBooking(book)}
@@ -715,7 +715,7 @@ export default function PaymentList() {
                   ) : (
                     <Typography typography="caption" sx={{ color: 'error.main' }}>
                       {/* {errors.invoiceFrom ? errors.invoiceFrom.message : null} */}
-                      Veuillez sélectionner une reservation
+                      Veuillez sélectionner un logement
                     </Typography>
                   )}
                 </Stack>

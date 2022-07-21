@@ -167,7 +167,8 @@ export default function VersementNewEditForm({ isEdit, onSubmit, paid, handleClo
                 </Button>
                 {/* </Grid> */}
                 {/* <Grid item xs={6} md={4}> */}
-                <Button variant="contained" type="submit" color="primary">
+
+                <Button variant="contained" disabled={isLoading} type="submit" color="primary">
                   {isLoading ? (
                     <>
                       {isEdit ? ' Enregistrement du versement...' : 'Modification du versement...'}

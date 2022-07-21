@@ -347,7 +347,7 @@ export default function VersementsAdmin() {
           setIsOpenModal(false);
           setEvent(false);
           setIsLoading(false);
-          enqueueSnackbar('Les informations de la reservation ont été mise à jour', { variant: 'success' });
+          enqueueSnackbar('Les informations du logement ont été mis à jour', { variant: 'success' });
         }, 3000);
       })
       .catch((error) => {});
@@ -377,7 +377,7 @@ export default function VersementsAdmin() {
           setIsGet(false);
           setIsOpenModal(false);
           setEvent(false);
-          enqueueSnackbar('La reservation été enregistrer avec succès', { variant: 'success' });
+          enqueueSnackbar('Le logement été enregistré avec succès', { variant: 'success' });
         }, 3000);
       })
       .catch((error) => {});
@@ -563,7 +563,7 @@ export default function VersementsAdmin() {
 
                     <InvoiceAddressListDialogBooking
                       open={openBooking}
-                      dialogTitle="Selectionner la reservation"
+                      dialogTitle="Selectionner le logement"
                       onClose={onCloseBooking}
                       selected={(selectedId) => oneBooking?.id === selectedId}
                       onSelect={(book) => setOneBooking(book)}
@@ -582,7 +582,7 @@ export default function VersementsAdmin() {
                   ) : (
                     <Typography typography="caption" sx={{ color: 'error.main' }}>
                       {/* {errors.invoiceFrom ? errors.invoiceFrom.message : null} */}
-                      Veuillez sélectionner une reservation
+                      Veuillez sélectionner un logment
                     </Typography>
                   )}
                 </Stack>

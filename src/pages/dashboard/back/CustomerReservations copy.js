@@ -373,11 +373,11 @@ export default function CustomerReservations() {
           setIsOpenModal(false);
           setEvent(false);
           setIsLoading(false);
-          enqueueSnackbar('Les informations de la reservation ont été mise à jour', { variant: 'success' });
+          enqueueSnackbar('Les informations du logement ont été mise à jour', { variant: 'success' });
         }, 3000);
       })
       .catch((error) => {
-        enqueueSnackbar("Les informations de la reservation n'ont pas été mise à jour", { variant: 'error' });
+        enqueueSnackbar("Les informations du logement n'ont pas été mise à jour", { variant: 'error' });
         setIsLoading(false);
         setIsOpenModal(false);
         setEvent(false);
@@ -413,11 +413,11 @@ export default function CustomerReservations() {
           setIsOpenModal(false);
           setEvent(false);
           setIsLoading(false);
-          enqueueSnackbar('La reservation été enregistrée avec succès', { variant: 'success' });
+          enqueueSnackbar('La logement été enregistré avec succès', { variant: 'success' });
         }, 3000);
       })
       .catch((error) => {
-        enqueueSnackbar("La reservation n'a pas enregistrée.", { variant: 'error' });
+        enqueueSnackbar("Le logement n'a pas enregistré.", { variant: 'error' });
         setIsLoading(false);
         setIsOpenModal(false);
         setEvent(false);
@@ -481,7 +481,7 @@ export default function CustomerReservations() {
               to=""
               startIcon={<Iconify icon={'eva:plus-fill'} />}
             >
-              Nouvelle reservation
+              Nouveau logement
             </Button>
           }
         />
@@ -941,7 +941,7 @@ export default function CustomerReservations() {
             >
               {isLoading ? (
                 <>
-                  {event ? ' Enregistrement de la reservation...' : 'Modification de la reservation...'}
+                  {event ? ' Enregistrement du logement...' : 'Modification du logement...'}
                   <CircularProgress
                     size={14}
                     sx={{
@@ -951,9 +951,9 @@ export default function CustomerReservations() {
                   />
                 </>
               ) : event ? (
-                'Enregistrer la reservation'
+                'Enregistrer le logement'
               ) : (
-                ' Enregistrer les modifications'
+                ' Enregistrer le logement'
               )}
             </Button>
           </DialogActions>

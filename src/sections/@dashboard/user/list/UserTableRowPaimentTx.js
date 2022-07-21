@@ -192,7 +192,7 @@ class UserTableRowPaimentTx extends Component {
                   </Grid>
                   <Grid item xs={6} md={3}>
                     <CardContent sx={{}}>
-                      <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Code reservation</Typography>
+                      <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Référence du logement</Typography>
                       <Typography variant="body2">{this.state.detailRow.booking_reference}</Typography>
                     </CardContent>
                   </Grid>
@@ -204,15 +204,6 @@ class UserTableRowPaimentTx extends Component {
                       </Typography>
                     </CardContent>
                   </Grid>
-                  {/* <Grid item xs={6} md={3}>
-                    <CardContent sx={{}}>
-                      <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Nombre d'echeance</Typography>
-                      <Typography variant="body2">
-                        {this.sepMillier(this.state.detailRow.amount_paid)}{' '}
-                        {this.state.detailRow.amount_paid === 0 ? '' : 'FCFA'}
-                      </Typography>
-                    </CardContent>
-                  </Grid> */}
                   <Grid item xs={12}>
                     <CardContent sx={{ width: '100%', backgroundColor: '#DFE3E8' }}>
                       <Typography sx={{ fontSize: 15 }}>Montant du versements</Typography>
@@ -223,39 +214,6 @@ class UserTableRowPaimentTx extends Component {
                   </Grid>
                 </Grid>
               </Card>
-              {/* <Typography variant="h4" component="div">
-                Detailes de l'echeance
-              </Typography>
-              <Card sx={{ minWidth: 275 }}>
-                <Grid container spacing={2}>
-                  <Grid item xs={6} md={3}>
-                    <CardContent sx={{}}>
-                      <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>
-                        Date de début de l'échéancier de paiement
-                      </Typography>
-                      <Typography variant="body2">
-                        {moment(this.state.detailRow.payment_schedule_start_date).format('DD MMM YYYY')}{' '}
-                      </Typography>
-                    </CardContent>
-                  </Grid>
-                  <Grid item xs={6} md={3}>
-                    <CardContent sx={{}}>
-                      <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>
-                        Date de fin de paiement de la reservation
-                      </Typography>
-                      <Typography variant="body2">
-                        {moment(this.state.detailRow.payment_schedule_end_date).format('DD MMM YYYY')}
-                      </Typography>
-                    </CardContent>
-                  </Grid>
-                  <Grid item xs={6} md={3}>
-                    <CardContent sx={{}}>
-                      <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Nombre d'echeance de paiement</Typography>
-                      <Typography variant="body2">{this.state.detailRow.payment_deadlines_number}</Typography>
-                    </CardContent>
-                  </Grid>
-                </Grid>
-              </Card> */}
             </Stack>
             <DialogActions>
               <Box sx={{ flexGrow: 1 }} />

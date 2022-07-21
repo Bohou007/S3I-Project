@@ -219,6 +219,7 @@ export default function UserNewEditForm({ isEdit, onSubmit, currentUser, handleC
                   variant="contained"
                   type="submit"
                   color="primary"
+                  disabled={isLoading}
                   onClick={() => {
                     // event ? handleSubmitToCreate() : handleSubmitToUpdate();
                   }}

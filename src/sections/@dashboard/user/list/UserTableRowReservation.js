@@ -337,7 +337,7 @@ class UserTableRowReservation extends Component {
                   <Grid item xs={6} md={4}>
                     <CardContent sx={{}}>
                       <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>
-                        Date de fin de paiement de la reservation
+                        Date de fin de paiement du logement
                       </Typography>
                       <Typography variant="body2">
                         {moment(this.state.detailRow.payment_schedule_end_date).format('DD MMM YYYY')}

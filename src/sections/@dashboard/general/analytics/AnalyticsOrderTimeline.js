@@ -87,8 +87,8 @@ function OrderItem({ item, isLast, user }) {
             (reference === 'a consulté les details de son logement ayant pour référence' && 'primary') ||
             (result === 'a consulté ces échéances' && 'secondary') ||
             (result === 'a consulté son profile' && 'warning') ||
-            (reference === "a consulté son état d'avancement pour la reservation de référence" && 'info') ||
-            (reference === "a consulté les details d'une de ces échéances pour la reservation de référence" &&
+            (reference === "a consulté son état d'avancement pour le logement de référence" && 'info') ||
+            (reference === "a consulté les details d'une de ces échéances pour le logement de référence" &&
               'secondary') ||
             (result === 'a consulté ces versements' && 'primary') ||
             (reference === "a consulté la facture d'un de ces versements ayant pour reference" && 'primary') ||
@@ -107,9 +107,9 @@ function OrderItem({ item, isLast, user }) {
               (reference === 'a consulté les details de son logement ayant pour référence' && 'eva:home-outline') ||
               (result === 'a consulté ces échéances' && 'eva:calendar-outline') ||
               (result === 'a consulté son profile' && 'eva:person-outline') ||
-              (reference === "a consulté son état d'avancement pour la reservation de référence" &&
+              (reference === "a consulté son état d'avancement pour le logement de référence" &&
                 'ic:round-perm-media') ||
-              (reference === "a consulté les details d'une de ces échéances pour la reservation de référence" &&
+              (reference === "a consulté les details d'une de ces échéances pour le logement de référence" &&
                 'eva:calendar-outline') ||
               (result === 'a consulté ces versements' && 'eva:credit-card-outline') ||
               (reference === "a consulté la facture d'un de ces versements ayant pour reference" &&

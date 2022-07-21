@@ -159,6 +159,7 @@ export default function ProgramNewEditForm({ isEdit, onSubmit, handleCloseModal,
                   variant="contained"
                   type="submit"
                   color="primary"
+                  disabled={isLoading}
                   onClick={() => {
                     // event ? handleSubmitToCreate() : handleSubmitToUpdate();
                   }}

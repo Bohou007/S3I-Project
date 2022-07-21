@@ -69,7 +69,7 @@ export default function ProfileGallery({ gallery, user, detailRow, bookingRefere
 
   useEffect(() => {
     if (user.role.toUpperCase() === 'CUSTOMER') {
-      AddLogs("a consulté son état d'avancement pour la reservation de référence " + bookingReference, user);
+      AddLogs("a consulté son état d'avancement pour du logement de référence " + bookingReference, user);
     }
   }, []);
 
@@ -88,38 +88,46 @@ export default function ProfileGallery({ gallery, user, detailRow, bookingRefere
 
       <Card sx={{ p: 3 }}>
         {user.role.toUpperCase() === 'CUSTOMER' ? (
-          gallery.length < 0 && isSolde ? (
-            <Box
-              sx={{
-                display: 'grid',
-                gap: 3,
-                gridTemplateColumns: {
-                  xs: 'repeat(1, 1fr)',
-                  sm: 'repeat(2, 1fr)',
-                  md: 'repeat(3, 1fr)',
-                },
-              }}
-            >
-              {gallery.map((image) => (
-                <GalleryItem key={image.id} image={image} onOpenLightbox={handleOpenLightbox} />
-              ))}
-            </Box>
-          ) : (
-            <>
-              <RootStyle>
-                <Image
-                  disabledEffect
-                  visibleByDefault
-                  alt="empty content"
-                  src={noDataImg}
-                  sx={{ height: 240, mb: 3 }}
-                />
+          gallery.length > 0 ? (
+            !isSolde ? (
+              <Box
+                sx={{
+                  display: 'grid',
+                  gap: 3,
+                  gridTemplateColumns: {
+                    xs: 'repeat(1, 1fr)',
+                    sm: 'repeat(2, 1fr)',
+                    md: 'repeat(3, 1fr)',
+                  },
+                }}
+              >
+                {gallery.map((image) => (
+                  <GalleryItem key={image.id} image={image} onOpenLightbox={handleOpenLightbox} />
+                ))}
+              </Box>
+            ) : (
+              <>
+                <RootStyle>
+                  <Image
+                    disabledEffect
+                    visibleByDefault
+                    alt="empty content"
+                    src={noDataImg}
+                    sx={{ height: 240, mb: 3 }}
+                  />
 
-                <Alert severity="error" sx={{ p: 2, fontWeight: 'bold' }}>
-                  Merci de vous acquitter de vos frais de réservations afin de constater l'évolution de votre logement.
-                </Alert>
-              </RootStyle>
-            </>
+                  <Alert severity="error" sx={{ p: 2, fontWeight: 'bold' }}>
+                    Merci de vous acquitter de vos frais de réservations afin de constater l'évolution de votre
+                    logement.
+                  </Alert>
+                </RootStyle>
+              </>
+            )
+          ) : (
+            <EmptyContent
+              title={"Pas d'image ce logement"}
+              description={"Ce logement n'a pas d'image de suivie d'activité."}
+            />
           )
         ) : gallery.length > 0 ? (
           <Box
@@ -139,8 +147,8 @@ export default function ProfileGallery({ gallery, user, detailRow, bookingRefere
           </Box>
         ) : (
           <EmptyContent
-            title={"Pas d'image pour cette reservation"}
-            description={"Cette reservation n'a pas d'image de suivie d'activité."}
+            title={"Pas d'image pour ce logement"}
+            description={"Ce logement n'a pas d'image de suivie d'activité."}
           />
         )}
 

@@ -45,12 +45,12 @@ const navConfigAdmin = [
       {
         title: 'Programmes immobiliers',
         path: PATH_DASHBOARD_ADMIN.general.buildingPrograms,
-        icon: ICONS.banking,
+        icon: ICONS.kanban,
       },
       {
-        title: 'Reservations',
+        title: 'Logements',
         path: PATH_DASHBOARD_ADMIN.general.customerReservation,
-        icon: ICONS.booking,
+        icon: ICONS.banking,
       },
       {
         title: 'Suivi des versements',

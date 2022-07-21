@@ -274,9 +274,7 @@ export default function IndexBooking({ program, detailRow, customer }) {
               </Grid>
               <Grid item xs={6} md={4}>
                 <CardContent sx={{}}>
-                  <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>
-                    Date de fin de paiement de la réservation
-                  </Typography>
+                  <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Date de fin de paiement du logement</Typography>
                   <Typography variant="body2">
                     {moment(detailRow.payment_schedule_end_date).format('DD MMM YYYY')}
                   </Typography>

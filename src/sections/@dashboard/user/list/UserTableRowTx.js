@@ -87,7 +87,7 @@ class UserTableRowTx extends Component {
     });
 
     AddLogs(
-      "a consulté les details d'une de ces échéances pour la reservation de référence " + value.booking_reference,
+      "a consulté les details d'une de ces échéances pour le logement de référence " + value.booking_reference,
       this.props.user
     );
   };

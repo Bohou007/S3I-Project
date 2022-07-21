@@ -199,7 +199,7 @@ export default function AccountGeneral() {
             </Box>
 
             <Stack spacing={3} alignItems="flex-end" sx={{ mt: 3 }}>
-              <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
+              <LoadingButton type="submit" disabled={isSubmitting} variant="contained" loading={isSubmitting}>
                 Modifier mon compte
               </LoadingButton>
             </Stack>

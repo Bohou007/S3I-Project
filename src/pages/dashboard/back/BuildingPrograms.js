@@ -396,109 +396,7 @@ export default function BuildingPrograms() {
               isLoading={isLoading}
               program={detailRow}
             />
-            {/* <Card sx={{ minWidth: 275 }}>
-              <Grid container spacing={2}>
-                <Grid item xs={12}>
-                  <CardContent sx={{ marginTop: 2 }}>
-                    <TextField
-                      name="label"
-                      onChange={handleChangeEdit}
-                      value={detailRow.label}
-                      defaultValue={event ? '' : ' '}
-                      label="Nom du programme"
-                      sx={{ width: '100%' }}
-                      error={errorText.label === ''}
-                      helperText={errorText.label}
-                    />
-                  </CardContent>
-                </Grid>
-                <Grid item xs={12}>
-                  <CardContent sx={{ marginTop: 0 }}>
-                    <TextField
-                      name="formula"
-                      id="outlined-basic"
-                      value={detailRow.formula}
-                      onChange={handleChangeEdit}
-                      defaultValue={event ? '' : ' '}
-                      label="Formule"
-                      onClick={handleRuleChange}
-                      sx={{ width: '100%' }}
-                      error={errorText.formula === ''}
-                      helperText={errorText.formula}
-                    />
-                  </CardContent>
-                </Grid>
-                <Grid item xs={12}>
-                  <CardContent sx={{ marginTop: 0 }}>
-                    <TextField
-                      id="outlined-basic"
-                      name="real_estate_program_type"
-                      value={detailRow.real_estate_program_type}
-                      defaultValue={event ? '' : ' '}
-                      onChange={handleChangeEdit}
-                      required
-                      label="Type d'habitation"
-                      sx={{ width: '100%' }}
-                      error={errorText.real_estate_program_type === ''}
-                      helperText={errorText.real_estate_program_type}
-                    />
-                  </CardContent>
-                </Grid>
-                <Grid item xs={12}>
-                  <CardContent sx={{ marginTop: 0 }}>
-                    <TextField
-                      id="outlined-basic"
-                      value={detailRow.location}
-                      name="location"
-                      defaultValue={event ? '' : ' '}
-                      onChange={handleChangeEdit}
-                      label="Localisation"
-                      sx={{ width: '100%' }}
-                      error={errorText.location === ''}
-                      helperText={errorText.location}
-                    />
-                  </CardContent>
-                </Grid>
-              </Grid>
-            </Card> */}
           </Stack>
-          {/* <DialogActions>
-            <Box sx={{ flexGrow: 1 }} />
-            <Button
-              variant="contained"
-              color="inherit"
-              onClick={() => {
-                handleCloseModal();
-                setEvent(false);
-              }}
-            >
-              Fermer
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => {
-                event ? handleSubmitToCreate() : handleSubmitToUpdate();
-              }}
-            >
-              {isLoading ? (
-                <>
-                  {event ? ' Enregistrement du programme...' : 'Modification du programme...'}
-                  <CircularProgress
-                    size={14}
-                    sx={{
-                      color: '#fff',
-                      marginLeft: 2,
-                    }}
-                  />
-                </>
-              ) : event ? (
-                'Enregistrer le programme immobilier'
-              ) : (
-                ' Enregistrer les modifications'
-              )}
-            </Button>
-          </DialogActions> */}
         </Dialog>
       </Container>
     </Page>
@@ -515,10 +413,6 @@ function applySortFilter({ tableData, comparator, filterName, filterProgramme, f
   });
 
   tableData = stabilizedThis.map((el) => el[0]);
-
-  // if (filterName) {
-  //   tableData = tableData.filter((item) => item.name.toLowerCase().indexOf(filterName.toLowerCase()) !== -1);
-  // }
 
   if (filterName) {
     tableData = tableData.filter(

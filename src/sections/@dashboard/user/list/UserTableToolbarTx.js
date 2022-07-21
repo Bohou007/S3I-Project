@@ -32,7 +32,7 @@ export default function UserTableToolbarTx({
       <TextField
         fullWidth
         select
-        label="Code de reservation"
+        label="Référence du logement"
         value={filterProgramme}
         onChange={onFilterProgramme}
         SelectProps={{

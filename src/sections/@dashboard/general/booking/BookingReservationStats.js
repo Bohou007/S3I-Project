@@ -58,7 +58,7 @@ export default function BookingReservationStats() {
   return (
     <Card>
       <CardHeader
-        title="Reservation Stats"
+        title="Logements Stats"
         subheader="(+43% Check In | +12% Check Out) than last year"
         action={
           <TextField

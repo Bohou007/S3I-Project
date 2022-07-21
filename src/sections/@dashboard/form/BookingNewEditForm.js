@@ -253,13 +253,14 @@ export default function BookingNewEditForm({
                   variant="contained"
                   type="submit"
                   color="primary"
+                  disabled={isLoading}
                   onClick={() => {
                     // event ? handleSubmitToCreate() : handleSubmitToUpdate();
                   }}
                 >
                   {isLoading ? (
                     <>
-                      {isEdit ? ' Enregistrement de la reservation...' : 'Modification de la reservation...'}
+                      {isEdit ? ' Enregistrement de le logement...' : 'Modification de le logement...'}
                       <CircularProgress
                         size={14}
                         sx={{
@@ -269,9 +270,9 @@ export default function BookingNewEditForm({
                       />
                     </>
                   ) : isEdit ? (
-                    'Enregistrer la reservation'
+                    'Enregistrer le logement'
                   ) : (
-                    ' Enregistrer les modifications'
+                    ' Enregistrer le logement'
                   )}
                 </Button>
               </Box>
