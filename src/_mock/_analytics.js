@@ -13,7 +13,7 @@ export const _analyticPost = [...Array(5)].map((_, index) => ({
   postedAt: _mock.time(index),
 }));
 
-export const _analyticOrderTimeline = [...Array(5)].map((_, index) => ({
+export const _analyticOrderTimeline = [...Array(25)].map((_, index) => ({
   id: _mock.id(index),
   title: [
     '1983, orders, $4220',

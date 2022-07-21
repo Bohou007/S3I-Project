@@ -1,3 +1,4 @@
+/* eslint-disable prefer-template */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from 'react';
 
@@ -18,11 +19,14 @@ import Page from '../../../components/Page';
 import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
 // sections
 import Invoice from '../../../sections/@dashboard/invoice/details';
+import { AddLogs } from '../log/AddLogs';
+import useAuth from '../../../hooks/useAuth';
 
 // ----------------------------------------------------------------------
 
 export default function PaymentView() {
   const { themeStretch } = useSettings();
+  const { user } = useAuth();
 
   const { paymentReference } = useParams();
 
@@ -46,6 +50,8 @@ export default function PaymentView() {
     //   setIsGet(true);
     // }
 
+    AddLogs("a consulté la facture d'un de ces versements ayant pour reference " + paymentReference, user);
+
     setTimeout(() => {
       setIsGet(true);
     }, 3000);
@@ -68,7 +74,7 @@ export default function PaymentView() {
           ]}
         />
         {isGet ? (
-          <Invoice invoice={invoice} customer={customer} program={program} />
+          <Invoice invoice={invoice} customer={customer} program={program} user={user} />
         ) : (
           <Box
             sx={{

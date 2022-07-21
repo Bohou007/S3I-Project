@@ -343,14 +343,6 @@ export default function CustomerReservations() {
     setValue('image', filteredItems);
   };
 
-  const handleStartDate = (newValue) => {
-    setStartDate(newValue);
-  };
-
-  const handleEndDate = (newValue) => {
-    setEndDate(newValue);
-  };
-
   const handleSubmitToUpdate = (event) => {
     setIsLoading(true);
 
@@ -397,24 +389,19 @@ export default function CustomerReservations() {
     const item = {
       customer_reference: oneCustomer.customer_reference,
       real_estate_programe_reference: oneProgram.real_estate_program_reference,
-      lot: data.lot,
-      sub_lot: data.sub_lot,
-      additional_land: data.additional_land,
-      additional_land_amount: data.additional_land_amount.split(' ').join(''),
-      additional_fence: data.additional_fence,
-      additional_fence_amount: data.additional_fence_amount.split(' ').join(''),
-
-      financing_method: data.financing_method,
-      initial_contribution: data.initial_contribution.split(' ').join(''),
-
-      purchase_amount: data.purchase_amount.split(' ').join(''),
-      application_fees: data.application_fees.split(' ').join(''),
-
-      booking_fees: data.booking_fees.split(' ').join(''),
-      booking_fees_paid: data.booking_fees_paid.split(' ').join(''),
-
+      lot: detailRow.lot,
+      sub_lot: detailRow.sub_lot,
+      additional_land: detailRow.additional_land,
+      additional_land_amount: detailRow.additional_land_amount.split(' ').join(''),
+      additional_fence_amount: detailRow.additional_fence_amount.split(' ').join(''),
+      purchase_amount: detailRow.purchase_amount.split(' ').join(''),
+      application_fees: detailRow.application_fees.split(' ').join(''),
+      booking_fees: detailRow.booking_fees.split(' ').join(''),
+      house_amount: detailRow.house_amount.split(' ').join(''),
+      balance_due: detailRow.balance_due.split(' ').join(''),
       payment_schedule_start_date: startDate,
       payment_schedule_end_date: endDate,
+      amount_paid: '0',
     };
     axios
       .post(`/ws-booking-payment/booking`, item)
@@ -714,12 +701,262 @@ export default function CustomerReservations() {
               handleCloseModal={handleCloseModal}
               isLoading={isLoading}
               booking={detailRow}
-              startDate={startDate}
-              endDate={endDate}
-              handleStartDate={handleStartDate}
-              handleEndDate={handleEndDate}
             />
+            <Card sx={{ minWidth: 275 }}>
+              <Grid container spacing={1}>
+                <Grid item xs={12} md={6}>
+                  <CardContent sx={{ marginTop: 0 }}>
+                    <TextField
+                      name="lot"
+                      // id="outlined-basic"
+                      onChange={handleChangeEdit}
+                      value={detailRow.lot}
+                      defaultValue={event ? '' : ' '}
+                      label="Lot"
+                      sx={{ width: '100%' }}
+                    />
+                  </CardContent>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <CardContent sx={{ marginTop: 0 }}>
+                    <TextField
+                      name="sub_lot"
+                      id="outlined-basic"
+                      value={detailRow.sub_lot}
+                      onChange={handleChangeEdit}
+                      defaultValue={event ? '' : ' '}
+                      label="ILot"
+                      sx={{ width: '100%' }}
+                    />
+                  </CardContent>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <CardContent sx={{ marginTop: 0 }}>
+                    <TextField
+                      name="financing_method"
+                      // id="outlined-basic"
+                      onChange={handleChangeEdit}
+                      value={detailRow.financing_method}
+                      defaultValue={event ? '' : ' '}
+                      label="Mode de financement"
+                      sx={{ width: '100%' }}
+                    />
+                  </CardContent>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <CardContent sx={{ marginTop: 0 }}>
+                    <TextField
+                      name="additional_land"
+                      // id="outlined-basic"
+                      onChange={handleChangeEdit}
+                      value={detailRow.additional_land}
+                      defaultValue={event ? '' : ' '}
+                      label="Terrain supplémentaires (m²)"
+                      sx={{ width: '100%' }}
+                    />
+                  </CardContent>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <CardContent sx={{ marginTop: 0 }}>
+                    <TextField
+                      name="additional_land_amount"
+                      // id="outlined-basic"
+                      onChange={handleChangeEdit}
+                      value={detailRow.additional_land_amount ? sepMillier(detailRow.additional_land_amount) : ''}
+                      defaultValue={event ? '' : ' '}
+                      label="Montant du terrain supplémentaire"
+                      sx={{ width: '100%' }}
+                    />
+                  </CardContent>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <CardContent sx={{ marginTop: 0 }}>
+                    <TextField
+                      name="additional_fence"
+                      // id="outlined-basic"
+                      onChange={handleChangeEdit}
+                      value={detailRow.additional_fence}
+                      defaultValue={event ? '' : ' '}
+                      label="Clôture supplémentaire (m²)"
+                      sx={{ width: '100%' }}
+                    />
+                  </CardContent>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <CardContent sx={{ marginTop: 0 }}>
+                    <TextField
+                      name="additional_fence_amount"
+                      id="outlined-basic"
+                      value={detailRow.additional_fence_amount ? sepMillier(detailRow.additional_fence_amount) : ''}
+                      onChange={handleChangeEdit}
+                      defaultValue={event ? '' : ' '}
+                      label="montant de la clôture supplémentaire"
+                      sx={{ width: '100%' }}
+                    />
+                  </CardContent>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <CardContent sx={{ marginTop: 0 }}>
+                    <TextField
+                      name="purchase_amount"
+                      id="outlined-basic"
+                      value={detailRow.purchase_amount ? sepMillier(detailRow.purchase_amount) : ''}
+                      onChange={handleChangeEdit}
+                      defaultValue={event ? '' : ' '}
+                      label="Montant de l'achat du logement"
+                      sx={{ width: '100%' }}
+                    />
+                  </CardContent>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <CardContent sx={{ marginTop: 0 }}>
+                    <TextField
+                      name="initial_contribution"
+                      id="outlined-basic"
+                      value={detailRow.initial_contribution ? sepMillier(detailRow.initial_contribution) : ''}
+                      onChange={handleChangeEdit}
+                      defaultValue={event ? '' : ' '}
+                      label="Apport initial"
+                      sx={{ width: '100%' }}
+                    />
+                  </CardContent>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <CardContent sx={{ marginTop: 0 }}>
+                    <TextField
+                      name="application_fees"
+                      // id="outlined-basic"
+                      onChange={handleChangeEdit}
+                      value={detailRow.application_fees ? sepMillier(detailRow.application_fees) : ''}
+                      defaultValue={event ? '' : ' '}
+                      label="Frais de dossier"
+                      sx={{ width: '100%' }}
+                    />
+                  </CardContent>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <CardContent sx={{ marginTop: 0 }}>
+                    <TextField
+                      name="booking_fees"
+                      id="outlined-basic"
+                      value={detailRow.booking_fees ? sepMillier(detailRow.booking_fees) : ''}
+                      onChange={handleChangeEdit}
+                      defaultValue={event ? '' : ' '}
+                      label="Frais de réservation"
+                      sx={{ width: '100%' }}
+                    />
+                  </CardContent>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <CardContent sx={{ marginTop: 0 }}>
+                    <TextField
+                      name="booking_fees_paid"
+                      id="outlined-basic"
+                      value={
+                        detailRow.booking_fees - detailRow.booking_fees_due
+                          ? sepMillier(detailRow.booking_fees - detailRow.booking_fees_due)
+                          : ''
+                      }
+                      onChange={handleChangeEdit}
+                      defaultValue={event ? '' : ' '}
+                      label="Frais de réservation payé"
+                      sx={{ width: '100%' }}
+                    />
+                  </CardContent>
+                </Grid>
+
+                {/* <Grid item xs={12} md={6}>
+                  <CardContent sx={{ marginTop: 0 }}>
+                    <TextField
+                      name="house_amount"
+                      // id="outlined-basic"
+                      onChange={handleChangeEdit}
+                      value={detailRow.house_amount ? sepMillier(detailRow.house_amount) : ''}
+                      defaultValue={event ? '' : ' '}
+                      label="Montant total de la maison"
+                      sx={{ width: '100%' }}
+                    />
+                  </CardContent>
+                </Grid> */}
+                {/* <Grid item xs={12} md={6}>
+                  <CardContent sx={{ marginTop: 0 }}>
+                    <TextField
+                      name="balance_due"
+                      // id="outlined-basic"
+                      // disabled
+                      onChange={handleChangeEdit}
+                      value={detailRow.balance_due ? sepMillier(detailRow.balance_due) : ''}
+                      defaultValue={event ? '' : ' '}
+                      label="Solde dû"
+                      sx={{ width: '100%' }}
+                    />
+                  </CardContent>
+                </Grid> */}
+
+                <Grid item xs={12} md={6}>
+                  <CardContent sx={{ marginTop: 0 }}>
+                    <DatePicker
+                      label="Date de début de paiement"
+                      value={startDate ? startDate : ''}
+                      onChange={(newValue) => {
+                        setStartDate(newValue);
+                      }}
+                      renderInput={(params) => <TextField fullWidth {...params} />}
+                    />
+                  </CardContent>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <CardContent sx={{ marginTop: 0 }}>
+                    <DatePicker
+                      label="Date de fin de paiement"
+                      value={endDate ? endDate : ''}
+                      onChange={(newValue) => {
+                        setEndDate(newValue);
+                      }}
+                      renderInput={(params) => <TextField fullWidth {...params} />}
+                    />
+                  </CardContent>
+                </Grid>
+              </Grid>
+            </Card>
           </Stack>
+          <DialogActions>
+            <Box sx={{ flexGrow: 1 }} />
+            <Button
+              variant="contained"
+              color="inherit"
+              onClick={() => {
+                handleCloseModal();
+                setEvent(false);
+              }}
+            >
+              Fermer
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => {
+                event ? handleSubmitToCreate() : handleSubmitToUpdate();
+              }}
+            >
+              {isLoading ? (
+                <>
+                  {event ? ' Enregistrement de la reservation...' : 'Modification de la reservation...'}
+                  <CircularProgress
+                    size={14}
+                    sx={{
+                      color: '#fff',
+                      marginLeft: 2,
+                    }}
+                  />
+                </>
+              ) : event ? (
+                'Enregistrer la reservation'
+              ) : (
+                ' Enregistrer les modifications'
+              )}
+            </Button>
+          </DialogActions>
         </Dialog>
         <Dialog open={isOpenModalImage} onClose={handleCloseModalImage} fullWidth="true" maxWidth="md">
           <DialogTitle sx={{ width: '100%', backgroundColor: '#D7B94D', paddingBottom: 2 }}>

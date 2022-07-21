@@ -43,11 +43,12 @@ const RowResultStyle = styled(TableRow)(({ theme }) => ({
 
 InvoiceDetails.propTypes = {
   invoice: PropTypes.object.isRequired,
+  user: PropTypes.object,
   customer: PropTypes.object.isRequired,
   program: PropTypes.object.isRequired,
 };
 
-export default function InvoiceDetails({ invoice, customer, program }) {
+export default function InvoiceDetails({ invoice, customer, program, user }) {
   const theme = useTheme();
 
   if (!invoice) {
@@ -65,7 +66,7 @@ export default function InvoiceDetails({ invoice, customer, program }) {
 
   return (
     <>
-      <InvoiceToolbar invoice={invoice} customer={customer} program={program} />
+      <InvoiceToolbar invoice={invoice} customer={customer} program={program} user={user} />
 
       <Card sx={{ pt: 5, px: 5 }}>
         <Grid container>
@@ -150,12 +151,19 @@ export default function InvoiceDetails({ invoice, customer, program }) {
                 >
                   <TableCell align="left" colSpan={4}>
                     <Box>
-                      <Typography variant="subtitle2">
-                        {program.label} {program.formula} {program.real_estate_program_type}
+                      <Typography variant="subtitle2" sx={{ fontSize: 17 }}>
+                        {/* {invoice.payment_schedule_reference} */}
+                        {invoice.payment_schedule_reference === 'FRAIS RESERVATION'
+                          ? 'Paiement de frais réservation'
+                          : "Paiement d'échéance"}
                       </Typography>
-                      <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
+                      <Typography variant="body2" sx={{ color: 'text.secondary', fontSize: 13 }} noWrap>
+                        {program.label} {program.formula} {program.real_estate_program_type} {' - '}
                         {program.location}
                       </Typography>
+                      {/* <Typography variant="body2" sx={{ color: 'text.secondary', fontSize: 12 }} noWrap>
+                        {invoice.payment_schedule_reference}
+                      </Typography> */}
                     </Box>
                   </TableCell>
                   <TableCell colSpan={1} align="right" sx={{ textAligin: 'right' }}>

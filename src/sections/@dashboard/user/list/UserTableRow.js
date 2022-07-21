@@ -21,6 +21,7 @@ UserTableRow.propTypes = {
   row: PropTypes.object,
   selected: PropTypes.bool,
   handleAddEvent: PropTypes.func,
+  handleViewRow: PropTypes.func,
   handleOpeneModalPassword: PropTypes.func,
   onEditRow: PropTypes.func,
   onSelectRow: PropTypes.func,
@@ -30,6 +31,7 @@ UserTableRow.propTypes = {
 export default function UserTableRow({
   row,
   selected,
+  handleViewRow,
   handleAddEvent,
   handleOpeneModalPassword,
   onEditRow,
@@ -82,6 +84,14 @@ export default function UserTableRow({
             <>
               <MenuItem
                 onClick={() => {
+                  handleViewRow();
+                }}
+              >
+                <Iconify icon={'eva:activity-outline'} />
+                Historique d'activitée
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
                   handleCloseMenu();
                   handleAddEvent();
                 }}
@@ -89,6 +99,7 @@ export default function UserTableRow({
                 <Iconify icon={'eva:edit-fill'} />
                 Modifier
               </MenuItem>
+
               <MenuItem
                 onClick={() => {
                   handleCloseMenu();

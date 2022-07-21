@@ -48,7 +48,7 @@ export default function InvoicePDF({ invoice, customer, program, facture }) {
     <Document>
       <Page size="A4" style={styles.page}>
         <View style={[styles.gridContainer, styles.mb40]}>
-          <Image source="/logo/s3i-logo.png" style={{ height: 52 }} />
+          <Image source="/logo/s3i-logo.png" style={{ height: 64 }} />
           <View style={{ alignItems: 'flex-end', flexDirection: 'column' }}>
             <Text style={styles.h3}>PAYÉE</Text>
             <Text> {invoice.payment_reference} </Text>
@@ -103,9 +103,14 @@ export default function InvoicePDF({ invoice, customer, program, facture }) {
             <View style={styles.tableRow}>
               <View style={styles.tableCell_2} colSpan={4}>
                 <Text style={styles.subtitle2}>
-                  {program.label} {program.formula} {program.real_estate_program_type}
+                  {invoice.payment_schedule_reference === 'FRAIS RESERVATION'
+                    ? 'Paiement de frais réservation'
+                    : "Paiement d'échéance"}
                 </Text>
-                <Text>{program.location}</Text>
+                <Text>
+                  {program.label} {program.formula} {program.real_estate_program_type} {' - '}
+                  {program.location}
+                </Text>
               </View>
               <View style={[styles.tableCell_3, styles.alignRight]} colSpan={1}>
                 <Text>{sepMillier(invoice.amount)} CFA</Text>

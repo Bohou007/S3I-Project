@@ -98,6 +98,7 @@
         "react-helmet-async": "^1.2.3",
         "react-hook-form": "^7.27.1",
         "react-i18next": "^11.15.6",
+        "react-idle-timer": "^5.4.1",
         "react-image-lightbox": "^5.1.4",
         "react-lazy-load-image-component": "^1.5.1",
         "react-map-gl": "^6.1.19",

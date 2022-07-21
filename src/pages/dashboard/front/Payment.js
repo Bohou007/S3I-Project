@@ -49,6 +49,7 @@ import { UserTableToolbarReservation, UserTableRowPaiment } from '../../../secti
 import useAuth from '../../../hooks/useAuth';
 import axios from '../../../utils/axios';
 import { SkeletonConversationItem, SkeletonMailSidebarItem } from '../../../components/skeleton';
+import { AddLogs } from '../log/AddLogs';
 
 // ----------------------------------------------------------------------
 
@@ -110,6 +111,7 @@ export default function Payment() {
     // if (response.status === 200 && programData.status === 200) {
     //   setIsGet(true);
     // }
+    AddLogs('a consulté ces versements', user);
 
     setTimeout(() => {
       setIsGet(true);
@@ -276,6 +278,7 @@ export default function Payment() {
                             onViewRow={() => handleViewRow(row.payment_reference)}
                             selected={selected.includes(row.id)}
                             onSelectRow={() => onSelectRow(row.id)}
+                            user={user}
                           />
                         ))
                     ) : (

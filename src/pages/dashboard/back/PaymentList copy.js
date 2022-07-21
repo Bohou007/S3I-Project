@@ -382,7 +382,7 @@ export default function PaymentList() {
       });
   };
 
-  const handleSubmitToCreate = (data) => {
+  const handleSubmitToCreate = (event) => {
     setIsLoading(true);
 
     const item = {
@@ -391,11 +391,10 @@ export default function PaymentList() {
       booking_reference: oneBooking.booking_reference,
       customer_lastname: oneCustomer.lastname,
       customer_firstname: oneCustomer.firstname,
-      amount: data.amount.split(' ').join(''),
-      bank: data.bank,
-      payment_method: data.payment_method,
-      input_payment_reference: data.input_payment_reference,
-      payment_goal: data.payment_goal,
+      amount: detailRow.amount.split(' ').join(''),
+      bank: detailRow.bank,
+      payment_method: detailRow.payment_method,
+      input_payment_reference: detailRow.input_payment_reference,
     };
 
     axios
@@ -721,14 +720,107 @@ export default function PaymentList() {
                 </Stack>
               </Stack>
             </Card>
-            <VersementNewEditForm
+            {/* <VersementNewEditForm
               isEdit={event}
               onSubmit={event ? handleSubmitToCreate : handleSubmitToUpdate}
               handleCloseModal={handleCloseModal}
               isLoading={isLoading}
-              paid={detailRow}
-            />
+              booking={detailRow}
+            /> */}
+            <Card sx={{ minWidth: 275 }}>
+              <Grid container spacing={1}>
+                <Grid item xs={12} md={6}>
+                  <CardContent sx={{ marginTop: 0 }}>
+                    <TextField
+                      name="payment_method"
+                      // id="outlined-basic"
+                      onChange={handleChangeEdit}
+                      value={detailRow.payment_method}
+                      defaultValue={event ? '' : ' '}
+                      label="Methode de paiement"
+                      sx={{ width: '100%' }}
+                    />
+                  </CardContent>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <CardContent sx={{ marginTop: 0 }}>
+                    <TextField
+                      name="bank"
+                      id="outlined-basic"
+                      value={detailRow.bank}
+                      onChange={handleChangeEdit}
+                      defaultValue={event ? '' : ' '}
+                      label="Banque"
+                      sx={{ width: '100%' }}
+                    />
+                  </CardContent>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <CardContent sx={{ marginTop: 0 }}>
+                    <TextField
+                      name="amount"
+                      // id="outlined-basic"
+                      onChange={handleChangeEdit}
+                      value={detailRow.amount ? sepMillier(detailRow.amount) : ''}
+                      // defaultValue={event ? '' : ' '}
+                      label="Montant payer"
+                      sx={{ width: '100%' }}
+                    />
+                  </CardContent>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <CardContent sx={{ marginTop: 0 }}>
+                    <TextField
+                      name="input_payment_reference"
+                      // id="outlined-basic"
+                      onChange={handleChangeEdit}
+                      value={detailRow.input_payment_reference}
+                      defaultValue={event ? '' : ' '}
+                      label="Reference de paiement"
+                      sx={{ width: '100%' }}
+                    />
+                  </CardContent>
+                </Grid>
+              </Grid>
+            </Card>
           </Stack>
+          <DialogActions>
+            <Box sx={{ flexGrow: 1 }} />
+            <Button
+              variant="contained"
+              color="inherit"
+              onClick={() => {
+                handleCloseModal();
+                setEvent(false);
+              }}
+            >
+              Fermer
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => {
+                event ? handleSubmitToCreate() : handleSubmitToUpdate();
+              }}
+            >
+              {isLoading ? (
+                <>
+                  {event ? ' Enregistrement du programme...' : 'Modification du programme...'}
+                  <CircularProgress
+                    size={14}
+                    sx={{
+                      color: '#fff',
+                      marginLeft: 2,
+                    }}
+                  />
+                </>
+              ) : event ? (
+                'Enregistrer le programme immobilier'
+              ) : (
+                ' Enregistrer les modifications'
+              )}
+            </Button>
+          </DialogActions>
         </Dialog>
       </Container>
     </Page>

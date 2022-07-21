@@ -20,7 +20,8 @@ const styles = StyleSheet.create({
     fontWeight: 700,
     textTransform: 'uppercase',
   },
-
+  titleIn: { fontSize: 17 },
+  titleEn: { fontSize: 13 },
   h3: { fontSize: 16, fontWeight: 700, color: '#229A16' },
   h4: { fontSize: 13, fontWeight: 700 },
   labelColor: {

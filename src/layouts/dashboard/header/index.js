@@ -12,8 +12,11 @@ import { HEADER, NAVBAR } from '../../../config';
 // components
 import Logo from '../../../components/Logo';
 import Iconify from '../../../components/Iconify';
+import useAuth from '../../../hooks/useAuth';
+
 import { IconButtonAnimate } from '../../../components/animate';
 //
+import AccountPopoverAdmin from './AccountPopoverAdmin';
 import AccountPopover from './AccountPopover';
 import NotificationsPopover from './NotificationsPopover';
 
@@ -56,6 +59,7 @@ DashboardHeader.propTypes = {
 
 export default function DashboardHeader({ onOpenSidebar, isCollapse = false, verticalLayout = false }) {
   const isOffset = useOffSetTop(HEADER.DASHBOARD_DESKTOP_HEIGHT) && !verticalLayout;
+  const { user } = useAuth();
 
   const isDesktop = useResponsive('up', 'lg');
 
@@ -80,7 +84,7 @@ export default function DashboardHeader({ onOpenSidebar, isCollapse = false, ver
 
         <Stack direction="row" alignItems="center" spacing={{ xs: 0.5, sm: 1.5 }}>
           <NotificationsPopover />
-          <AccountPopover />
+          {user?.role === 'customer' ? <AccountPopover /> : <AccountPopoverAdmin />}
         </Stack>
       </Toolbar>
     </RootStyle>

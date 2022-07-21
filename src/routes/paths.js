@@ -13,7 +13,7 @@ const ROOTS_DASHBOARD_ADMIN = '/tableau-de-bord/admin';
 export const PATH_AUTH = {
   root: ROOTS_AUTH,
   login: path(ROOTS_AUTH, '/login'),
-  adminLogin: (role) => path(ROOTS_AUTH, `${role}/login`),
+  adminLogin: path(ROOTS_AUTH, '/admin/login'),
   register: path(ROOTS_AUTH, '/register'),
   loginUnprotected: path(ROOTS_AUTH, '/login-unprotected'),
   registerUnprotected: path(ROOTS_AUTH, '/register-unprotected'),
@@ -91,7 +91,10 @@ export const PATH_DASHBOARD_ADMIN = {
   general: {
     dashboardAmin: path(ROOTS_DASHBOARD_ADMIN, '/app'),
     buildingPrograms: path(ROOTS_DASHBOARD_ADMIN, '/programmes-immobiliers'),
-    userLists: path(ROOTS_DASHBOARD_ADMIN, '/listes-des-utilisateurs'),
+    userLists: path(ROOTS_DASHBOARD_ADMIN, '/customer/listes-des-utilisateurs'),
+    logActivity: (userId) => path(ROOTS_DASHBOARD_ADMIN, `/customer/${userId}/historique-activite`),
+    // logActivity: (id) => path(ROOTS_DASHBOARD_ADMIN, `/customer/historique-activite/${id}`),
+
     customerReservation: path(ROOTS_DASHBOARD_ADMIN, '/reservations'),
     customerDetailsReservation: (bookingReference) => path(ROOTS_DASHBOARD_ADMIN, `/reservations/${bookingReference}`),
   },

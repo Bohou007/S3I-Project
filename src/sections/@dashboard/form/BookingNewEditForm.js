@@ -1,3 +1,4 @@
+/* eslint-disable import/named */
 /* eslint-disable no-unneeded-ternary */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable object-shorthand */
@@ -35,7 +36,7 @@ import { PATH_DASHBOARD } from '../../../routes/paths';
 import { countries } from '../../../_mock';
 // components
 import Label from '../../../components/Label';
-import { FormProvider, RHFSelect, RHFSwitch, RHFTextField, RHFUploadAvatar } from '../../../components/hook-form';
+import { FormProvider, RHFSelect, RHFSwitch, RHFTextField, RHFTextFieldSomme } from '../../../components/hook-form';
 import userAvartar from '../../../assets/images/userAvatar.png';
 import Image from '../../../components/Image';
 import Iconify from '../../../components/Iconify';
@@ -46,33 +47,42 @@ BookingNewEditForm.propTypes = {
   isEdit: PropTypes.bool,
   booking: PropTypes.object,
   onSubmit: PropTypes.func,
+  handleEndDate: PropTypes.func,
+  handleStartDate: PropTypes.func,
   handleCloseModal: PropTypes.func,
+  startDate: PropTypes.instanceOf(Date),
+  endDate: PropTypes.instanceOf(Date),
   isLoading: PropTypes.bool,
 };
 
-export default function BookingNewEditForm({ isEdit, onSubmit, booking, handleCloseModal, isLoading }) {
+export default function BookingNewEditForm({
+  isEdit,
+  onSubmit,
+  booking,
+  handleStartDate,
+  startDate,
+  endDate,
+  handleEndDate,
+  handleCloseModal,
+  isLoading,
+}) {
   const navigate = useNavigate();
 
-  const [startDate, setStartDate] = useState(booking?.payment_schedule_start_date);
-  const [endDate, setEndDate] = useState(booking?.payment_schedule_end_date);
-
   const { enqueueSnackbar } = useSnackbar();
-  const [showPasswordField, setShowPasswordField] = useState(false);
 
   const NewUserSchema = Yup.object().shape({
-    lot: Yup.string().required('le nom de famille est obligatoire'),
-    sub_lot: Yup.string().required('le prénom est obligatoire'),
-    additional_land: Yup.string().required("L'Email est obligatoire"),
-    additional_land_amount: Yup.string().required('Le numero de téléphone est obligatoire'),
-    additional_fence_amount: Yup.string().required('Le mot de passe est obligatoire'),
-    purchase_amount: Yup.string().required('Les mots de passe doivent correspondre'),
-    application_fees: Yup.string().required('Le genre est obligatoire'),
-    booking_fees: Yup.string().required('Le status matrimonial est obligatoire'),
-
-    house_amount: Yup.string().required('Le status matrimonial est obligatoire'),
-    balance_due: Yup.string().required('Le status matrimonial est obligatoire'),
-    // payment_schedule_start_date: Yup.string().required('Le status matrimonial est obligatoire'),
-    // payment_schedule_end_date: Yup.string().required('Le status matrimonial est obligatoire'),
+    lot: Yup.string().required('Le lot est obligatoire'),
+    sub_lot: Yup.string().required('Le Ilot est obligatoire'),
+    financing_method: Yup.string().required('Le mode de financement est obligatoire'),
+    additional_land: Yup.string(),
+    additional_land_amount: Yup.string(),
+    additional_fence: Yup.string(),
+    additional_fence_amount: Yup.string(),
+    purchase_amount: Yup.string().required('Le prix de vente du logement est obligatoire'),
+    initial_contribution: Yup.string().required("L'apport initial est obligatoire"),
+    application_fees: Yup.string().required('Les frais de dossier sont obligatoire'),
+    booking_fees: Yup.string().required('Les frais de réservation sont obligatoire'),
+    booking_fees_paid: Yup.string(),
   });
 
   const sepMillier = (number) => {
@@ -84,19 +94,20 @@ export default function BookingNewEditForm({ isEdit, onSubmit, booking, handleCl
     () => ({
       lot: booking?.lot || '',
       sub_lot: booking?.sub_lot || '',
-      additional_land: booking?.additional_land || '',
+      financing_method: booking?.financing_method || '',
+      additional_land: booking?.additional_land >= 0 ? booking?.additional_land : '',
       additional_land_amount: booking.additional_land_amount ? sepMillier(booking.additional_land_amount) : '',
+      additional_fence: booking?.additional_fence >= 0 ? booking?.additional_fence : '',
       additional_fence_amount: booking.additional_fence_amount ? sepMillier(booking.additional_fence_amount) : '',
       purchase_amount: booking.purchase_amount ? sepMillier(booking.purchase_amount) : '',
+      initial_contribution: booking.initial_contribution ? sepMillier(booking.initial_contribution) : '',
       application_fees: booking.application_fees ? sepMillier(booking.application_fees) : '',
       booking_fees: booking.booking_fees ? sepMillier(booking.booking_fees) : '',
-      house_amount: booking.house_amount ? sepMillier(booking.house_amount) : '',
-      balance_due: booking.balance_due ? sepMillier(booking.balance_due) : '',
-
-      payment_schedule_start_date: startDate || '',
-      payment_schedule_end_date: endDate || '',
+      booking_fees_paid:
+        booking.booking_fees - booking.booking_fees_due >= 0
+          ? sepMillier(booking.booking_fees - booking.booking_fees_due)
+          : '',
     }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [booking]
   );
 
@@ -158,17 +169,51 @@ export default function BookingNewEditForm({ isEdit, onSubmit, booking, handleCl
               }}
             >
               <RHFTextField name="lot" label="Lot" />
-              <RHFTextField name="sub_lot" label="Sous-Lot" />
-              <RHFTextField name="additional_land" label="Terrain supplémentaires (m²)" />
-              <RHFTextField name="additional_land_amount" label="Montant du terrain supplémentaire" />
-              <RHFTextField name="additional_fence_amount" label="montant de la clôture supplémentaire" />
+              <RHFTextField name="sub_lot" label="ILot" />
+              <RHFTextField name="financing_method" label="Mode de financement" />
+              <RHFTextFieldSomme name="purchase_amount" isSomme={'true'} label="Prix de vente du logement" />
 
-              <RHFTextField name="purchase_amount" label="Montant de l'achat" />
-              <RHFTextField name="application_fees" label="Frais de demande" />
-              <RHFTextField name="booking_fees" label="Frais de réservation" />
-              <RHFTextField name="house_amount" label="Montant total de la maison" />
-              <RHFTextField name="balance_due" label="Solde dû" />
+              <RHFTextFieldSomme name="initial_contribution" isSomme={'true'} label="Apport initial" />
+
+              <RHFTextFieldSomme name="application_fees" isSomme={'true'} label="Frais de dossier" />
+
+              <RHFTextField name="additional_land" label="Terrain supplémentaires (m²)" />
+              <RHFTextFieldSomme
+                name="additional_land_amount"
+                isSomme={'true'}
+                label="Coût du terrain supplémentaire"
+              />
+
+              <RHFTextField name="additional_fence" label="Clôture supplémentaire (m²)" />
+              <RHFTextFieldSomme
+                name="additional_fence_amount"
+                isSomme={'true'}
+                label="Coût de la clôture supplémentaire"
+              />
+
+              <RHFTextFieldSomme name="booking_fees" isSomme={'true'} label="Frais de réservation" />
+              <RHFTextFieldSomme name="booking_fees_paid" isSomme={'true'} label="Frais de réservation payé" />
+
+              {/* <RHFTextField name="house_amount" label="Montant total de la maison" /> */}
+              {/* <RHFTextField name="balance_due" label="Solde dû" /> */}
+
               <DatePicker
+                label="Date de début de paiement"
+                value={startDate ? startDate : ''}
+                onChange={(newValue) => {
+                  handleStartDate(newValue);
+                }}
+                renderInput={(params) => <RHFTextField fullWidth {...params} />}
+              />
+              <DatePicker
+                label="Date de fin de paiement"
+                value={endDate ? endDate : ''}
+                onChange={(newValue) => {
+                  handleEndDate(newValue);
+                }}
+                renderInput={(params) => <RHFTextField fullWidth {...params} />}
+              />
+              {/* <DatePicker
                 label="Date de début de paiement"
                 value={startDate ? startDate : ''}
                 onChange={(newValue) => {
@@ -183,7 +228,7 @@ export default function BookingNewEditForm({ isEdit, onSubmit, booking, handleCl
                   setEndDate(newValue);
                 }}
                 renderInput={(params) => <RHFTextField fullWidth {...params} />}
-              />
+              /> */}
             </Box>
 
             <Stack alignItems="flex-end" sx={{ mt: 3 }}>

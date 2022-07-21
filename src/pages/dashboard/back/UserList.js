@@ -204,6 +204,12 @@ export default function UserList() {
     setDetailRow({ ...detailRow, [name]: value });
   };
 
+  const handleViewRow = async (value) => {
+    const response = await axios.get(`/ws-booking-payment/customer/${value.customer_reference}`);
+    localStorage.setItem('customer', JSON.stringify(response.data));
+    navigate(PATH_DASHBOARD_ADMIN.general.logActivity(response.data.id));
+  };
+
   const handleAddEvent = async (value) => {
     const response = await axios.get(`/ws-booking-payment/customer/${value.customer_reference}`);
     setDetailRow(value);
@@ -381,6 +387,7 @@ export default function UserList() {
                           handleOpeneModalPassword={() => handleOpeneModalPassword(row)}
                           isOpenModal={isOpenModal}
                           handleCloseModal={() => handleCloseModal()}
+                          handleViewRow={() => handleViewRow(row)}
                           // handleSubmitToUpdate={(event) => handleSubmitToUpdate(event)}
                         />
                       ))

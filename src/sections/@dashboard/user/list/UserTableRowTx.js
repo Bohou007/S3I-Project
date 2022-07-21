@@ -49,7 +49,12 @@ import {
   selectRange,
 } from '../../../../redux/slices/calendar';
 import axios from '../../../../utils/axios';
+import useAuth from '../../../../hooks/useAuth';
+
 import { CalendarForm, CalendarStyle, CalendarToolbar } from '../../calendar';
+import { AddLogs } from '../../../../pages/dashboard/log/AddLogs';
+
+// const { user } = useAuth();
 
 class UserTableRowTx extends Component {
   constructor(props) {
@@ -73,12 +78,18 @@ class UserTableRowTx extends Component {
   handleAddEvent = async (value) => {
     const program = await axios.get(`/ws-booking-payment/real-estate-program/${value.real_estate_program_reference}`);
     const booking = await axios.get(`/ws-booking-payment/booking/${value.booking_reference}`);
+
     this.setState({
       isOpenModal: true,
       detailRow: value,
       program: program.data,
       booking: booking.data,
     });
+
+    AddLogs(
+      "a consulté les details d'une de ces échéances pour la reservation de référence " + value.booking_reference,
+      this.props.user
+    );
   };
 
   handleGetProgramme = async (value) => {
@@ -155,7 +166,7 @@ class UserTableRowTx extends Component {
             onClick={() => this.handleAddEvent(this.props.row)}
             startIcon={<VisibilityIcon />}
           >
-            Details
+            Détails
           </Button>
 
           <DialogAnimate open={this.state.isOpenModal} onClose={this.handleCloseModal} maxWidth={'md'}>
@@ -194,25 +205,25 @@ class UserTableRowTx extends Component {
               </Card>
               <Card sx={{ minWidth: 275 }}>
                 <Grid container spacing={2}>
-                  <Grid item xs={6} md={4}>
+                  <Grid item xs={6} md={3}>
                     <CardContent sx={{}}>
-                      <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Code reservation</Typography>
+                      <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Code du logement</Typography>
                       <Typography variant="body2">{this.state.booking.booking_reference}</Typography>
                     </CardContent>
                   </Grid>
-                  <Grid item xs={6} md={4}>
+                  <Grid item xs={6} md={3}>
                     <CardContent sx={{}}>
                       <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Lot</Typography>
                       <Typography variant="body2">{this.state.booking.lot}</Typography>
                     </CardContent>
                   </Grid>
-                  <Grid item xs={6} md={4}>
+                  <Grid item xs={6} md={3}>
                     <CardContent sx={{}}>
-                      <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Sous-Lot</Typography>
+                      <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Ilot</Typography>
                       <Typography variant="body2">{this.state.booking.sub_lot}</Typography>
                     </CardContent>
                   </Grid>
-                  <Grid item xs={6} md={4}>
+                  <Grid item xs={6} md={3}>
                     <CardContent>
                       <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Statut</Typography>
                       {parseInt(this.state.detailRow.amount_paid) !== 0 ? (
@@ -322,6 +333,7 @@ class UserTableRowTx extends Component {
 
 UserTableRowTx.propTypes = {
   row: PropTypes.object,
+  user: PropTypes.object,
   selected: PropTypes.bool,
   onEditRow: PropTypes.func,
   onSelectRow: PropTypes.func,

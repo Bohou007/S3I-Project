@@ -123,7 +123,7 @@ export default function UserTableRowAdminReserv({
                   <Iconify icon={'eva:eye-outline'} />
                   Voir detail
                 </MenuItem>
-                <MenuItem
+                {/* <MenuItem
                   onClick={() => {
                     handleCloseMenu();
                     handleAddEvent();
@@ -131,7 +131,7 @@ export default function UserTableRowAdminReserv({
                 >
                   <Iconify icon={'eva:edit-fill'} />
                   Modifier
-                </MenuItem>
+                </MenuItem> */}
                 <MenuItem
                   onClick={() => {
                     handleCloseMenu();

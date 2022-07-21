@@ -1,3 +1,5 @@
+/* eslint-disable prefer-template */
+/* eslint-disable import/named */
 /* eslint-disable arrow-body-style */
 /* eslint-disable import/no-unresolved */
 /* eslint-disable no-nested-ternary */
@@ -58,6 +60,7 @@ import { UserTableToolbarReservation, UserTableRowReservation } from '../../../s
 import useAuth from '../../../hooks/useAuth';
 import axios from '../../../utils/axios';
 import { AppFeatured, AppWelcome, AppWidget } from '../../../sections/@dashboard/general/app';
+import { AddLogs } from '../log/AddLogs';
 
 // ----------------------------------------------------------------------
 
@@ -133,6 +136,8 @@ export default function Reservation() {
     setTotalAmountPay(totalAmountPayData.data);
     setTableData(response.data);
     setProgram(programData.data);
+
+    AddLogs('a consulté ces logements', user);
 
     // if (response.status === 200 && programData.status === 200) {
     //   setIsGet(true);
@@ -246,7 +251,7 @@ export default function Reservation() {
           heading="Consulter mes logements"
           links={[{ name: 'Tableau de bord', href: PATH_DASHBOARD.root }, { name: 'Mes logements' }]}
         />
-        <Card sx={{ padding: 5, marginBottom: 5 }}>
+        {/* <Card sx={{ padding: 5, marginBottom: 5 }}>
           <Grid container spacing={3}>
             <Grid item xs={12} md={6}>
               <AppWidget
@@ -268,7 +273,7 @@ export default function Reservation() {
               />
             </Grid>
           </Grid>
-        </Card>
+        </Card> */}
 
         <Card>
           {/* <Tabs

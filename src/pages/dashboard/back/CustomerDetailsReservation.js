@@ -111,7 +111,7 @@ export default function CustomerDetailsReservation() {
     {
       value: 'galerie',
       icon: <Iconify icon={'ic:round-perm-media'} width={20} height={20} />,
-      component: <ProfileGallery gallery={galleries} isGet={isGet} />,
+      component: <ProfileGallery gallery={galleries} user={user} isGet={isGet} detailRow={book} />,
     },
   ];
 

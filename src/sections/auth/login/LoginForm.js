@@ -15,6 +15,7 @@ import useIsMountedRef from '../../../hooks/useIsMountedRef';
 // components
 import Iconify from '../../../components/Iconify';
 import { FormProvider, RHFTextField, RHFCheckbox } from '../../../components/hook-form';
+import { AddLogs } from '../../../pages/dashboard/log/AddLogs';
 
 // ----------------------------------------------------------------------
 
@@ -52,8 +53,19 @@ export default function LoginForm() {
     try {
       const response = await login(data.login_id, data.password);
       console.log('====================================');
-      console.log('response', response);
+      console.log('response', response.data.customer);
       console.log('====================================');
+      const user = await {
+        firstName: response.data.customer.firstname,
+        id: response.data.customer.id,
+        lastName: response.data.customer.lastname,
+        role: 'CUSTOMER',
+      };
+
+      console.log('=================user===================');
+      console.log('response', user);
+      console.log('====================================');
+      AddLogs("s'est connecté.", user);
     } catch (error) {
       console.error(error);
       reset();

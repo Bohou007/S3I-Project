@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 import axios from 'axios';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { useSnackbar } from 'notistack';
 // form
@@ -15,6 +15,7 @@ import { FormProvider, RHFTextField } from '../../../../components/hook-form';
 import { HOST_API } from '../../../../config';
 import useAuth from '../../../../hooks/useAuth';
 import Iconify from '../../../../components/Iconify';
+import { AddLogs } from '../../../../pages/dashboard/log/AddLogs';
 
 // ----------------------------------------------------------------------
 
@@ -24,6 +25,8 @@ export default function AccountChangePassword() {
   const [showPasswordField1, setShowPasswordField1] = useState(false);
   const [showPasswordField2, setShowPasswordField2] = useState(false);
   const [showPasswordField3, setShowPasswordField3] = useState(false);
+
+  useEffect(() => {}, []);
 
   const ChangePassWordSchema = Yup.object().shape({
     old_password: Yup.string().required('Le mot de passe actuel est requis'),
@@ -57,7 +60,9 @@ export default function AccountChangePassword() {
       await axios
         .put(`${HOST_API}/ws-booking-payment/customer/update-password/${user?.customer_reference}`, data)
         .then((res) => {
-          enqueueSnackbar('Votre mot de password ont été mise à jour', { variant: 'success' });
+          enqueueSnackbar('Votre mot de passe ont été mise à jour', { variant: 'success' });
+          AddLogs('a mis a jour son mot de passe', user);
+
           setTimeout(() => {
             window.location.reload(true);
           }, 1500);

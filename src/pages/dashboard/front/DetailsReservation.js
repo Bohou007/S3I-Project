@@ -1,3 +1,4 @@
+/* eslint-disable prefer-template */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { capitalCase } from 'change-case';
 /* eslint-disable react-hooks/exhaustive-deps */
@@ -23,6 +24,7 @@ import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
 import IndexBooking from '../IndexBooking';
 import ProfileGallery from '../ProfileGallery';
 import axios from '../../../utils/axios';
+import { AddLogs } from '../log/AddLogs';
 
 // ----------------------------------------------------------------------
 
@@ -58,7 +60,7 @@ export default function DetailsReservation() {
   const { user } = useAuth();
   const { bookingReference } = useParams();
 
-  const { currentTab, onChangeTab } = useTabs('détails');
+  const { currentTab, onChangeTab } = useTabs('details');
   const [program, setProgram] = useState({});
   const [book, setBook] = useState({});
   const [galleries, setGalleries] = useState([]);
@@ -77,6 +79,7 @@ export default function DetailsReservation() {
     setProgram(programData.data);
 
     const galleriesData = await axios.get(`ws-booking-payment/image/booking/${bookingReference}`);
+    AddLogs('a consulté les details de son logement ayant pour référence ' + bookingReference, user);
 
     setGalleries(galleriesData.data);
     if (galleriesData.status === 200) {
@@ -93,9 +96,10 @@ export default function DetailsReservation() {
 
   const PROFILE_TABS = [
     {
-      value: 'détails',
+      value: 'details',
+      label: 'Détails',
       icon: <Iconify icon={'eva:info-outline'} width={20} height={20} />,
-      component: <IndexBooking program={program} detailRow={book} />,
+      component: <IndexBooking program={program} detailRow={book} customer={'true'} />,
     },
     // {
     //   value: 'profile',
@@ -109,8 +113,11 @@ export default function DetailsReservation() {
     // },
     {
       value: 'galerie',
+      label: "Etat d'avancement",
       icon: <Iconify icon={'ic:round-perm-media'} width={20} height={20} />,
-      component: <ProfileGallery gallery={galleries} isGet={isGet} />,
+      component: (
+        <ProfileGallery detailRow={book} gallery={galleries} user={user} bookingReference={bookingReference} />
+      ),
     },
   ];
 
@@ -143,7 +150,7 @@ export default function DetailsReservation() {
               onChange={onChangeTab}
             >
               {PROFILE_TABS.map((tab) => (
-                <Tab disableRipple key={tab.value} value={tab.value} icon={tab.icon} label={capitalCase(tab.value)} />
+                <Tab disableRipple key={tab.value} value={tab.value} icon={tab.icon} label={tab.label} />
               ))}
             </Tabs>
           </TabsWrapperStyle>

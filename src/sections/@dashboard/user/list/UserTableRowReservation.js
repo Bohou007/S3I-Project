@@ -138,7 +138,18 @@ class UserTableRowReservation extends Component {
         <TableCell align="left"> {moment(row.payment_schedule_end_date).format('DD MMM YYYY')}</TableCell>
 
         <TableCell align="left">
-          <TableMoreMenu
+          <Button
+            variant="outlined"
+            color={'primary'}
+            onClick={() => {
+              this.props.onViewRow();
+            }}
+            startIcon={<VisibilityIcon />}
+          >
+            Détails
+          </Button>
+
+          {/* <TableMoreMenu
             open={this.state.openMenu}
             onOpen={this.handleOpenMenu}
             onClose={this.handleCloseMenu}
@@ -156,7 +167,7 @@ class UserTableRowReservation extends Component {
                 </MenuItem>
               </>
             }
-          />
+          /> */}
 
           <DialogAnimate open={this.state.isOpenModal} onClose={this.handleCloseModal} maxWidth={'md'}>
             <DialogTitle sx={{ width: '100%', backgroundColor: '#D7B94D', paddingBottom: 2 }}>
@@ -205,7 +216,7 @@ class UserTableRowReservation extends Component {
                   </Grid>
                   <Grid item xs={6} md={4}>
                     <CardContent sx={{}}>
-                      <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Sous-Lot</Typography>
+                      <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>ILot</Typography>
                       <Typography variant="body2">{this.state.detailRow.sub_lot}</Typography>
                     </CardContent>
                   </Grid>

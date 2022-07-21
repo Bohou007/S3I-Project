@@ -32,7 +32,13 @@ export function NavItemRoot({ item, isCollapse, open = false, active, onOpen }) 
     return domain;
   };
 
+  const reallyPath1 = (data) => {
+    const domain = data.substr(0, data.lastIndexOf('/') - 1);
+    return domain;
+  };
+
   const cordsPath = reallyPath(pathname);
+  const cordsPath1 = reallyPath1(pathname);
   // const clodPath = reallyPath(list.path);
 
   if (cordsPath === '/tableau-de-bord/versements/' && path === '/tableau-de-bord/versements/consulter-mes-versements') {
@@ -46,6 +52,13 @@ export function NavItemRoot({ item, isCollapse, open = false, active, onOpen }) 
   if (
     cordsPath === '/tableau-de-bord/admin/payments/' &&
     path === '/tableau-de-bord/admin/payments/suivi-des-versements'
+  ) {
+    active = true;
+  }
+
+  if (
+    cordsPath1 === '/tableau-de-bord/admin/customer/' &&
+    path === '/tableau-de-bord/admin/customer/listes-des-utilisateurs'
   ) {
     active = true;
   }

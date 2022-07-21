@@ -11,6 +11,7 @@ import { PATH_AUTH } from '../../routes/paths';
 import useAuth from '../../hooks/useAuth';
 import useResponsive from '../../hooks/useResponsive';
 import illustrationLogin from '../../assets/images/illustration_login.png';
+import fond from '../../assets/images/slider1.jpg';
 import videoBg from '../../assets/video/builder.mp4';
 
 // components
@@ -25,22 +26,26 @@ import { LoginForm } from '../../sections/auth/login';
 const RootStyle = styled('div')(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
     display: 'flex',
+    backgroundImage: `url(${fond})`,
+    backgroundRepeat: 'no-repeat',
   },
 }));
 
 const HeaderStyle = styled('header')(({ theme }) => ({
   top: 0,
-  zIndex: 9,
-  lineHeight: 0,
+  // zIndex: 9,
+  // lineHeight: 0,
   width: '100%',
   display: 'flex',
   alignItems: 'center',
-  position: 'absolute',
-  padding: theme.spacing(3),
-  justifyContent: 'space-between',
+  // position: 'absolute',
+  paddingTop: 10,
+  paddingBottom: theme.spacing(5),
+
+  justifyContent: 'center',
   [theme.breakpoints.up('md')]: {
     alignItems: 'flex-start',
-    padding: theme.spacing(7, 5, 0, 7),
+    // padding: theme.spacing(7, 5, 0, 7),
   },
 }));
 
@@ -75,21 +80,13 @@ export default function Login() {
 
   return (
     <Page title="Connexion">
-      <RootStyle>
-        <HeaderStyle>
+      <RootStyle sx={{ backgroundImage: fond }}>
+        {/* <HeaderStyle>
           <Logo />
-          {/* {smUp && (
-            <Typography variant="body2" sx={{ mt: { md: -2 } }}>
-              Vous n'avez pas de compte ? {''}
-              <Link variant="subtitle2" component={RouterLink} to={PATH_AUTH.register}>
-                Créer un compte
-              </Link>
-            </Typography>
-          )} */}
-        </HeaderStyle>
+        </HeaderStyle> */}
 
-        {mdUp && (
-          <SectionStyle>
+        {/* {mdUp && ( */}
+        {/* <SectionStyle>
             <Typography variant="h2" sx={{ px: 5, mt: 10 }}>
               {salutation},
             </Typography>
@@ -97,36 +94,25 @@ export default function Login() {
               Bienvenue
             </Typography>
             <CardMedia component="video" image={videoBg} autoPlay loop muted />
-
-            {/* <Image visibleByDefault disabledEffect alt="login" src={illustrationLogin} /> */}
-          </SectionStyle>
-        )}
+          </SectionStyle> */}
+        {/* )} */}
 
         <Container maxWidth="sm">
           <ContentStyle>
-            <Stack direction="row" alignItems="center" sx={{ mb: 5 }}>
-              <Box sx={{ flexGrow: 1 }}>
-                <Typography variant="h4" gutterBottom>
-                  Connectez-vous
-                </Typography>
-                <Typography sx={{ color: 'text.secondary' }}>Entrez vos coordonnées ci-dessous.</Typography>
-              </Box>
+            <Stack sx={{ backgroundColor: '#fff', pb: 10, pl: 10, pr: 10, pt: 7, borderRadius: 2 }}>
+              <HeaderStyle>
+                <Logo />
+              </HeaderStyle>
+              <Stack direction="row" alignItems="center" sx={{ mb: 5 }}>
+                <Box sx={{ flexGrow: 1, textAlign: 'center' }}>
+                  <Typography variant="h4" gutterBottom>
+                    Connectez-vous
+                  </Typography>
+                  <Typography sx={{ color: 'text.secondary' }}>Entrez vos coordonnées ci-dessous.</Typography>
+                </Box>
+              </Stack>
+              <LoginForm />
             </Stack>
-
-            {/* <Alert severity="info" sx={{ mb: 3 }}>
-              Use email : <strong>demo@minimals.cc</strong> / password :<strong> demo1234</strong>
-            </Alert> */}
-
-            <LoginForm />
-
-            {/* {!smUp && (
-              <Typography variant="body2" align="center" sx={{ mt: 3 }}>
-                Vous n'avez pas de compte ?{' '}
-                <Link variant="subtitle2" component={RouterLink} to={PATH_AUTH.register}>
-                  Créer un compte
-                </Link>
-              </Typography>
-            )} */}
           </ContentStyle>
         </Container>
       </RootStyle>

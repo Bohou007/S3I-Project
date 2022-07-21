@@ -1,3 +1,4 @@
+/* eslint-disable import/named */
 import { capitalCase } from 'change-case';
 // @mui
 import { Container, Tab, Box, Tabs } from '@mui/material';
@@ -20,6 +21,7 @@ import {
   AccountNotifications,
   AccountChangePassword,
 } from '../../sections/@dashboard/user/account';
+import { AnalyticsOrderTimeline, AnalyticsNewsUpdate } from '../../sections/@dashboard/general/analytics';
 
 // ----------------------------------------------------------------------
 
@@ -41,6 +43,12 @@ export default function UserAccount() {
       icon: <Iconify icon={'ic:round-vpn-key'} width={20} height={20} />,
       component: <AccountChangePassword />,
     },
+    // {
+    //   value: 'log_activity',
+    //   label: "Historique d'activité",
+    //   icon: <Iconify icon={'eva:activity-outline'} width={20} height={20} />,
+    //   component: <AnalyticsOrderTimeline roles={'CUSTOMER'} />,
+    // },
   ];
 
   return (

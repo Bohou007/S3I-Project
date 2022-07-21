@@ -13,9 +13,8 @@ import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import MyAvatar from '../../../components/MyAvatar';
 import MenuPopover from '../../../components/MenuPopover';
 import { IconButtonAnimate } from '../../../components/animate';
-import { AddLogs } from '../../../pages/dashboard/log/AddLogs';
 
-export default function AccountPopover() {
+export default function AccountPopoverAdmin() {
   const navigate = useNavigate();
 
   const { user, logout } = useAuth();
@@ -43,7 +42,7 @@ export default function AccountPopover() {
     },
     {
       label: 'Gérer mon compte',
-      linkTo: user?.role === 'customer' ? PATH_DASHBOARD.user.account : PATH_DASHBOARD_ADMIN.user.account,
+      linkTo: PATH_DASHBOARD_ADMIN.user.account,
     },
   ];
 
@@ -51,9 +50,8 @@ export default function AccountPopover() {
 
   const handleLogout = async () => {
     try {
-      AddLogs("s'est deconnecté.", user);
       await logout();
-      navigate(PATH_AUTH.login, { replace: true });
+      navigate(PATH_AUTH.adminLogin);
       if (isMountedRef.current) {
         handleClose();
       }
@@ -81,18 +79,6 @@ export default function AccountPopover() {
         }}
       >
         <MyAvatar />
-        {/* <Box sx={{ my: 1.5, px: 1.5 }}>
-          <Typography
-            variant="subtitle2"
-            sx={{ color: 'text.secondary', fontWeight: 'bold', textAlign: 'left' }}
-            noWrap
-          >
-            {user?.firstName} {user?.lastName}
-          </Typography>
-          <Typography variant="body2" sx={{ color: 'text.secondary', textAlign: 'left' }} noWrap>
-            {user?.customer_reference}
-          </Typography>
-        </Box> */}
       </IconButtonAnimate>
 
       <MenuPopover

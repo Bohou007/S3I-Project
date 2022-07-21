@@ -21,16 +21,18 @@ import { PATH_DASHBOARD } from '../../../../routes/paths';
 import Iconify from '../../../../components/Iconify';
 //
 import InvoicePDF from './InvoicePDF';
+import { AddLogs } from '../../../../pages/dashboard/log/AddLogs';
 
 // ----------------------------------------------------------------------
 
 InvoiceToolbar.propTypes = {
   invoice: PropTypes.object.isRequired,
   customer: PropTypes.object.isRequired,
+  user: PropTypes.object,
   program: PropTypes.object.isRequired,
 };
 
-export default function InvoiceToolbar({ invoice, customer, program }) {
+export default function InvoiceToolbar({ invoice, customer, program, user }) {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [isDownload, setIsDownload] = useState(false);
@@ -64,6 +66,12 @@ export default function InvoiceToolbar({ invoice, customer, program }) {
         })
         .then((res) => {
           fileDownload(res.data, facture);
+
+          AddLogs(
+            "a téléchargée la facture d'un de ces versements ayant pour reference " +
+              invoice.payment_schedule_reference,
+            user
+          );
         });
     }, 3000);
   };
@@ -91,6 +99,11 @@ export default function InvoiceToolbar({ invoice, customer, program }) {
               iframe.contentWindow.print();
             }, 1);
           };
+
+          AddLogs(
+            "a imprimée la facture d'un de ces versements ayant pour reference " + invoice.payment_schedule_reference,
+            user
+          );
         });
     }, 3000);
   };

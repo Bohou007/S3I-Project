@@ -48,6 +48,7 @@ import {
 import axios from '../../../../utils/axios';
 
 import { CalendarForm, CalendarStyle, CalendarToolbar } from '../../calendar';
+import { AddLogs } from '../../../../pages/dashboard/log/AddLogs';
 
 class UserTableRowPaiment extends Component {
   constructor(props) {
@@ -77,6 +78,10 @@ class UserTableRowPaiment extends Component {
       detailRow: value,
       program: response.data,
     });
+    AddLogs(
+      'a consulté les détailes de son versement de référence ' + value.payment_schedule_reference,
+      this.props.user
+    );
   };
 
   handleGetProgramme = async (value) => {
@@ -269,6 +274,7 @@ class UserTableRowPaiment extends Component {
 
 UserTableRowPaiment.propTypes = {
   row: PropTypes.object,
+  user: PropTypes.object,
   onViewRow: PropTypes.func,
 };
 

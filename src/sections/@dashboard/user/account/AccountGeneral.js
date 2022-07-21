@@ -2,7 +2,7 @@
 import * as Yup from 'yup';
 import axios from 'axios';
 import { useSnackbar } from 'notistack';
-import { useCallback, useReducer } from 'react';
+import { useCallback, useReducer, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 // form
 import { useForm } from 'react-hook-form';
@@ -21,6 +21,7 @@ import { FormProvider, RHFSwitch, RHFSelect, RHFTextField, RHFUploadAvatar } fro
 import Image from '../../../../components/Image';
 import userAvartar from '../../../../assets/images/userAvatar.png';
 import { HOST_API } from '../../../../config';
+import { AddLogs } from '../../../../pages/dashboard/log/AddLogs';
 // ----------------------------------------------------------------------
 const initialState = {
   user: null,
@@ -48,6 +49,10 @@ export default function AccountGeneral() {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const { user } = useAuth();
+
+  useEffect(() => {
+    AddLogs('a consulté son profile', user);
+  }, []);
 
   const UpdateUserSchema = Yup.object().shape({
     firstname: Yup.string().required('Votre nom est requis'),
@@ -108,6 +113,7 @@ export default function AccountGeneral() {
             sexe: data.sexe,
             maritalStatus: data.marital_status,
           };
+          AddLogs('a mis a jour son profile', user);
 
           dispatch({
             type: 'INITIALIZE',

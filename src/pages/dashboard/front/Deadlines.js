@@ -1,3 +1,4 @@
+/* eslint-disable prefer-template */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable import/first */
 /* eslint-disable no-unused-vars */
@@ -53,6 +54,7 @@ import { UserTableToolbarTx, UserTableRowTx } from '../../../sections/@dashboard
 import useAuth from '../../../hooks/useAuth';
 import axios from '../../../utils/axios';
 import { SkeletonConversationItem, SkeletonMailSidebarItem } from '../../../components/skeleton';
+import { AddLogs } from '../log/AddLogs';
 
 // ----------------------------------------------------------------------
 
@@ -113,6 +115,8 @@ export default function Deadlines() {
     setFilterProgramme(option.booking_reference);
     const booking = await axios.get(`/ws-booking-payment/payment-schedule/booking/${option.booking_reference}`);
     setTableData(booking.data);
+
+    AddLogs('a consulté ces échéances', user);
 
     setTimeout(() => {
       setIsGet(true);
@@ -181,11 +185,11 @@ export default function Deadlines() {
   }, 4000);
 
   return (
-    <Page title="Consulter mes echeances">
+    <Page title="Consulter mes échéances">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Consulter mes echeances"
-          links={[{ name: 'Tableau de bord', href: PATH_DASHBOARD.root }, { name: 'Mes echeances' }]}
+          heading="Consulter mes échéances"
+          links={[{ name: 'Tableau de bord', href: PATH_DASHBOARD.root }, { name: 'Mes échéances' }]}
         />
 
         <Card>
@@ -265,6 +269,7 @@ export default function Deadlines() {
                             row={row}
                             selected={selected.includes(row.id)}
                             onSelectRow={() => onSelectRow(row.id)}
+                            user={user}
                           />
                         ))
                     ) : (

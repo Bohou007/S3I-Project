@@ -7,6 +7,9 @@ import LogoOnlyLayout from '../layouts/LogoOnlyLayout';
 // guards
 import GuestGuard from '../guards/GuestGuard';
 import AuthGuard from '../guards/AuthGuard';
+import AuthBeforeDead from '../guards/AuthBeforeDead';
+import AuthBeforeLoge from '../guards/AuthBeforeLoge';
+import AuthBeforeVers from '../guards/AuthBeforeVers';
 import RoleBasedGuard from '../guards/RoleBasedGuard';
 import LoadingScreen from '../components/LoadingScreen';
 
@@ -77,12 +80,27 @@ export default function Router() {
           path: 'app',
           element: <Dashboard />,
         },
-        { path: 'consulter-mes-echeances', element: <Deadlines /> },
+
+        {
+          path: 'consulter-mes-echeances',
+          element: (
+            <AuthBeforeDead>
+              <Deadlines />
+            </AuthBeforeDead>
+          ),
+        },
         {
           path: 'versements',
           children: [
             { element: <Navigate to="/tableau-de-bord/versements/consulter-mes-versements" replace />, index: true },
-            { path: 'consulter-mes-versements', element: <Payment /> },
+            {
+              path: 'consulter-mes-versements',
+              element: (
+                <AuthBeforeVers>
+                  <Payment />
+                </AuthBeforeVers>
+              ),
+            },
             { path: ':paymentReference', element: <PaymentView /> },
           ],
         },
@@ -92,7 +110,14 @@ export default function Router() {
           path: 'logements',
           children: [
             { element: <Navigate to="/tableau-de-bord/logements/consulter-mes-logements" replace />, index: true },
-            { path: 'consulter-mes-logements', element: <Reservation /> },
+            {
+              path: 'consulter-mes-logements',
+              element: (
+                <AuthBeforeLoge>
+                  <Reservation />
+                </AuthBeforeLoge>
+              ),
+            },
             { path: ':bookingReference', element: <DetailsReservation /> },
           ],
         },
@@ -171,10 +196,20 @@ export default function Router() {
         },
 
         {
+          path: 'customer',
+          children: [
+            { element: <Navigate to="tableau-de-bord/admin/customer/listes-des-utilisateurs" replace />, index: true },
+            { path: 'listes-des-utilisateurs', element: <UserLists /> },
+            { path: ':userId/historique-activite', element: <LogActivity /> },
+          ],
+        },
+
+        {
           path: 'user',
           children: [
             { element: <Navigate to="tableau-de-bord/admin/user/account" replace />, index: true },
             { path: 'account', element: <AdminAccount /> },
+            { path: 'historique-activitée', element: <LogActivity /> },
             { path: 'new', element: <AddClient /> },
           ],
         },
@@ -257,6 +292,7 @@ const CustomerDetailsReservation = Loadable(lazy(() => import('../pages/dashboar
 const PaymentList = Loadable(lazy(() => import('../pages/dashboard/back/PaymentList')));
 const PaymentAdminView = Loadable(lazy(() => import('../pages/dashboard/back/PaymentView')));
 const AdminAccount = Loadable(lazy(() => import('../pages/dashboard/back/AdminAccount')));
+const LogActivity = Loadable(lazy(() => import('../pages/dashboard/log/LogActivity')));
 
 const AddPayment = Loadable(lazy(() => import('../pages/dashboard/back/payment/AddPayment')));
 const EditPayment = Loadable(lazy(() => import('../pages/dashboard/back/payment/EditPayment')));
