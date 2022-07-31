@@ -399,6 +399,7 @@ export default function CustomerReservations() {
       real_estate_programe_reference: oneProgram.real_estate_program_reference,
       lot: data.lot,
       sub_lot: data.sub_lot,
+      area: data.area,
       additional_land: data.additional_land,
       additional_land_amount: data.additional_land_amount.split(' ').join(''),
       additional_fence: data.additional_fence,

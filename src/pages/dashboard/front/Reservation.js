@@ -69,9 +69,10 @@ const STATUS_OPTIONS = ['Tous les echeances', 'Echances passées', 'Echanches à
 const TABLE_HEAD = [
   { id: 'programmeImobillier', label: 'Programme immobillier', align: 'left' },
   { id: 'lot', label: 'Lot', align: 'left' },
-  { id: 'sousLot', label: 'Sous-lot', align: 'left' },
-  { id: 'montantReservation', label: 'Montant total', align: 'left' },
+  { id: 'sousLot', label: 'Ilot', align: 'left' },
+  { id: 'montantReservation', label: 'Montant total du logement hors frais de notaire', align: 'left' },
   { id: 'montantReservation', label: 'Montant versé', align: 'left' },
+  { id: 'montantReservation', label: 'Solde à devoir', align: 'left' },
   { id: 'date_fin', label: 'fin de paiement', align: 'left' },
   { id: '' },
 ];
@@ -173,13 +174,6 @@ export default function Reservation() {
   };
 
   const active = getActive(PATH_DASHBOARD.general.reservation, pathname);
-  console.log('================active====================');
-  console.log(active);
-  console.log('====================================');
-
-  console.log('================pathname====================');
-  console.log(pathname);
-  console.log('====================================');
 
   const handleFilterProgramme = async (event) => {
     console.log('event.target.value', event.target.value);
@@ -217,7 +211,9 @@ export default function Reservation() {
   const handleViewRow = (bookingReference) => {
     navigate(PATH_DASHBOARD.general.detailsReservation(bookingReference));
   };
-
+  const handleViewRowSituation = (bookingReference) => {
+    navigate(PATH_DASHBOARD.general.logementSituation(bookingReference));
+  };
   const statisticsAmount = (total, partial) => {
     // Calculate the percentage
     const percent = (partial / total) * 100;
@@ -251,29 +247,6 @@ export default function Reservation() {
           heading="Consulter mes logements"
           links={[{ name: 'Tableau de bord', href: PATH_DASHBOARD.root }, { name: 'Mes logements' }]}
         />
-        {/* <Card sx={{ padding: 5, marginBottom: 5 }}>
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={6}>
-              <AppWidget
-                title="Montant versé"
-                total={totalAmountPay}
-                icon={'eva:credit-card-ffill'}
-                color="warning"
-                chartData={statisticsAmount(totalReservationAmount, totalAmountPay)}
-                isGet={isGet}
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <AppWidget
-                title="Montant restant "
-                total={totalReservationAmount - totalAmountPay}
-                icon={'eva:person-ffill'}
-                chartData={statisticsAmount(totalReservationAmount, totalReservationAmount - totalAmountPay)}
-                isGet={isGet}
-              />
-            </Grid>
-          </Grid>
-        </Card> */}
 
         <Card>
           {/* <Tabs
@@ -290,7 +263,6 @@ export default function Reservation() {
           </Tabs> */}
 
           {/* <Divider /> */}
-
           <UserTableToolbarReservation
             filterName={filterName}
             filterProgramme={filterProgramme}
@@ -302,7 +274,7 @@ export default function Reservation() {
           />
 
           <Scrollbar>
-            <TableContainer sx={{ minWidth: 800, position: 'relative' }}>
+            <TableContainer sx={{ minWidth: 800 }}>
               {selected.length > 0 && (
                 <TableSelectedActions
                   dense={dense}
@@ -324,7 +296,12 @@ export default function Reservation() {
                 />
               )}
 
-              <Table size={dense ? 'small' : 'medium'}>
+              <Table
+                sx={{
+                  width: 'max-content',
+                }}
+                size={dense ? 'small' : 'medium'}
+              >
                 <TableHeadCustom
                   order={order}
                   orderBy={orderBy}
@@ -351,6 +328,7 @@ export default function Reservation() {
                             tableData={tableData}
                             row={row}
                             onViewRow={() => handleViewRow(row.booking_reference)}
+                            onViewRowSituation={() => handleViewRowSituation(row.booking_reference)}
                             selected={selected.includes(row.id)}
                             onSelectRow={() => onSelectRow(row.id)}
                           />

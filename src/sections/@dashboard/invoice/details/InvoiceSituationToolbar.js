@@ -20,20 +20,21 @@ import { PATH_DASHBOARD } from '../../../../routes/paths';
 // components
 import Iconify from '../../../../components/Iconify';
 //
-import InvoicePDF from './InvoicePDF';
+import InvoicePDF from './InvoiceSituationPDF';
 import { AddLogs } from '../../../../pages/dashboard/log/AddLogs';
 
 // ----------------------------------------------------------------------
 
-InvoiceToolbar.propTypes = {
+InvoiceSituationToolbar.propTypes = {
   invoice: PropTypes.object.isRequired,
   customer: PropTypes.object.isRequired,
   user: PropTypes.object,
   versement: PropTypes.array,
   program: PropTypes.object.isRequired,
+  somme: PropTypes.number,
 };
 
-export default function InvoiceToolbar({ invoice, customer, program, user, versement }) {
+export default function InvoiceSituationToolbar({ invoice, customer, program, user, versement, somme }) {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [isDownload, setIsDownload] = useState(false);
@@ -42,7 +43,16 @@ export default function InvoiceToolbar({ invoice, customer, program, user, verse
   const facture = 'avis-situation-' + invoice.booking_reference + '.pdf';
 
   const [instance, updateInstance] = usePDF({
-    document: <InvoicePDF invoice={invoice} customer={customer} program={program} facture={facture} />,
+    document: (
+      <InvoicePDF
+        invoice={invoice}
+        customer={customer}
+        program={program}
+        facture={facture}
+        versement={versement}
+        somme={somme}
+      />
+    ),
   });
 
   const handleEdit = () => {
@@ -180,7 +190,7 @@ export default function InvoiceToolbar({ invoice, customer, program, user, verse
           </DialogActions>
           <Box sx={{ flexGrow: 1, height: '100%', overflow: 'hidden' }}>
             <PDFViewer width="100%" height="100%" style={{ border: 'none' }}>
-              <InvoicePDF invoice={invoice} customer={customer} program={program} versement={versement} />
+              <InvoicePDF invoice={invoice} customer={customer} program={program} versement={versement} somme={somme} />
             </PDFViewer>
           </Box>
         </Box>

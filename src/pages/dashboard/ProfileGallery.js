@@ -126,7 +126,7 @@ export default function ProfileGallery({ gallery, user, detailRow, bookingRefere
           ) : (
             <EmptyContent
               title={"Pas d'image ce logement"}
-              description={"Ce logement n'a pas d'image de suivie d'activité."}
+              description={"Ce logement n'a pas d'image de suivi d'activité."}
             />
           )
         ) : gallery.length > 0 ? (
@@ -148,7 +148,7 @@ export default function ProfileGallery({ gallery, user, detailRow, bookingRefere
         ) : (
           <EmptyContent
             title={"Pas d'image pour ce logement"}
-            description={"Ce logement n'a pas d'image de suivie d'activité."}
+            description={"Ce logement n'a pas d'image de suivi d'activité."}
           />
         )}
 

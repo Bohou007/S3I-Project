@@ -52,7 +52,7 @@ export default function AuthBeforeLoge({ children }) {
   const [showPasswordField1, setShowPasswordField1] = useState(false);
 
   const NewUserSchema = Yup.object().shape({
-    password: Yup.string().required('Le mot de passe est obligatoire'),
+    password: Yup.string().required('Le mot de passe est obligatoire.'),
   });
 
   const defaultValues = useMemo(() => ({
@@ -176,7 +176,7 @@ export default function AuthBeforeLoge({ children }) {
                         >
                           Fermer
                         </Button>
-                        <Button variant="contained" type="submit" color="primary">
+                        <Button disabled={isLoading} variant="contained" type="submit" color="primary">
                           {isLoading ? (
                             <>
                               Validation de vos access...

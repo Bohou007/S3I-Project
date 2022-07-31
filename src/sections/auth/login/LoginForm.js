@@ -27,8 +27,8 @@ export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
 
   const LoginSchema = Yup.object().shape({
-    login_id: Yup.string().required("L'adresse Mail ou le numero de téléphone est requis"),
-    password: Yup.string().required('Le mot de passe est requis'),
+    login_id: Yup.string().required("L'adresse Mail ou le numéro de téléphone est requis."),
+    password: Yup.string().required('Le mot de passe est requis.'),
   });
 
   const defaultValues = {
@@ -72,7 +72,7 @@ export default function LoginForm() {
       if (isMountedRef.current) {
         setError('afterSubmit', {
           ...error,
-          message: "L'adresse e-mail ou le numéro de téléphone et le mot de passe ne sont pas valides",
+          message: "L'adresse e-mail ou le numéro de téléphone et le mot de passe ne sont pas valides.",
         });
       }
     }
@@ -83,7 +83,7 @@ export default function LoginForm() {
       <Stack spacing={3}>
         {!!errors.afterSubmit && <Alert severity="error">{errors.afterSubmit.message}</Alert>}
 
-        <RHFTextField name="login_id" label="Adresse email / Numéro de téléphone" />
+        <RHFTextField name="login_id" label="Adresse email / Numéro de téléphone." />
 
         <RHFTextField
           name="password"
@@ -103,9 +103,9 @@ export default function LoginForm() {
 
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
         <RHFCheckbox name="remember" label="Se souvenir de moi" />
-        <Link component={RouterLink} variant="subtitle2" to={PATH_AUTH.resetPassword}>
-          Mot de passe oublié?
-        </Link>
+        {/* <Link component={RouterLink} variant="subtitle2" to={PATH_AUTH.resetPassword}>
+          Mot de passe oublié ?
+        </Link> */}
       </Stack>
 
       <LoadingButton fullWidth size="large" type="submit" variant="contained" loading={isSubmitting}>

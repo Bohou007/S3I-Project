@@ -99,7 +99,7 @@ export default function LoginAdmin() {
             <Stack direction="row" alignItems="center" sx={{ mb: 5 }}>
               <Box sx={{ flexGrow: 1 }}>
                 <Typography variant="h4" gutterBottom>
-                  Connectez-vous
+                  Connectez-vous.
                 </Typography>
                 <Typography sx={{ color: 'text.secondary' }}>Entrez vos coordonnées ci-dessous.</Typography>
               </Box>

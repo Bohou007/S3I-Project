@@ -132,13 +132,14 @@ class UserTableRowReservation extends Component {
           {row.sub_lot}
         </TableCell>
 
-        <TableCell align="left">{this.sepMillier(row.house_amount)} FCFA</TableCell>
+        <TableCell align="right">{this.sepMillier(row.house_amount)} FCFA</TableCell>
         <TableCell align="left">{this.sepMillier(row.amount_paid)} FCFA</TableCell>
+        <TableCell align="left">{this.sepMillier(row.balance_due)} FCFA</TableCell>
 
         <TableCell align="left"> {moment(row.payment_schedule_end_date).format('DD MMM YYYY')}</TableCell>
 
         <TableCell align="left">
-          <Button
+          {/* <Button
             variant="outlined"
             color={'primary'}
             onClick={() => {
@@ -147,9 +148,9 @@ class UserTableRowReservation extends Component {
             startIcon={<VisibilityIcon />}
           >
             Détails
-          </Button>
+          </Button> */}
 
-          {/* <TableMoreMenu
+          <TableMoreMenu
             open={this.state.openMenu}
             onOpen={this.handleOpenMenu}
             onClose={this.handleCloseMenu}
@@ -165,9 +166,19 @@ class UserTableRowReservation extends Component {
                   <Iconify icon={'eva:eye-outline'} />
                   Voir détails
                 </MenuItem>
+                <MenuItem
+                  variant="outlined"
+                  color={'primary'}
+                  onClick={() => {
+                    this.props.onViewRowSituation();
+                  }}
+                >
+                  <Iconify icon={'eva:corner-down-right-outline'} />
+                  Voir ma situation
+                </MenuItem>
               </>
             }
-          /> */}
+          />
 
           <DialogAnimate open={this.state.isOpenModal} onClose={this.handleCloseModal} maxWidth={'md'}>
             <DialogTitle sx={{ width: '100%', backgroundColor: '#D7B94D', paddingBottom: 2 }}>
@@ -369,6 +380,7 @@ class UserTableRowReservation extends Component {
 UserTableRowReservation.propTypes = {
   row: PropTypes.object,
   onViewRow: PropTypes.func,
+  onViewRowSituation: PropTypes.func,
   selected: PropTypes.bool,
   onEditRow: PropTypes.func,
   onSelectRow: PropTypes.func,

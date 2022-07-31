@@ -28,15 +28,15 @@ import { AnalyticsOrderTimeline, AnalyticsNewsUpdate } from '../../sections/@das
 export default function UserAccount() {
   const { themeStretch } = useSettings();
 
-  const { currentTab, onChangeTab } = useTabs('mon_profil');
+  const { currentTab, onChangeTab } = useTabs('mon_mot_de_passe');
 
   const ACCOUNT_TABS = [
-    {
-      value: 'mon_profil',
-      label: 'Mon profil',
-      icon: <Iconify icon={'ic:round-account-box'} width={20} height={20} />,
-      component: <AccountGeneral />,
-    },
+    // {
+    //   value: 'mon_profil',
+    //   label: 'Mon profil',
+    //   icon: <Iconify icon={'ic:round-account-box'} width={20} height={20} />,
+    //   component: <AccountGeneral />,
+    // },
     {
       value: 'mon_mot_de_passe',
       label: 'Mon mot de passe',

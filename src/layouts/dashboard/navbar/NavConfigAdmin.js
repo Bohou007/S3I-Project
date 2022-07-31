@@ -63,7 +63,7 @@ const navConfigAdmin = [
         icon: ICONS.userLists,
       },
       {
-        title: 'Gerer mon compte',
+        title: 'Gérer mon compte',
         path: PATH_DASHBOARD_ADMIN.user.account,
         icon: ICONS.user,
       },

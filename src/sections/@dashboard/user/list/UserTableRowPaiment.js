@@ -144,7 +144,15 @@ class UserTableRowPaiment extends Component {
         <TableCell align="center"> {moment(row.payment_date).format('DD MMM YYYY')}</TableCell>
 
         <TableCell align="right">
-          <TableMoreMenu
+          <Button
+            variant="outlined"
+            color={'primary'}
+            onClick={() => this.handleAddEvent(this.props.row)}
+            startIcon={<VisibilityIcon />}
+          >
+            Détails
+          </Button>
+          {/* <TableMoreMenu
             open={this.state.openMenu}
             onOpen={this.handleOpenMenu}
             onClose={this.handleCloseMenu}
@@ -165,7 +173,7 @@ class UserTableRowPaiment extends Component {
                 </MenuItem>
               </>
             }
-          />
+          /> */}
 
           <DialogAnimate open={this.state.isOpenModal} onClose={this.handleCloseModal} maxWidth={'md'}>
             <DialogTitle sx={{ width: '100%', backgroundColor: '#D7B94D', paddingBottom: 2 }}>

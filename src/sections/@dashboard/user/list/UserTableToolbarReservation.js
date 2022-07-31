@@ -75,7 +75,7 @@ export default function UserTableToolbarReservation({
       </TextField>
 
       <DatePicker
-        label="Recherchez par date de fin de paiement"
+        label="Recherchez par date de fin de paiement."
         value={filterDate}
         onChange={(newValue) => {
           onFilterDate(newValue);

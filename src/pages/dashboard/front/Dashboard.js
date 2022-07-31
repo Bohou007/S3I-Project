@@ -136,7 +136,11 @@ export default function Dashboard() {
               }}
               onClick={() => allNavigate(PATH_DASHBOARD.general.reservation)}
             >
-              <BookingWidgetSummary title="Logements totales" total={countReservation} icon={<BookingIllustration />} />
+              <BookingWidgetSummary
+                title="Logements souscrits"
+                total={countReservation}
+                icon={<BookingIllustration />}
+              />
             </Box>
           </Grid>
 
@@ -148,7 +152,7 @@ export default function Dashboard() {
               onClick={() => allNavigate(PATH_DASHBOARD.general.payment)}
             >
               <BookingWidgetSummary
-                title="Logements soldées"
+                title="Logements soldés"
                 total={countPayReservation}
                 icon={<CheckInIllustration />}
               />
@@ -163,7 +167,7 @@ export default function Dashboard() {
               onClick={() => allNavigate(PATH_DASHBOARD.general.deadlines)}
             >
               <BookingWidgetSummary
-                title="Logements non soldées"
+                title="Logements non soldés"
                 total={countNoPayReservation}
                 icon={<CheckOutIllustration />}
               />

@@ -50,6 +50,13 @@ export function NavItemRoot({ item, isCollapse, open = false, active, onOpen }) 
   }
 
   if (
+    cordsPath === '/tableau-de-bord/logements/situation-logement/' &&
+    path === '/tableau-de-bord/logements/consulter-mes-logements'
+  ) {
+    active = true;
+  }
+
+  if (
     cordsPath === '/tableau-de-bord/admin/payments/' &&
     path === '/tableau-de-bord/admin/payments/suivi-des-versements'
   ) {

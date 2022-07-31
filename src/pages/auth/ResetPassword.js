@@ -58,7 +58,7 @@ export default function ResetPassword() {
                 <SentIcon sx={{ mb: 5, mx: 'auto', height: 160 }} />
 
                 <Typography variant="h3" gutterBottom>
-                  La demande a été envoyée avec succès
+                  La demande a été envoyée avec succès.
                 </Typography>
                 <Typography>
                   Nous avons envoyé un e-mail de confirmation à &nbsp;

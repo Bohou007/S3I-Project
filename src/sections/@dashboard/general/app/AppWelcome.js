@@ -42,12 +42,10 @@ export default function AppWelcome({ displayName }) {
         </Typography>
 
         <Typography variant="body2" sx={{ pb: { xs: 3, xl: 5 }, maxWidth: 480, mx: 'auto' }}>
-          Nous vous souhaitons la bienvenue sur votre espace client S3I bâtisseur du confort.
+          Nous vous souhaitons la bienvenue sur votre espace client.
+          <br />
+          S3I bâtisseur du confort.
         </Typography>
-
-        {/* <Button variant="contained" to="#" component={RouterLink}>
-          Go Now
-        </Button> */}
       </CardContent>
 
       <SeoIllustration

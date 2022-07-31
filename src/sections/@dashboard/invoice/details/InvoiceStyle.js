@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
   col8: { width: '75%' },
   col6: { width: '50%' },
   mb8: { marginBottom: 8 },
-  mb40: { marginBottom: 40 },
+  mb40: { marginBottom: 30 },
   textAligne: { textAlign: 'right', flexDirection: 'column', justifyContent: 'flex-end' },
   overline: {
     fontSize: 8,

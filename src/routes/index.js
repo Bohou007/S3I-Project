@@ -119,6 +119,7 @@ export default function Router() {
               ),
             },
             { path: ':bookingReference', element: <DetailsReservation /> },
+            { path: 'situation-logement/:bookingReference', element: <LogementSituation /> },
           ],
         },
         {
@@ -281,6 +282,7 @@ const Payment = Loadable(lazy(() => import('../pages/dashboard/front/Payment')))
 const PaymentView = Loadable(lazy(() => import('../pages/dashboard/front/PaymentView')));
 const Reservation = Loadable(lazy(() => import('../pages/dashboard/front/Reservation')));
 const DetailsReservation = Loadable(lazy(() => import('../pages/dashboard/front/DetailsReservation')));
+const LogementSituation = Loadable(lazy(() => import('../pages/dashboard/front/LogementSituation')));
 
 // GENERAL ADMIN
 const DashboardAdmin = Loadable(lazy(() => import('../pages/dashboard/back/DashboardAdmin')));

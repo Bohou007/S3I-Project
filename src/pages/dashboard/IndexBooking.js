@@ -1,3 +1,4 @@
+/* eslint-disable prefer-template */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable no-unneeded-ternary */
 /* eslint-disable radix */
@@ -50,7 +51,7 @@ export default function IndexBooking({ program, detailRow, customer }) {
       {customer && isSolde ? (
         <Alert severity="error" sx={{ p: 2, fontWeight: 'bold' }}>
           Merci de solder les frais de réservations, passer un délai de 3 mois à compter de votre date de réservation,
-          votre logement sera reattribué à une autre personne.
+          votre logement sera réattribué à une autre personne.
         </Alert>
       ) : (
         ''
@@ -89,19 +90,26 @@ export default function IndexBooking({ program, detailRow, customer }) {
               </Typography> */}
       <Card sx={{ minWidth: 275 }}>
         <Grid container spacing={2}>
-          <Grid item xs={6} md={4}>
+          <Grid item xs={6} md={3}>
             <CardContent sx={{}}>
               <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Lot</Typography>
-              <Typography variant="body2">{detailRow.lot}</Typography>
+              <Typography variant="body2">{detailRow.lot > 0 ? detailRow.lot : 0}</Typography>
             </CardContent>
           </Grid>
-          <Grid item xs={6} md={4}>
+
+          <Grid item xs={6} md={3}>
             <CardContent sx={{}}>
               <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>ILot</Typography>
-              <Typography variant="body2">{detailRow.sub_lot}</Typography>
+              <Typography variant="body2">{detailRow.sub_lot > 0 ? detailRow.sub_lot : 0}</Typography>
             </CardContent>
           </Grid>
-          <Grid item xs={6} md={4}>
+          <Grid item xs={6} md={3}>
+            <CardContent sx={{}}>
+              <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Superficie du lot</Typography>
+              <Typography variant="body2">{detailRow.area > 0 ? detailRow.area : 0} m&sup2;</Typography>
+            </CardContent>
+          </Grid>
+          <Grid item xs={6} md={3}>
             <CardContent>
               <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Statut</Typography>
               {parseInt(detailRow.balance_due) === 0 ? (
@@ -136,7 +144,7 @@ export default function IndexBooking({ program, detailRow, customer }) {
               <Typography variant="body2">{detailRow.financing_method}</Typography>
             </CardContent>
           </Grid>
-          <Grid item xs={6} md={4}>
+          {/* <Grid item xs={6} md={4}>
             <CardContent sx={{}}>
               <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Apport initial</Typography>
               <Typography variant="body2">
@@ -144,7 +152,7 @@ export default function IndexBooking({ program, detailRow, customer }) {
                 {parseInt(detailRow.initial_contribution) === 0 ? '' : ' FCFA'}
               </Typography>
             </CardContent>
-          </Grid>
+          </Grid> */}
           <Grid item xs={6} md={4}>
             <CardContent sx={{}}>
               <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Prix de vente de mon logement</Typography>
@@ -164,37 +172,37 @@ export default function IndexBooking({ program, detailRow, customer }) {
           <Grid item xs={6} md={4}>
             <CardContent sx={{}}>
               <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>
-                Coût total du logement hors frais de notaire
+                Prix total du logement hors frais de notaire
               </Typography>
               <Typography variant="body2">
                 {sepMillier(detailRow.house_amount)} {parseInt(detailRow.house_amount) === 0 ? '' : 'FCFA'}
               </Typography>
             </CardContent>
           </Grid>
-          <Grid item xs={6} md={4}>
+          {/* <Grid item xs={6} md={4}>
             <CardContent sx={{}}>
               <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Terrain supplémentaire</Typography>
               <Typography variant="body2">{sepMillier(detailRow.additional_land)} m&sup2;</Typography>
             </CardContent>
-          </Grid>
+          </Grid> */}
           <Grid item xs={6} md={4}>
             <CardContent sx={{}}>
-              <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Coût du terrain supplémentaire</Typography>
+              <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Prix du terrain supplémentaire</Typography>
               <Typography variant="body2">
                 {sepMillier(detailRow.additional_land_amount)}{' '}
                 {parseInt(detailRow.additional_land_amount) === 0 ? '' : 'FCFA'}
               </Typography>
             </CardContent>
           </Grid>
-          <Grid item xs={6} md={4}>
+          {/* <Grid item xs={6} md={4}>
             <CardContent sx={{}}>
               <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Clôture supplémentaire</Typography>
               <Typography variant="body2">{sepMillier(detailRow.additional_fence)} m&sup2;</Typography>
             </CardContent>
-          </Grid>
+          </Grid> */}
           <Grid item xs={6} md={4}>
             <CardContent sx={{}}>
-              <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Coût de la clôture supplémentaire</Typography>
+              <Typography sx={{ fontSize: 15, fontWeight: 'bold' }}>Prix de la clôture supplémentaire</Typography>
               <Typography variant="body2">
                 {sepMillier(detailRow.additional_fence_amount)}{' '}
                 {parseInt(detailRow.additional_fence_amount) === 0 ? '' : 'FCFA'}
@@ -224,7 +232,14 @@ export default function IndexBooking({ program, detailRow, customer }) {
             <CardContent sx={{}}>
               <Typography sx={{ fontSize: 15 }}>Reste a payer frais de réservation</Typography>
               <Typography variant="body2" sx={{ fontSize: 18, fontWeight: 'bold' }}>
-                {sepMillier(detailRow.booking_fees_due)} {detailRow.booking_fees_due === 0 ? '' : 'FCFA'}
+                {parseInt(detailRow.booking_fees_due) === 0 ? (
+                  sepMillier(detailRow.booking_fees_due) + ' FCFA'
+                ) : (
+                  <Label variant={'ghost'} color={'error'} sx={{ fontSize: 18, fontWeight: 'bold', p: 2 }}>
+                    {sepMillier(detailRow.booking_fees_due)} FCFA
+                  </Label>
+                )}
+                {/* {sepMillier(detailRow.booking_fees_due)} {detailRow.booking_fees_due === 0 ? '' : 'FCFA'} */}
               </Typography>
             </CardContent>
           </Grid>
@@ -249,7 +264,13 @@ export default function IndexBooking({ program, detailRow, customer }) {
             <CardContent sx={{}}>
               <Typography sx={{ fontSize: 15 }}>Reste à payer du montant total du logement</Typography>
               <Typography variant="body2" sx={{ fontSize: 18, fontWeight: 'bold' }}>
-                {sepMillier(detailRow.balance_due)} {detailRow.balance_due === 0 ? '' : 'FCFA'}
+                {parseInt(detailRow.balance_due) === 0 ? (
+                  sepMillier(detailRow.balance_due) + ' FCFA'
+                ) : (
+                  <Label variant={'ghost'} color={'error'} sx={{ fontSize: 18, fontWeight: 'bold', p: 2 }}>
+                    {sepMillier(detailRow.balance_due)} FCFA
+                  </Label>
+                )}
               </Typography>
             </CardContent>
           </Grid>

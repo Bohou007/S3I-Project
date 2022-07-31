@@ -73,6 +73,7 @@ export default function BookingNewEditForm({
   const NewUserSchema = Yup.object().shape({
     lot: Yup.string().required('Le lot est obligatoire'),
     sub_lot: Yup.string().required('Le Ilot est obligatoire'),
+    area: Yup.string().required('La superficie est obligatoire.'),
     financing_method: Yup.string().required('Le mode de financement est obligatoire'),
     additional_land: Yup.string(),
     additional_land_amount: Yup.string(),
@@ -94,6 +95,7 @@ export default function BookingNewEditForm({
     () => ({
       lot: booking?.lot || '',
       sub_lot: booking?.sub_lot || '',
+      area: booking?.area || '',
       financing_method: booking?.financing_method || '',
       additional_land: booking?.additional_land >= 0 ? booking?.additional_land : '',
       additional_land_amount: booking.additional_land_amount ? sepMillier(booking.additional_land_amount) : '',
@@ -170,6 +172,7 @@ export default function BookingNewEditForm({
             >
               <RHFTextField name="lot" label="Lot" />
               <RHFTextField name="sub_lot" label="ILot" />
+              <RHFTextField name="area" label="Superficie totale du logement (m²)" />
               <RHFTextField name="financing_method" label="Mode de financement" />
               <RHFTextFieldSomme name="purchase_amount" isSomme={'true'} label="Prix de vente du logement" />
 
@@ -181,14 +184,14 @@ export default function BookingNewEditForm({
               <RHFTextFieldSomme
                 name="additional_land_amount"
                 isSomme={'true'}
-                label="Coût du terrain supplémentaire"
+                label="Prix du terrain supplémentaire"
               />
 
               <RHFTextField name="additional_fence" label="Clôture supplémentaire (m²)" />
               <RHFTextFieldSomme
                 name="additional_fence_amount"
                 isSomme={'true'}
-                label="Coût de la clôture supplémentaire"
+                label="Prix de la clôture supplémentaire"
               />
 
               <RHFTextFieldSomme name="booking_fees" isSomme={'true'} label="Frais de réservation" />

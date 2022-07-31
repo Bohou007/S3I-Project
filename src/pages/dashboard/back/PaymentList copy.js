@@ -916,7 +916,7 @@ function Booking({ lot, booking_reference, sub_lot }) {
         <b>Lot</b> : {lot}
       </Typography>
       <Typography variant="body2">
-        <b>Sous-lot</b>: {sub_lot}
+        <b>Ilot</b>: {sub_lot}
       </Typography>
     </>
   );

@@ -91,7 +91,7 @@ export default function InvoiceAddressListDialogBooking({
             </Typography>
 
             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              <b>Sous-lot</b>: {booking.sub_lot}
+              <b>Ilot</b>: {booking.sub_lot}
             </Typography>
           </ListItemButton>
         ))}

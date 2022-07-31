@@ -28,6 +28,13 @@ const RootStyle = styled('div')(({ theme }) => ({
     display: 'flex',
     backgroundImage: `url(${fond})`,
     backgroundRepeat: 'no-repeat',
+    backgroundSize: 'cover',
+  },
+  [theme.breakpoints.up('sm')]: {
+    display: 'flex',
+    backgroundImage: `url(${fond})`,
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'cover',
   },
 }));
 
@@ -47,6 +54,10 @@ const HeaderStyle = styled('header')(({ theme }) => ({
     alignItems: 'flex-start',
     // padding: theme.spacing(7, 5, 0, 7),
   },
+}));
+
+const StackHead = styled(Stack)(({ theme }) => ({
+  [theme.breakpoints.up('md')]: {},
 }));
 
 const SectionStyle = styled(Card)(({ theme }) => ({
@@ -99,14 +110,24 @@ export default function Login() {
 
         <Container maxWidth="sm">
           <ContentStyle>
-            <Stack sx={{ backgroundColor: '#fff', pb: 10, pl: 10, pr: 10, pt: 7, borderRadius: 2 }}>
+            <Stack
+              sx={{
+                backgroundColor: '#fff',
+                pb: { md: 10 },
+                pl: { md: 10 },
+                pr: { md: 10 },
+                pt: { md: 7 },
+                p: { xs: 3 },
+                borderRadius: 2,
+              }}
+            >
               <HeaderStyle>
                 <Logo />
               </HeaderStyle>
               <Stack direction="row" alignItems="center" sx={{ mb: 5 }}>
                 <Box sx={{ flexGrow: 1, textAlign: 'center' }}>
                   <Typography variant="h4" gutterBottom>
-                    Connectez-vous
+                    Connectez-vous.
                   </Typography>
                   <Typography sx={{ color: 'text.secondary' }}>Entrez vos coordonnées ci-dessous.</Typography>
                 </Box>

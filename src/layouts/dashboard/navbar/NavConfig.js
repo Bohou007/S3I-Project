@@ -34,7 +34,7 @@ const navConfig = [
       { title: 'Consulter mes logements', path: PATH_DASHBOARD.general.reservation, icon: ICONS.banking },
       { title: 'Consulter mes versements', path: PATH_DASHBOARD.general.payment, icon: ICONS.invoice },
       { title: 'Consulter mes échéances', path: PATH_DASHBOARD.general.deadlines, icon: ICONS.analytics },
-      { title: 'Gerer mon compte', path: PATH_DASHBOARD.user.account, icon: ICONS.user },
+      { title: 'Gérer mon compte', path: PATH_DASHBOARD.user.account, icon: ICONS.user },
     ],
   },
 ];

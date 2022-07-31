@@ -44,6 +44,7 @@ export const PATH_DASHBOARD = {
 
     reservation: path(ROOTS_DASHBOARD, '/logements/consulter-mes-logements'),
     detailsReservation: (bookingReference) => path(ROOTS_DASHBOARD, `/logements/${bookingReference}`),
+    logementSituation: (bookingReference) => path(ROOTS_DASHBOARD, `/logements/situation-logement/${bookingReference}`),
   },
 
   user: {

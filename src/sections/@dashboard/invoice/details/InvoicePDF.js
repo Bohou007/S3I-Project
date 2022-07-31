@@ -21,9 +21,10 @@ InvoicePDF.propTypes = {
   customer: PropTypes.object.isRequired,
   program: PropTypes.object.isRequired,
   facture: PropTypes.string.isRequired,
+  versement: PropTypes.array,
 };
 
-export default function InvoicePDF({ invoice, customer, program, facture }) {
+export default function InvoicePDF({ invoice, customer, program, facture, versement }) {
   const {
     items,
     taxes,
