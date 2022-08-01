@@ -73,7 +73,7 @@ const TABLE_HEAD = [
   { id: 'montantReservation', label: 'Montant total du logement hors frais de notaire', align: 'left' },
   { id: 'montantReservation', label: 'Montant versé', align: 'left' },
   { id: 'montantReservation', label: 'Solde à devoir', align: 'left' },
-  { id: 'date_fin', label: 'fin de paiement', align: 'left' },
+  { id: 'date_fin', label: 'Fin de paiement', align: 'left' },
   { id: '' },
 ];
 
@@ -109,6 +109,7 @@ export default function Reservation() {
   const [isGet, setIsGet] = useState(false);
 
   const [filterName, setFilterName] = useState('');
+  const [listProName, setListProName] = useState('');
 
   const [filterProgramme, setFilterProgramme] = useState('all');
   const [filterDate, setFilterDate] = useState('');
@@ -180,6 +181,8 @@ export default function Reservation() {
     const programData = await axios.get(
       `/ws-booking-payment/real-estate-program/booking-by-customer/${user?.customer_reference}`
     );
+
+    handleGetProgramme(event.target.value);
     setFilterProgramme(event.target.value);
     // setProgram(programData.data);
 
@@ -190,6 +193,12 @@ export default function Reservation() {
     setTimeout(() => {
       setIsGet(true);
     }, 3000);
+  };
+
+  const handleGetProgramme = async (value) => {
+    const response = await axios.get(`/ws-booking-payment/real-estate-program/${value}`);
+    const programme = response.data.label + ' ' + response.data.formula + ' ' + response.data.real_estate_program_type;
+    setListProName(programme);
   };
 
   const handleDeleteRow = (id) => {
@@ -329,6 +338,8 @@ export default function Reservation() {
                             row={row}
                             onViewRow={() => handleViewRow(row.booking_reference)}
                             onViewRowSituation={() => handleViewRowSituation(row.booking_reference)}
+                            handleGetProgramme={handleGetProgramme}
+                            listProName={listProName}
                             selected={selected.includes(row.id)}
                             onSelectRow={() => onSelectRow(row.id)}
                           />

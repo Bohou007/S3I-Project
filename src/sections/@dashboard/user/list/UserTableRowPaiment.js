@@ -86,8 +86,6 @@ class UserTableRowPaiment extends Component {
 
   handleGetProgramme = async (value) => {
     const response = await axios.get(`/ws-booking-payment/real-estate-program/${value}`);
-    // console.log('response', response);
-
     const programme = response.data.label + ' ' + response.data.formula + ' ' + response.data.real_estate_program_type;
     this.setState({
       listPro: programme,
@@ -129,7 +127,7 @@ class UserTableRowPaiment extends Component {
     return (
       <TableRow hover>
         <TableCell align="left" sx={{ textTransform: 'none' }}>
-          {this.state.listPro}
+          {this.props.listProName !== '' ? this.props.listProName : this.state.listPro}
         </TableCell>
 
         <TableCell align="left">{this.sepMillier(row.amount)} FCFA</TableCell>
@@ -283,6 +281,7 @@ class UserTableRowPaiment extends Component {
 UserTableRowPaiment.propTypes = {
   row: PropTypes.object,
   user: PropTypes.object,
+  listProName: PropTypes.string,
   onViewRow: PropTypes.func,
 };
 

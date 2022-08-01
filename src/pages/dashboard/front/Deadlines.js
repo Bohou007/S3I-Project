@@ -65,7 +65,7 @@ const TABLE_HEAD = [
   { id: 'program', label: 'Programme immobillier', align: 'left' },
   // { id: 'ilot', label: 'I Lot', align: 'left' },
   { id: 'montant', label: 'Montant à payer', align: 'left' },
-  { id: 'date_echeance', label: 'Date Echeances', align: 'left' },
+  { id: 'date_echeance', label: 'Date échéance', align: 'left' },
   { id: 'statut', label: 'Statut', align: 'left' },
   { id: '' },
 ];

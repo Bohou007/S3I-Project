@@ -82,13 +82,11 @@ class UserTableRowReservation extends Component {
 
   handleGetProgramme = async (value) => {
     const response = await axios.get(`/ws-booking-payment/real-estate-program/${value}`);
-    // console.log('response', response);
-
     const programme = response.data.label + ' ' + response.data.formula + ' ' + response.data.real_estate_program_type;
+    // this.props.listProName = programme;
     this.setState({
       listPro: programme,
     });
-    return programme;
   };
 
   // eslint-disable-next-line class-methods-use-this
@@ -124,7 +122,9 @@ class UserTableRowReservation extends Component {
 
     return (
       <TableRow hover>
-        <TableCell align="left">{this.state.listPro}</TableCell>
+        <TableCell align="left">
+          {this.props.listProName !== '' ? this.props.listProName : this.state.listPro}
+        </TableCell>
 
         <TableCell align="left">{row.lot}</TableCell>
 
@@ -173,7 +173,7 @@ class UserTableRowReservation extends Component {
                     this.props.onViewRowSituation();
                   }}
                 >
-                  <Iconify icon={'eva:corner-down-right-outline'} />
+                  <Iconify icon={'eva:file-text-outline'} />
                   Voir ma situation
                 </MenuItem>
               </>
@@ -381,6 +381,8 @@ UserTableRowReservation.propTypes = {
   row: PropTypes.object,
   onViewRow: PropTypes.func,
   onViewRowSituation: PropTypes.func,
+  handleGetProgramme: PropTypes.func,
+  listProName: PropTypes.string,
   selected: PropTypes.bool,
   onEditRow: PropTypes.func,
   onSelectRow: PropTypes.func,

@@ -1,3 +1,4 @@
+/* eslint-disable prefer-template */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { paramCase } from 'change-case';
@@ -58,7 +59,7 @@ const STATUS_OPTIONS = ['Tous les echeances', 'Echances passées', 'Echanches à
 const TABLE_HEAD = [
   { id: 'programmeImobillier', label: 'Programme Immobillier', align: 'left' },
   { id: 'montant', label: 'Montant versé', align: 'left' },
-  { id: 'input_payment_reference', label: 'Réference', align: 'left' },
+  { id: 'input_payment_reference', label: 'Référence', align: 'left' },
   { id: 'payment_method', label: 'Mode de paiement', align: 'left' },
   { id: 'bank', label: 'Banque', align: 'center' },
   { id: 'payment_date', label: 'Date de paiement', align: 'center' },
@@ -93,6 +94,7 @@ export default function Payment() {
 
   const [filterName, setFilterName] = useState('');
   const [isGet, setIsGet] = useState(false);
+  const [listProName, setListProName] = useState('');
 
   const [filterProgramme, setFilterProgramme] = useState('all');
   const [filterDate, setFilterDate] = useState('');
@@ -129,10 +131,6 @@ export default function Payment() {
       `/ws-booking-payment/real-estate-program/booking-by-customer/${user?.customer_reference}`
     );
 
-    // if (programData.status === 200) {
-    //   setIsGet(true);
-    // }
-
     setTimeout(() => {
       setIsGet(true);
     }, 3000);
@@ -142,15 +140,17 @@ export default function Payment() {
     const programData = await axios.get(
       `/ws-booking-payment/real-estate-program/booking-by-customer/${user?.customer_reference}`
     );
+    handleGetProgramme(event.target.value);
     setFilterProgramme(event.target.value);
-
-    // if (programData.status === 200) {
-    //   setIsGet(true);
-    // }
-
     setTimeout(() => {
       setIsGet(true);
     }, 3000);
+  };
+
+  const handleGetProgramme = async (value) => {
+    const response = await axios.get(`/ws-booking-payment/real-estate-program/${value}`);
+    const programme = response.data.label + ' ' + response.data.formula + ' ' + response.data.real_estate_program_type;
+    setListProName(programme);
   };
 
   const handleDeleteRow = (id) => {
@@ -278,6 +278,8 @@ export default function Payment() {
                             onViewRow={() => handleViewRow(row.payment_reference)}
                             selected={selected.includes(row.id)}
                             onSelectRow={() => onSelectRow(row.id)}
+                            handleGetProgramme={handleGetProgramme}
+                            listProName={listProName}
                             user={user}
                           />
                         ))

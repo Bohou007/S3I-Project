@@ -58,7 +58,7 @@ const TABLE_HEAD = [
   { id: 'lot', label: 'Lot', align: 'left' },
   { id: 'ilot', label: 'I Lot', align: 'left' },
   { id: 'montant', label: 'Montant', align: 'center' },
-  { id: 'date_echeance', label: 'Date Echeances', align: 'center' },
+  { id: 'date_echeance', label: 'Date échéance', align: 'center' },
   { id: 'programme', label: 'Programme', align: 'left' },
   { id: '' },
 ];

@@ -230,7 +230,7 @@ export default function IndexBooking({ program, detailRow, customer }) {
           </Grid>
           <Grid item xs={6} md={4}>
             <CardContent sx={{}}>
-              <Typography sx={{ fontSize: 15 }}>Reste a payer frais de réservation</Typography>
+              <Typography sx={{ fontSize: 15 }}>Reste à payer frais de réservation</Typography>
               <Typography variant="body2" sx={{ fontSize: 18, fontWeight: 'bold' }}>
                 {parseInt(detailRow.booking_fees_due) === 0 ? (
                   sepMillier(detailRow.booking_fees_due) + ' FCFA'
