@@ -136,11 +136,7 @@ export default function Dashboard() {
               }}
               onClick={() => allNavigate(PATH_DASHBOARD.general.reservation)}
             >
-              <BookingWidgetSummary
-                title="Logements souscrits"
-                total={countReservation}
-                icon={<BookingIllustration />}
-              />
+              <BookingWidgetSummary title="Mes logements" total={countReservation} icon={<BookingIllustration />} />
             </Box>
           </Grid>
 

@@ -11,6 +11,10 @@ export { default as UserTableToolbarReservation } from './UserTableToolbarReserv
 export { default as UserTableRowPaiment } from './UserTableRowPaiment';
 export { default as UserTableRowPaimentTx } from './UserTableRowPaimentTx';
 
+export { default as UserTableRowDetailsReservation } from './UserTableRowDetailsReservation';
+export { default as UserTableRowDetailsReservationTx1 } from './UserTableRowDetailsReservationTx1';
+export { default as UserTableRowDetailsReservationTx2 } from './UserTableRowDetailsReservationTx2';
+
 export { default as UserTableToolbarAdminTx } from './UserTableToolbarAdminTx';
 export { default as UserTableRowAdminTx } from './UserTableRowAdminTx';
 export { default as UserTableRowAdminReserv } from './UserTableRowAdminReserv';
