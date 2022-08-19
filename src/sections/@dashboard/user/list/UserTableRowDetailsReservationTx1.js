@@ -110,60 +110,6 @@ export default function UserTableRowDetailsReservationTx1({ detailRow, program, 
           {parseInt(detailRow.additional_fence_amount) === 0 ? '' : 'FCFA'}
         </StyledTableCell>
       </StyledTableRow>
-      <StyledTableRow hover>
-        <StyledTableCell align="left">Frais de réservation</StyledTableCell>
-        <StyledTableCell align="left">
-          <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-            {sepMillier(detailRow.booking_fees)} {detailRow.booking_fees === 0 ? '' : 'FCFA'}
-          </Typography>
-        </StyledTableCell>
-      </StyledTableRow>
-      <StyledTableRow hover>
-        <StyledTableCell align="left">Montant de frais de réservation payé</StyledTableCell>
-        <StyledTableCell align="left">
-          <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-            {sepMillier(detailRow.booking_fees - detailRow.booking_fees_due)}{' '}
-            {detailRow.booking_fees - detailRow.booking_fees_due === 0 ? '' : 'FCFA'}
-          </Typography>
-        </StyledTableCell>
-      </StyledTableRow>
-      <StyledTableRow sx={{ backgroundColor: '#F7EFED', color: '#A04428' }}>
-        <StyledTableCell align="left">Reste à payer frais de réservation</StyledTableCell>
-        <StyledTableCell align="left">
-          <Typography variant="body2" sx={{ fontSize: 16, fontWeight: 'bold' }}>
-            {parseInt(detailRow.booking_fees_due) === 0
-              ? sepMillier(detailRow.booking_fees_due) + ' FCFA'
-              : sepMillier(detailRow.booking_fees_due) + ' FCFA'}
-          </Typography>
-        </StyledTableCell>
-      </StyledTableRow>
-      <StyledTableRow hover>
-        <StyledTableCell align="left">Montant total du logement</StyledTableCell>
-        <StyledTableCell align="left">
-          <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-            {sepMillier(detailRow.house_global_amount)} {detailRow.house_global_amount === 0 ? '' : 'FCFA'}
-          </Typography>
-        </StyledTableCell>
-      </StyledTableRow>
-      <StyledTableRow hover>
-        <StyledTableCell align="left">Somme versée</StyledTableCell>
-        <StyledTableCell align="left">
-          <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-            {sepMillier(detailRow.amount_paid)} {detailRow.amount_paid === 0 ? '' : 'FCFA'}
-          </Typography>
-        </StyledTableCell>
-      </StyledTableRow>
-      <StyledTableRow></StyledTableRow>
-      <StyledTableRow sx={{ backgroundColor: '#F7EFED', color: '#A04428' }}>
-        <StyledTableCell align="left">Reste à payer du montant total du logement</StyledTableCell>
-        <StyledTableCell align="left">
-          <Typography variant="body2" sx={{ fontSize: 16, fontWeight: 'bold' }}>
-            {parseInt(detailRow.balance_due) === 0
-              ? sepMillier(detailRow.balance_due) + ' FCFA'
-              : sepMillier(detailRow.balance_due) + ' FCFA'}
-          </Typography>
-        </StyledTableCell>
-      </StyledTableRow>
     </>
   );
 }
