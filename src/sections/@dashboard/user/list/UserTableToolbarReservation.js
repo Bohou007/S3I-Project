@@ -82,20 +82,6 @@ export default function UserTableToolbarReservation({
         }}
         renderInput={(params) => <TextField fullWidth {...params} />}
       />
-
-      {/* <TextField
-        fullWidth
-        value={filterName}
-        onChange={(event) => onFilterName(event.target.value)}
-        placeholder="Recherche le client..."
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <Iconify icon={'eva:search-fill'} sx={{ color: 'text.disabled', width: 20, height: 20 }} />
-            </InputAdornment>
-          ),
-        }}
-      /> */}
     </Stack>
   );
 }

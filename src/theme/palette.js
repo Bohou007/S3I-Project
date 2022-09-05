@@ -14,12 +14,19 @@ const PRIMARY = {
   dark: '#E86841',
   darker: '#4F1807',
 };
-const SECONDARY = {
+const DEFAULT = {
   lighter: '#D6E4FF',
-  light: '#84A9FF',
-  main: '#3366FF',
-  dark: '#1939B7',
-  darker: '#091A7A',
+  light: '#F2F3F5',
+  main: '#F2F3F5',
+  dark: '#F2F3F5',
+  darker: '#F2F3F5',
+};
+const SECONDARY = {
+  lighter: '#F7EFED',
+  light: '#F7EFED',
+  main: '#F7EFED',
+  dark: '#F7EFED',
+  darker: '#F7EFED',
 };
 const INFO = {
   lighter: '#D0F2FF',
@@ -119,6 +126,7 @@ const CHART_COLORS = {
 const COMMON = {
   common: { black: '#000', white: '#fff' },
   primary: { ...PRIMARY, contrastText: '#fff' },
+  default: { ...DEFAULT, contrastText: '#212B36' },
   secondary: { ...SECONDARY, contrastText: '#fff' },
   info: { ...INFO, contrastText: '#fff' },
   success: { ...SUCCESS, contrastText: GREY[800] },

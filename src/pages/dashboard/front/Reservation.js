@@ -63,14 +63,26 @@ import { AppFeatured, AppWelcome, AppWidget } from '../../../sections/@dashboard
 import { AddLogs } from '../log/AddLogs';
 
 // ----------------------------------------------------------------------
-
-const STATUS_OPTIONS = ['Tous les echeances', 'Echances passées', 'Echanches à venir'];
+const filterOption = [
+  { value: 1, label: 'Logement payé', title: 'Logement dont le montant total a été payé' },
+  { value: 2, label: 'Frais de réservation soldé', title: 'Logement dont les frais de réservation ont été soldés' },
+  {
+    value: 3,
+    label: 'Frais de réservation non soldé',
+    title: 'Logement dont les frais de réservation n’ont pas été totalement payés',
+  },
+];
 
 const TABLE_HEAD = [
   { id: 'programmeImobillier', label: 'Programme immobillier', align: 'left' },
   { id: 'lot', label: 'Lot', align: 'left' },
   { id: 'sousLot', label: 'Ilot', align: 'left' },
-  { id: 'montantReservation', label: 'Montant total du logement hors frais de notaire', align: 'left' },
+  {
+    id: 'montantReservation',
+    label: 'Montant total du logement hors frais de notaire',
+    align: 'left',
+    width: '18%;',
+  },
   { id: 'montantReservation', label: 'Montant versé', align: 'left' },
   { id: 'montantReservation', label: 'Solde à devoir', align: 'left' },
   { id: 'date_fin', label: 'Fin de paiement', align: 'left' },
@@ -107,6 +119,7 @@ export default function Reservation() {
   const [tableData, setTableData] = useState([]);
   const [program, setProgram] = useState([]);
   const [isGet, setIsGet] = useState(false);
+  const [filterLog, setFilterLog] = useState(1);
 
   const [filterName, setFilterName] = useState('');
   const [listProName, setListProName] = useState('');
@@ -232,12 +245,17 @@ export default function Reservation() {
     return percentRounded > 0 ? percentRounded : 0;
   };
 
+  const setSelectFilterLog = (e) => {
+    setFilterLog(e);
+  };
+
   const dataFiltered = applySortFilter({
     tableData,
     comparator: getComparator(order, orderBy),
     filterName,
     filterProgramme,
     // filterStatus,
+    filterLog,
     filterDate,
   });
   const denseHeight = dense ? 52 : 72;
@@ -258,6 +276,25 @@ export default function Reservation() {
         />
 
         <Card>
+          <Box sx={{ p: 4 }}>
+            {filterOption.map((option) => (
+              <Tooltip title={option.title}>
+                <Button
+                  key={option.value}
+                  variant="contained"
+                  // type="submit"
+                  color={filterLog === option.value ? 'primary' : 'default'}
+                  onClick={() => {
+                    setSelectFilterLog(option.value);
+                  }}
+                  sx={{ mr: 2, maxWidth: 300, textAlign: 'left' }}
+                >
+                  {option.label}
+                </Button>
+              </Tooltip>
+            ))}
+          </Box>
+          <Divider />
           <UserTableToolbarReservation
             filterName={filterName}
             filterProgramme={filterProgramme}
@@ -267,7 +304,6 @@ export default function Reservation() {
             onFilterDate={handleFilterDate}
             optionsProgrmme={PROGRAMME_OPTIONS}
           />
-
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
               {selected.length > 0 && (
@@ -348,7 +384,6 @@ export default function Reservation() {
               </Table>
             </TableContainer>
           </Scrollbar>
-
           <Box sx={{ position: 'relative' }}>
             <TablePagination
               rowsPerPageOptions={[5, 10, 25]}
@@ -372,7 +407,7 @@ export default function Reservation() {
   );
 }
 
-function applySortFilter({ tableData, comparator, filterName, filterProgramme, filterDate }) {
+function applySortFilter({ tableData, comparator, filterName, filterProgramme, filterLog, filterDate }) {
   const stabilizedThis = tableData.map((el, index) => [el, index]);
 
   stabilizedThis.sort((a, b) => {
@@ -390,6 +425,18 @@ function applySortFilter({ tableData, comparator, filterName, filterProgramme, f
   // if (filterStatus !== 'all') {
   //   tableData = tableData.filter((item) => item.status === filterStatus);
   // }
+
+  if (filterLog === 1) {
+    tableData = tableData.filter((item) => item.house_global_amount === item.amount_paid);
+  }
+
+  if (filterLog === 2) {
+    tableData = tableData.filter((item) => item.booking_fees_due === 0);
+  }
+
+  if (filterLog === 3) {
+    tableData = tableData.filter((item) => item.booking_fees_due !== 0);
+  }
 
   if (filterProgramme !== 'all') {
     tableData = tableData.filter((item) => item.real_estate_programe_reference === filterProgramme);

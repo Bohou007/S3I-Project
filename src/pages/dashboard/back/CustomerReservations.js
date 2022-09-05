@@ -116,6 +116,16 @@ const TABLE_HEAD = [
   { id: '' },
 ];
 
+const filterOption = [
+  { value: 1, label: 'Logement payé', title: 'Logement dont le montant total a été payé' },
+  { value: 2, label: 'Frais de réservation soldé', title: 'Logement dont les frais de réservation ont été soldés' },
+  {
+    value: 3,
+    label: 'Frais de réservation non soldé',
+    title: 'Logement dont les frais de réservation n’ont pas été totalement payés',
+  },
+];
+
 export default function CustomerReservations() {
   const LabelStyle = styled(Typography)(({ theme }) => ({
     ...theme.typography.subtitle2,
@@ -159,6 +169,8 @@ export default function CustomerReservations() {
   const [allCustomer, setAllCustomer] = useState([]);
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
+
+  const [filterLog, setFilterLog] = useState(1);
 
   const [isGet, setIsGet] = useState(false);
 
@@ -250,6 +262,7 @@ export default function CustomerReservations() {
     comparator: getComparator(order, orderBy),
     filterName,
     filterProgramme,
+    filterLog,
   });
   const denseHeight = dense ? 52 : 72;
   setTimeout(() => {
@@ -501,6 +514,25 @@ export default function CustomerReservations() {
         />
 
         <Card>
+          <Box sx={{ p: 4 }}>
+            {filterOption.map((option) => (
+              <Tooltip title={option.title}>
+                <Button
+                  key={option.value}
+                  variant="contained"
+                  // type="submit"
+                  color={filterLog === option.value ? 'primary' : 'default'}
+                  onClick={() => {
+                    setFilterLog(option.value);
+                  }}
+                  sx={{ mr: 2, maxWidth: 300, textAlign: 'left' }}
+                >
+                  {option.label}
+                </Button>
+              </Tooltip>
+            ))}
+          </Box>
+          <Divider />
           <UserTableToolbarReservationAdmin
             filterName={filterName}
             filterProgramme={filterProgramme}
@@ -795,7 +827,7 @@ export default function CustomerReservations() {
   );
 }
 
-function applySortFilter({ tableData, comparator, filterName, filterProgramme, filterDate }) {
+function applySortFilter({ tableData, comparator, filterName, filterProgramme, filterDate, filterLog }) {
   const stabilizedThis = tableData.map((el, index) => [el, index]);
 
   stabilizedThis.sort((a, b) => {
@@ -814,10 +846,17 @@ function applySortFilter({ tableData, comparator, filterName, filterProgramme, f
       // item.real_estate_program_type.toLowerCase().indexOf(filterName.toLowerCase()) !== -1
     );
   }
-  // if (filterStatus !== 'all') {
-  //   tableData = tableData.filter((item) => item.status === filterStatus);
-  // }
+  if (filterLog === 1) {
+    tableData = tableData.filter((item) => item.house_global_amount === item.amount_paid);
+  }
 
+  if (filterLog === 2) {
+    tableData = tableData.filter((item) => item.booking_fees_due === 0);
+  }
+
+  if (filterLog === 3) {
+    tableData = tableData.filter((item) => item.booking_fees_due !== 0);
+  }
   if (filterProgramme !== 'all') {
     tableData = tableData.filter((item) => item.real_estate_programe_reference === filterProgramme);
   }

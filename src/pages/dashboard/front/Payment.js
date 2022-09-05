@@ -56,6 +56,11 @@ import { AddLogs } from '../log/AddLogs';
 
 const STATUS_OPTIONS = ['Tous les echeances', 'Echances passées', 'Echanches à venir'];
 
+const filterOption = [
+  { value: 1, label: 'Frais de reservation', title: '' },
+  { value: 2, label: 'Paiement des échéances', title: '' },
+];
+
 const TABLE_HEAD = [
   { id: 'programmeImobillier', label: 'Programme Immobillier', align: 'left' },
   { id: 'montant', label: 'Montant versé', align: 'left' },
@@ -95,6 +100,7 @@ export default function Payment() {
   const [filterName, setFilterName] = useState('');
   const [isGet, setIsGet] = useState(false);
   const [listProName, setListProName] = useState('');
+  const [filterVers, setFilterVers] = useState(1);
 
   const [filterProgramme, setFilterProgramme] = useState('all');
   const [filterDate, setFilterDate] = useState('');
@@ -178,7 +184,7 @@ export default function Payment() {
     comparator: getComparator(order, orderBy),
     filterName,
     filterProgramme,
-    // filterStatus,
+    filterVers,
     filterDate,
   });
 
@@ -201,20 +207,25 @@ export default function Payment() {
         />
 
         <Card>
-          {/* <Tabs
-            allowScrollButtonsMobile
-            variant="scrollable"
-            scrollButtons="auto"
-            value={filterStatus}
-            onChange={onChangeFilterStatus}
-            sx={{ px: 2, bgcolor: 'background.neutral' }}
-          >
-            {STATUS_OPTIONS.map((tab) => (
-              <Tab disableRipple key={tab} label={tab} value={tab} />
+          <Box sx={{ p: 4 }}>
+            {filterOption.map((option) => (
+              <Tooltip title={option.title}>
+                <Button
+                  key={option.value}
+                  variant="contained"
+                  // type="submit"
+                  color={filterVers === option.value ? 'primary' : 'default'}
+                  onClick={() => {
+                    setFilterVers(option.value);
+                  }}
+                  sx={{ mr: 2, maxWidth: 300, textAlign: 'left' }}
+                >
+                  {option.label}
+                </Button>
+              </Tooltip>
             ))}
-          </Tabs> */}
-
-          {/* <Divider /> */}
+          </Box>
+          <Divider />
 
           <UserTableToolbarReservation
             filterName={filterName}
@@ -326,7 +337,7 @@ export default function Payment() {
 }
 
 // ----------------------------------------------------------------------
-function applySortFilter({ tableData, comparator, filterName, filterProgramme, filterDate }) {
+function applySortFilter({ tableData, comparator, filterName, filterProgramme, filterVers, filterDate }) {
   const stabilizedThis = tableData.map((el, index) => [el, index]);
 
   stabilizedThis.sort((a, b) => {
@@ -341,9 +352,13 @@ function applySortFilter({ tableData, comparator, filterName, filterProgramme, f
     tableData = tableData.filter((item) => item.name.toLowerCase().indexOf(filterName.toLowerCase()) !== -1);
   }
 
-  // if (filterStatus !== 'all') {
-  //   tableData = tableData.filter((item) => item.status === filterStatus);
-  // }
+  if (filterVers === 1) {
+    tableData = tableData.filter((item) => item.payment_schedule_reference === 'FRAIS RESERVATION');
+  }
+
+  if (filterVers === 2) {
+    tableData = tableData.filter((item) => item.payment_schedule_reference !== 'FRAIS RESERVATION');
+  }
 
   if (filterProgramme !== 'all') {
     tableData = tableData.filter((item) => item.real_estate_program_reference === filterProgramme);

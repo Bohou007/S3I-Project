@@ -58,7 +58,6 @@ export default function TableHeadCustom({
                 sx={{ textTransform: 'none' }}
               >
                 {headCell.label}
-
                 {orderBy === headCell.id ? (
                   <Box sx={{ ...visuallyHidden }}>{order === 'desc' ? 'sorted descending' : 'sorted ascending'}</Box>
                 ) : null}

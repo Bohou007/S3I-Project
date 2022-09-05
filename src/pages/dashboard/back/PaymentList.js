@@ -93,6 +93,11 @@ const TABLE_HEAD = [
   { id: '' },
 ];
 
+const filterOption = [
+  { value: 1, label: 'Frais de reservation', title: '' },
+  { value: 2, label: 'Paiement des échéances', title: '' },
+];
+
 // ----------------------------------------------------------------------
 
 export default function PaymentList() {
@@ -137,6 +142,8 @@ export default function PaymentList() {
   const [allCustomer, setAllCustomer] = useState([]);
   const [allBookings, setAllBookings] = useState([]);
   const [oneBooking, setOneBooking] = useState({});
+
+  const [filterVers, setFilterVers] = useState(1);
 
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
@@ -256,6 +263,7 @@ export default function PaymentList() {
     filterProgramme,
     filterStartDate,
     filterEndDate,
+    filterVers,
   });
 
   const handleChangeEdit = (event) => {
@@ -450,6 +458,24 @@ export default function PaymentList() {
         </DialogAnimate> */}
 
         <Card>
+          <Box sx={{ p: 4 }}>
+            {filterOption.map((option) => (
+              <Tooltip title={option.title}>
+                <Button
+                  key={option.value}
+                  variant="contained"
+                  // type="submit"
+                  color={filterVers === option.value ? 'primary' : 'default'}
+                  onClick={() => {
+                    setFilterVers(option.value);
+                  }}
+                  sx={{ mr: 2, maxWidth: 300, textAlign: 'left' }}
+                >
+                  {option.label}
+                </Button>
+              </Tooltip>
+            ))}
+          </Box>
           <InvoiceTableToolbar
             filterName={filterName}
             filterProgramme={filterProgramme}
@@ -737,7 +763,15 @@ export default function PaymentList() {
 
 // ----------------------------------------------------------------------
 
-function applySortFilter({ tableData, comparator, filterName, filterProgramme, filterStartDate, filterEndDate }) {
+function applySortFilter({
+  tableData,
+  comparator,
+  filterName,
+  filterProgramme,
+  filterStartDate,
+  filterEndDate,
+  filterVers,
+}) {
   const stabilizedThis = tableData.map((el, index) => [el, index]);
 
   stabilizedThis.sort((a, b) => {
@@ -765,6 +799,14 @@ function applySortFilter({ tableData, comparator, filterName, filterProgramme, f
         moment(item.payment_date).format('DD/MM/YYYY') >= moment(filterStartDate).format('DD/MM/YYYY') &&
         moment(item.payment_date).format('DD/MM/YYYY') <= moment(filterEndDate).format('DD/MM/YYYY')
     );
+  }
+
+  if (filterVers === 1) {
+    tableData = tableData.filter((item) => item.payment_schedule_reference === 'FRAIS RESERVATION');
+  }
+
+  if (filterVers === 2) {
+    tableData = tableData.filter((item) => item.payment_schedule_reference !== 'FRAIS RESERVATION');
   }
 
   return tableData;

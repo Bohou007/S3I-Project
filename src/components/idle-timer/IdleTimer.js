@@ -28,7 +28,7 @@ export default function ReactTimer() {
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
 
-  const timeout = 3 * 60 * 1000;
+  const timeout = 3333 * 60 * 1000;
   const [remaining, setRemaining] = useState(timeout);
   const [isLoading, setIsLoading] = useState(false);
   const [isOpenModal, setIsOpenModal] = useState(false);

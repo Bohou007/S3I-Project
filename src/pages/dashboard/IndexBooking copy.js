@@ -246,7 +246,7 @@ export default function IndexBooking({ program, detailRow, customer }) {
 
           <Grid item xs={6} md={4}>
             <CardContent sx={{}}>
-              <Typography sx={{ fontSize: 15 }}>Montant total du logement</Typography>
+              <Typography sx={{ fontSize: 15 }}>Prix du logement</Typography>
               <Typography variant="body2" sx={{ fontSize: 18, fontWeight: 'bold' }}>
                 {sepMillier(detailRow.house_global_amount)} {detailRow.house_global_amount === 0 ? '' : 'FCFA'}
               </Typography>
@@ -262,7 +262,7 @@ export default function IndexBooking({ program, detailRow, customer }) {
           </Grid>
           <Grid item xs={6} md={4}>
             <CardContent sx={{}}>
-              <Typography sx={{ fontSize: 15 }}>Reste à payer du montant total du logement</Typography>
+              <Typography sx={{ fontSize: 15 }}>Reste à payer du prix du logement</Typography>
               <Typography variant="body2" sx={{ fontSize: 18, fontWeight: 'bold' }}>
                 {parseInt(detailRow.balance_due) === 0 ? (
                   sepMillier(detailRow.balance_due) + ' FCFA'
