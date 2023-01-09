@@ -27,6 +27,7 @@ import {
   Button,
   CircularProgress,
   ButtonGroup,
+  TextField,
 } from '@mui/material';
 // utils
 import { fData } from '../../../utils/formatNumber';
@@ -36,7 +37,14 @@ import { PATH_DASHBOARD } from '../../../routes/paths';
 import { countries } from '../../../_mock';
 // components
 import Label from '../../../components/Label';
-import { FormProvider, RHFSelect, RHFSwitch, RHFTextField, RHFTextFieldSomme } from '../../../components/hook-form';
+import {
+  FormProvider,
+  RHFSelect12,
+  RHFSwitch,
+  RHFSelect,
+  RHFTextField,
+  RHFTextFieldSomme,
+} from '../../../components/hook-form';
 import userAvartar from '../../../assets/images/userAvatar.png';
 import Image from '../../../components/Image';
 import Iconify from '../../../components/Iconify';
@@ -53,6 +61,8 @@ VersementNewEditForm.propTypes = {
 
 export default function VersementNewEditForm({ isEdit, onSubmit, paid, handleCloseModal, isLoading }) {
   const navigate = useNavigate();
+
+  const [mode, setMode] = useState(true);
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -124,6 +134,14 @@ export default function VersementNewEditForm({ isEdit, onSubmit, paid, handleClo
     [setValue]
   );
   const py = isEdit ? 11 : 7;
+  const handleClick = (data) => {
+    const content = data.target.value;
+    if (content === 'ESPECE') {
+      setMode(false);
+    } else {
+      setMode(true);
+    }
+  };
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={3}>
@@ -138,7 +156,19 @@ export default function VersementNewEditForm({ isEdit, onSubmit, paid, handleClo
               }}
             >
               <RHFTextField name="payment_method" label="Methode de paiement" />
-              <RHFTextField name="bank" label="Banque" />
+              <RHFSelect12
+                name="payment_method"
+                label="Methode de paiement"
+                placeholder="Methode de paiement"
+                handleClick={handleClick}
+              >
+                <option value="" />
+                <option value="CHEQUE">CHEQUE</option>
+                <option value="VIREMENT">VIREMENT</option>
+                <option value="ESPECE">ESPECE</option>
+              </RHFSelect12>
+
+              {mode === true ? <RHFTextField name="bank" label="Banque" /> : ''}
               <RHFTextFieldSomme name="amount" isSomme={'true'} label="Montant payer" />
               <RHFTextField name="input_payment_reference" label="Reference de paiement" />
 

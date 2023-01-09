@@ -841,7 +841,6 @@ function applySortFilter({ tableData, comparator, filterName, filterProgramme, f
   if (filterName) {
     tableData = tableData.filter(
       (item) => item.customer_reference.toLowerCase().indexOf(filterName.toLowerCase()) !== -1
-      // ||
       // item.formula.toLowerCase().indexOf(filterName.toLowerCase()) !== -1 ||
       // item.real_estate_program_type.toLowerCase().indexOf(filterName.toLowerCase()) !== -1
     );

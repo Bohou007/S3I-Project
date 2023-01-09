@@ -427,15 +427,18 @@ function applySortFilter({ tableData, comparator, filterName, filterProgramme, f
   // }
 
   if (filterLog === 1) {
-    tableData = tableData.filter((item) => item.house_global_amount === item.amount_paid);
+    // eslint-disable-next-line radix
+    tableData = tableData.filter((item) => parseInt(item.balance_due) === 0);
   }
 
   if (filterLog === 2) {
-    tableData = tableData.filter((item) => item.booking_fees_due === 0);
+    // eslint-disable-next-line radix
+    tableData = tableData.filter((item) => parseInt(item.booking_fees_due) === 0);
   }
 
   if (filterLog === 3) {
-    tableData = tableData.filter((item) => item.booking_fees_due !== 0);
+    // eslint-disable-next-line radix
+    tableData = tableData.filter((item) => parseInt(item.booking_fees_due) !== 0);
   }
 
   if (filterProgramme !== 'all') {
